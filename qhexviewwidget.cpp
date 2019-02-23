@@ -1,0 +1,101 @@
+// copyright (c) 2019 hors<horsicq@gmail.com>
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+//
+#include "qhexviewwidget.h"
+#include "ui_qhexviewwidget.h"
+
+QHexViewWidget::QHexViewWidget(QWidget *parent) :
+    QWidget(parent),
+    ui(new Ui::QHexViewWidget)
+{
+    ui->setupUi(this);
+
+    ui->lineEditCursorAddress->setReadOnly(true);
+    ui->lineEditSelectionAddress->setReadOnly(true);
+    ui->lineEditSelectionSize->setReadOnly(true);
+
+    connect(ui->scrollAreaHex,SIGNAL(cursorPositionChanged()),this,SLOT(_getState()));
+    connect(ui->scrollAreaHex,SIGNAL(errorMessage(QString)),this,SLOT(_errorMessage(QString)));
+    connect(ui->scrollAreaHex,SIGNAL(customContextMenu(const QPoint &)),this,SLOT(_customContextMenu(const QPoint &)));
+
+    new QShortcut(QKeySequence(KS_GOTOADDRESS),this,SLOT(_goToAddress()));
+}
+
+QHexViewWidget::~QHexViewWidget()
+{
+    delete ui;
+}
+
+void QHexViewWidget::setData(QIODevice *pDevice,QHexView::OPTIONS *pOptions)
+{
+    ui->scrollAreaHex->setData(pDevice,pOptions);
+    ui->checkBoxReadonly->setChecked(true);
+    ui->checkBoxReadonly->setEnabled(pDevice->isWritable());
+}
+
+void QHexViewWidget::reload()
+{
+    ui->scrollAreaHex->reload();
+}
+
+void QHexViewWidget::_getState()
+{
+    QHexView::STATE state=ui->scrollAreaHex->getState();
+
+    ui->lineEditCursorAddress->setValue32_64((quint64)state.nCursorAddress);
+    ui->lineEditSelectionAddress->setValue32_64((quint64)state.nSelectionAddress);
+    ui->lineEditSelectionSize->setValue32_64((quint64)state.nSelectionSize);
+}
+
+void QHexViewWidget::on_pushButtonGoTo_clicked()
+{
+    _goToAddress();
+}
+
+void QHexViewWidget::on_checkBoxReadonly_toggled(bool checked)
+{
+    ui->scrollAreaHex->setReadonly(checked);
+}
+
+void QHexViewWidget::_goToAddress()
+{
+    DialogGoToAddress da(this,ui->scrollAreaHex);
+    da.exec();
+
+    ui->scrollAreaHex->setFocus();
+    ui->scrollAreaHex->reload();
+}
+
+void QHexViewWidget::_customContextMenu(const QPoint &pos)
+{
+    QMenu contextMenu(this);
+
+    QAction actionGoToAddress(tr("Go to Address"), this);
+    actionGoToAddress.setShortcut(QKeySequence(KS_GOTOADDRESS));
+    connect(&actionGoToAddress, SIGNAL(triggered()), this, SLOT(_goToAddress()));
+    contextMenu.addAction(&actionGoToAddress);
+
+    contextMenu.exec(pos);
+}
+
+void QHexViewWidget::_errorMessage(QString sText)
+{
+    QMessageBox::critical(this,tr("Error"),sText);
+}
