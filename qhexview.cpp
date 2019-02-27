@@ -105,8 +105,8 @@ void QHexView::setData(QIODevice *pDevice, OPTIONS *pOptions)
 
 void QHexView::paintEvent(QPaintEvent *event)
 {
-    //    QElapsedTimer timer;
-    //    timer.start();
+//    QElapsedTimer timer;
+//    timer.start();
 
     QPainter painter(viewport());
     painter.setPen(viewport()->palette().color(QPalette::WindowText));
@@ -126,7 +126,7 @@ void QHexView::paintEvent(QPaintEvent *event)
 
             if(nLineAddress<_nBaseAddress+_nDataSize)
             {
-                quint32 nLinePosition=topLeftY+(i+1)*_nLineHeight;
+                qint32 nLinePosition=topLeftY+(i+1)*_nLineHeight;
                 QString sLineAddress=QString("%1").arg(nLineAddress,_nAddressWidthCount,16,QChar('0'));
                 painter.drawText(topLeftX+_nAddressPosition,nLinePosition,sLineAddress);
             }
@@ -216,7 +216,7 @@ void QHexView::paintEvent(QPaintEvent *event)
             painter.fillRect(_rectCursor, this->palette().color(QPalette::Base));
         }
 
-        qint64 nRelOffset=posInfo.cursorPosition.nOffset-_nStartOffset;
+        qint32 nRelOffset=posInfo.cursorPosition.nOffset-_nStartOffset;
 
         if(posInfo.cursorPosition.type==CT_ANSI)
         {
@@ -240,7 +240,7 @@ void QHexView::paintEvent(QPaintEvent *event)
         }
     }
 
-    //    qDebug("QHexView::paintEvent: %d msec",timer.elapsed());
+//    qDebug("QHexView::paintEvent: %d msec",timer.elapsed());
 }
 
 void QHexView::mouseMoveEvent(QMouseEvent *event)
@@ -340,8 +340,9 @@ QHexView::STATE QHexView::getState()
     }
     else
     {
-        state.nSelectionAddress=state.nCursorAddress;
-        state.nSelectionSize=1;
+        state.nCursorAddress=0;
+        state.nSelectionAddress=0;
+        state.nSelectionSize=0;
     }
 
     return state;
