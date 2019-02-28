@@ -1,3 +1,6 @@
 [submodule "Controls"]
 	path = Controls
 	url = https://github.com/horsicq/Controls.git
+[submodule "FormatDialogs"]
+	path = FormatDialogs
+	url = https://github.com/horsicq/FormatDialogs.git
