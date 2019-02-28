@@ -1,0 +1,3 @@
+[submodule "Controls"]
+	path = Controls
+	url = https://github.com/horsicq/Controls.git

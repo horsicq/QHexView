@@ -83,6 +83,25 @@ void QHexViewWidget::_goToAddress()
     ui->scrollAreaHex->reload();
 }
 
+void QHexViewWidget::_dumpToFile()
+{
+    QString sFilter;
+    sFilter+=QString("%1 (*.bin)").arg(tr("Raw data"));
+    QString sSaveFileName="result"; // TODO default directory
+    QString sFileName=QFileDialog::getSaveFileName(this,tr("Save dump"),sSaveFileName,sFilter);
+
+    if(!sFileName.isEmpty())
+    {
+        QHexView::STATE state=ui->scrollAreaHex->getState();
+
+        DialogDump dd(this);
+
+        dd.dumpToFile(ui->scrollAreaHex->getDevice(),state.nSelectionOffset,state.nSelectionSize,sFileName);
+
+        dd.exec();
+    }
+}
+
 void QHexViewWidget::_customContextMenu(const QPoint &pos)
 {
     QMenu contextMenu(this);
@@ -91,6 +110,11 @@ void QHexViewWidget::_customContextMenu(const QPoint &pos)
     actionGoToAddress.setShortcut(QKeySequence(KS_GOTOADDRESS));
     connect(&actionGoToAddress, SIGNAL(triggered()), this, SLOT(_goToAddress()));
     contextMenu.addAction(&actionGoToAddress);
+
+    QAction actionDumpToFile(tr("Dump to File"), this);
+    actionDumpToFile.setShortcut(QKeySequence(KS_DUMPTOFILE));
+    connect(&actionDumpToFile, SIGNAL(triggered()), this, SLOT(_dumpToFile()));
+    contextMenu.addAction(&actionDumpToFile);
 
     contextMenu.exec(pos);
 }

@@ -62,6 +62,7 @@ public:
     {
         qint64 nCursorAddress;
         qint64 nSelectionAddress;
+        qint64 nSelectionOffset;
         qint64 nSelectionSize;
     };
 

@@ -19,3 +19,8 @@ FORMS += \
     XCONFIG += qlineedithex
     include(../Controls/qlineedithex.pri)
 }
+
+!contains(XCONFIG, dialogdump) {
+    XCONFIG += dialogdump
+    include(../FormatDialogs/dialogdump.pri)
+}

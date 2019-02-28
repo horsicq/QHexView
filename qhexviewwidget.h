@@ -25,10 +25,13 @@
 #include <QMessageBox>
 #include <QMenu>
 #include <QShortcut>
+#include <QFileDialog>
 #include "qhexview.h"
 #include "dialoggotoaddress.h"
+#include "dialogdump.h"
 
-#define KS_GOTOADDRESS Qt::CTRL+Qt::Key_G
+#define KS_GOTOADDRESS          Qt::CTRL+Qt::Key_G
+#define KS_DUMPTOFILE           Qt::CTRL+Qt::Key_D
 
 namespace Ui {
 class QHexViewWidget;
@@ -51,6 +54,7 @@ private slots:
 
     void _getState();
     void _goToAddress();
+    void _dumpToFile();
     void _customContextMenu(const QPoint &pos);
     void _errorMessage(QString sText);
 private:

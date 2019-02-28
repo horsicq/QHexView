@@ -41,8 +41,7 @@ void DialogGoToAddress::on_pushButtonCancel_clicked()
 
 void DialogGoToAddress::on_pushButtonOK_clicked()
 {
-    // TODO Check valid
-    qint64 nAddress=ui->lineEditAddress->getValue();
+    qint64 nAddress=(qint64)ui->lineEditAddress->getValue();
 
     if(pHexView->isAddressValid(nAddress))
     {
@@ -53,5 +52,4 @@ void DialogGoToAddress::on_pushButtonOK_clicked()
     {
         ui->labelStatus->setText(tr("Invalid"));
     }
-
 }
