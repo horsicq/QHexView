@@ -116,6 +116,9 @@ void QHexViewWidget::_customContextMenu(const QPoint &pos)
     connect(&actionDumpToFile, SIGNAL(triggered()), this, SLOT(_dumpToFile()));
     contextMenu.addAction(&actionDumpToFile);
 
+    // TODO Search
+    // TODO Select (All/reset)
+
     contextMenu.exec(pos);
 }
 

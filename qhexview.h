@@ -78,7 +78,7 @@ public:
     //    ~QHexView();
 
     QIODevice *getDevice() const;
-    void setData(QIODevice *pDevice,OPTIONS *pOptions=0);
+    void setData(QIODevice *pDevice,OPTIONS *pOptions=nullptr);
     quint32 getBytesProLine() const;
     void setBytesProLine(const quint32 nBytesProLine);
     qint64 getBaseAddress() const;
