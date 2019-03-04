@@ -45,7 +45,9 @@ QHexView::QHexView(QWidget *parent):QAbstractScrollArea(parent)
 #ifdef Q_OS_LINUX
     setFont(QFont("Monospace",10));
 #endif
-// TODO MAC font
+#ifdef Q_OS_OSX
+    setFont(QFont("Monospace",10)); // TODO Check
+#endif
 
     setContextMenuPolicy(Qt::CustomContextMenu);
 
