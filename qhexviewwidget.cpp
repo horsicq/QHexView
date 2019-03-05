@@ -102,19 +102,34 @@ void QHexViewWidget::_dumpToFile()
     }
 }
 
+void QHexViewWidget::_selectAll()
+{
+    qDebug("void QHexViewWidget::_selectAll()");
+
+    ui->scrollAreaHex->selectAll();
+}
+
 void QHexViewWidget::_customContextMenu(const QPoint &pos)
 {
     QMenu contextMenu(this);
 
-    QAction actionGoToAddress(tr("Go to Address"), this);
+    QAction actionGoToAddress(tr("Go to Address"),this);
     actionGoToAddress.setShortcut(QKeySequence(KS_GOTOADDRESS));
-    connect(&actionGoToAddress, SIGNAL(triggered()), this, SLOT(_goToAddress()));
+    connect(&actionGoToAddress,SIGNAL(triggered()),this,SLOT(_goToAddress()));
     contextMenu.addAction(&actionGoToAddress);
 
-    QAction actionDumpToFile(tr("Dump to File"), this);
+    QAction actionDumpToFile(tr("Dump to File"),this);
     actionDumpToFile.setShortcut(QKeySequence(KS_DUMPTOFILE));
-    connect(&actionDumpToFile, SIGNAL(triggered()), this, SLOT(_dumpToFile()));
+    connect(&actionDumpToFile,SIGNAL(triggered()),this,SLOT(_dumpToFile()));
     contextMenu.addAction(&actionDumpToFile);
+
+    QMenu menuSelect(tr("Select"),this);
+
+    QAction actionSelectAll(tr("Select all"),this);
+    connect(&actionSelectAll,SIGNAL(triggered()),this,SLOT(_selectAll()));
+
+    menuSelect.addAction(&actionSelectAll);
+    contextMenu.addMenu(&menuSelect);
 
     // TODO Search
     // TODO Select (All/reset)

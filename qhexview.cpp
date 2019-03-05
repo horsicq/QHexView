@@ -410,8 +410,15 @@ void QHexView::setSelection(qint64 nAddress, qint64 nSize)
         {
             _initSelection(addressToOffset(nAddress));
             _setSelection(addressToOffset(nAddress)+nSize-1);
+
+            viewport()->update();
         }
     }
+}
+
+void QHexView::selectAll()
+{
+    setSelection(_nBaseAddress,_nDataSize);
 }
 
 void QHexView::setWidgetResizable(bool resizable){}; // hack

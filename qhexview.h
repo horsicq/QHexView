@@ -104,6 +104,7 @@ public slots:
     void goToAddress(qint64 nAddress);
     void _goToOffset(qint64 nOffset);
     void setSelection(qint64 nAddress,qint64 nSize);
+    void selectAll();
     void setWidgetResizable(bool resizable); // hack
     void setWidget(QWidget *widget); // hack
 private slots:

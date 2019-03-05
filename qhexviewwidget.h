@@ -55,6 +55,7 @@ private slots:
     void _getState();
     void _goToAddress();
     void _dumpToFile();
+    void _selectAll();
     void _customContextMenu(const QPoint &pos);
     void _errorMessage(QString sText);
 private:
