@@ -42,9 +42,9 @@ class QHexViewWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit QHexViewWidget(QWidget *parent = 0);
+    explicit QHexViewWidget(QWidget *parent=nullptr);
     ~QHexViewWidget();
-    void setData(QIODevice *pDevice,QHexView::OPTIONS *pOptions=0);
+    void setData(QIODevice *pDevice,QHexView::OPTIONS *pOptions=nullptr);
     void reload();
 
 private slots:
