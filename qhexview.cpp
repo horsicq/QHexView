@@ -335,6 +335,11 @@ QHexView::STATE QHexView::getState()
 
     state.nCursorAddress=offsetToAddress(posInfo.cursorPosition.nOffset);
 
+    if(state.nCursorAddress==-1)
+    {
+        state.nCursorAddress=0;
+    }
+
     if(posInfo.nSelectionStartOffset!=-1)
     {
         state.nSelectionOffset=posInfo.nSelectionStartOffset;
@@ -343,7 +348,7 @@ QHexView::STATE QHexView::getState()
     }
     else
     {
-        state.nCursorAddress=0;
+//        state.nCursorAddress=0;
         state.nSelectionOffset=0;
         state.nSelectionAddress=0;
         state.nSelectionSize=0;
