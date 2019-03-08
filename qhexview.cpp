@@ -115,7 +115,6 @@ void QHexView::paintEvent(QPaintEvent *event)
 
     if(_rectCursor!=event->rect()) // TODO blink
     {
-
         //    qDebug("void QHexView::paintEvent(QPaintEvent *event)");
         qint32 topLeftY=event->rect().topLeft().y();
         qint32 topLeftX=event->rect().topLeft().x()-_nXOffset;
@@ -132,7 +131,6 @@ void QHexView::paintEvent(QPaintEvent *event)
                 QString sLineAddress=QString("%1").arg(nLineAddress,_nAddressWidthCount,16,QChar('0'));
                 painter.drawText(topLeftX+_nAddressPosition,nLinePosition,sLineAddress);
             }
-
         }
 
         painter.setPen(viewport()->palette().color(QPalette::WindowText));
@@ -563,7 +561,7 @@ void QHexView::adjust()
     _nStartOffset=verticalScrollBar()->value()*_nBytesProLine; // TODO
     _nXOffset=horizontalScrollBar()->value();
 
-
+    // TODO update
     if(pDevice)
     {
         if(pDevice->seek(_nStartOffset))
