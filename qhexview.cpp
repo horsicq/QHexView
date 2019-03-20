@@ -608,7 +608,12 @@ void QHexView::adjust()
 void QHexView::init()
 {
     _nStartOffset=0; // mb TODO !!!
-    _nDataSize=pDevice->size();
+    _nDataSize=0;
+    if(pDevice)
+    {
+        _nDataSize=pDevice->size();
+    }
+
     _nTotalLineCount=_nDataSize/_nBytesProLine+1;
     verticalScrollBar()->setValue(0);
 }
