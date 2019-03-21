@@ -87,7 +87,7 @@ void QHexViewWidget::_dumpToFile()
 {
     QString sFilter;
     sFilter+=QString("%1 (*.bin)").arg(tr("Raw data"));
-    QString sSaveFileName="result"; // TODO default directory
+    QString sSaveFileName="Result"; // TODO default directory
     QString sFileName=QFileDialog::getSaveFileName(this,tr("Save dump"),sSaveFileName,sFilter);
 
     if(!sFileName.isEmpty())
@@ -125,7 +125,7 @@ void QHexViewWidget::_customContextMenu(const QPoint &pos)
 
     QMenu menuSelect(tr("Select"),this);
 
-    QAction actionSelectAll(tr("Select all"),this);
+    QAction actionSelectAll(tr("Select All"),this);
     connect(&actionSelectAll,SIGNAL(triggered()),this,SLOT(_selectAll()));
 
     menuSelect.addAction(&actionSelectAll);
