@@ -42,6 +42,7 @@ public:
         qint64 nStartSelectionAddress;
         qint64 nSizeOfSelection;
         QString sBackupFileName;
+        bool bUseCustomMenu;
     };
 
     enum CURSOR_TYPE

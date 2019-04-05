@@ -525,13 +525,12 @@ bool QHexView::writeByte(qint64 nOffset, quint8 *pByte)
 
 void QHexView::_customContextMenu(const QPoint &pos)
 {
+    // TODO
     emit customContextMenu(mapToGlobal(pos));
 }
 
 void QHexView::adjust()
 {
-    //    qDebug("void QHexView::adjust()");
-
     int nHeight=viewport()->height();
     _nLineHeight=_nCharHeight+5;
     _nLinesProPage=(nHeight)/_nLineHeight; // mb nHeight-4
@@ -716,7 +715,6 @@ void QHexView::_setSelection(qint64 nOffset)
 
 void QHexView::resizeEvent(QResizeEvent *)
 {
-//    qDebug("void QHexView::resizeEvent(QResizeEvent *)");
     adjust();
 }
 

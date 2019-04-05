@@ -33,7 +33,7 @@ QHexViewWidget::QHexViewWidget(QWidget *parent) :
 
     connect(ui->scrollAreaHex,SIGNAL(cursorPositionChanged()),this,SLOT(_getState()));
     connect(ui->scrollAreaHex,SIGNAL(errorMessage(QString)),this,SLOT(_errorMessage(QString)));
-    connect(ui->scrollAreaHex,SIGNAL(customContextMenu(const QPoint &)),this,SLOT(_customContextMenu(const QPoint &)));
+//    connect(ui->scrollAreaHex,SIGNAL(customContextMenu(const QPoint &)),this,SLOT(_customContextMenu(const QPoint &)));
 
     new QShortcut(QKeySequence(KS_GOTOADDRESS),this,SLOT(_goToAddress()));
 }
@@ -104,8 +104,6 @@ void QHexViewWidget::_dumpToFile()
 
 void QHexViewWidget::_selectAll()
 {
-    qDebug("void QHexViewWidget::_selectAll()");
-
     ui->scrollAreaHex->selectAll();
 }
 
