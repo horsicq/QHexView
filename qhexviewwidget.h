@@ -48,7 +48,6 @@ public:
     void reload();
 
 private slots:
-
     void on_pushButtonGoTo_clicked();
     void on_checkBoxReadonly_toggled(bool checked);
 
