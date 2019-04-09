@@ -42,7 +42,6 @@ public:
         qint64 nStartSelectionAddress;
         qint64 nSizeOfSelection;
         QString sBackupFileName;
-        bool bUseCustomMenu;
     };
 
     enum CURSOR_TYPE
@@ -128,11 +127,11 @@ signals:
     void customContextMenu(const QPoint &pos);
 
 protected:
-    void paintEvent(QPaintEvent *event);
-    void mouseMoveEvent(QMouseEvent *event);
-    void mousePressEvent(QMouseEvent *event);
-    void resizeEvent(QResizeEvent *);
-    void keyPressEvent(QKeyEvent *event);
+    virtual void paintEvent(QPaintEvent *event);
+    virtual void mouseMoveEvent(QMouseEvent *event);
+    virtual void mousePressEvent(QMouseEvent *event);
+    virtual void resizeEvent(QResizeEvent *);
+    virtual void keyPressEvent(QKeyEvent *event);
 private:
 
     QIODevice *pDevice;

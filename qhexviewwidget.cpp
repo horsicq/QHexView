@@ -50,6 +50,35 @@ void QHexViewWidget::setData(QIODevice *pDevice,QHexView::OPTIONS *pOptions)
     ui->checkBoxReadonly->setEnabled(pDevice->isWritable());
 }
 
+void QHexViewWidget::enableHeader(bool bState)
+{
+    if(bState)
+    {
+        ui->widgetHeader->show();
+    }
+    else
+    {
+        ui->widgetHeader->hide();
+    }
+}
+
+void QHexViewWidget::enableReadOnly(bool bState)
+{
+    if(bState)
+    {
+        ui->checkBoxReadonly->show();
+    }
+    else
+    {
+        ui->checkBoxReadonly->hide();
+    }
+}
+
+bool QHexViewWidget::setReadonly(bool bState)
+{
+    return ui->scrollAreaHex->setReadonly(bState);
+}
+
 void QHexViewWidget::reload()
 {
     ui->scrollAreaHex->reload();

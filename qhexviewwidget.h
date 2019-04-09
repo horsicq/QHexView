@@ -45,6 +45,9 @@ public:
     explicit QHexViewWidget(QWidget *parent=nullptr);
     ~QHexViewWidget();
     void setData(QIODevice *pDevice,QHexView::OPTIONS *pOptions=nullptr);
+    void enableHeader(bool bState);
+    void enableReadOnly(bool bState);
+    bool setReadonly(bool bState);
     void reload();
 
 private slots:
@@ -57,6 +60,7 @@ private slots:
     void _selectAll();
     void _customContextMenu(const QPoint &pos);
     void _errorMessage(QString sText);
+
 private:
     Ui::QHexViewWidget *ui;
 };
