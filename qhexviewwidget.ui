@@ -59,7 +59,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QLineEditHEX" name="lineEditCursorAddress">
+       <widget class="XLineEditHEX" name="lineEditCursorAddress">
         <property name="maximumSize">
          <size>
           <width>140</width>
@@ -79,7 +79,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QLineEditHEX" name="lineEditSelectionAddress">
+       <widget class="XLineEditHEX" name="lineEditSelectionAddress">
         <property name="maximumSize">
          <size>
           <width>140</width>
@@ -99,7 +99,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QLineEditHEX" name="lineEditSelectionSize">
+       <widget class="XLineEditHEX" name="lineEditSelectionSize">
         <property name="maximumSize">
          <size>
           <width>140</width>
@@ -163,9 +163,9 @@
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>QLineEditHEX</class>
+   <class>XLineEditHEX</class>
    <extends>QLineEdit</extends>
-   <header>qlineedithex.h</header>
+   <header>xlineedithex.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

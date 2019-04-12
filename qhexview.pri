@@ -15,9 +15,9 @@ FORMS += \
     $$PWD/qhexviewwidget.ui \
     $$PWD/dialoggotoaddress.ui
 
-!contains(XCONFIG, qlineedithex) {
-    XCONFIG += qlineedithex
-    include(../Controls/qlineedithex.pri)
+!contains(XCONFIG, xlineedithex) {
+    XCONFIG += xlineedithex
+    include(../Controls/xlineedithex.pri)
 }
 
 !contains(XCONFIG, dialogdump) {

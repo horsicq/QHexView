@@ -42,7 +42,7 @@
        <number>1</number>
       </property>
       <item>
-       <widget class="QLineEditHEX" name="lineEditAddress"/>
+       <widget class="XLineEditHEX" name="lineEditAddress"/>
       </item>
      </layout>
     </widget>
@@ -102,9 +102,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>QLineEditHEX</class>
+   <class>XLineEditHEX</class>
    <extends>QLineEdit</extends>
-   <header>qlineedithex.h</header>
+   <header>xlineedithex.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
