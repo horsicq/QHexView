@@ -138,7 +138,6 @@ void QHexViewWidget::_selectAll()
 
 void QHexViewWidget::_customContextMenu(const QPoint &pos)
 {
-
     QHexView::STATE state=ui->scrollAreaHex->getState();
 
     QMenu contextMenu(this);
@@ -148,11 +147,12 @@ void QHexViewWidget::_customContextMenu(const QPoint &pos)
     connect(&actionGoToAddress,SIGNAL(triggered()),this,SLOT(_goToAddress()));
     contextMenu.addAction(&actionGoToAddress);
 
+    QAction actionDumpToFile(tr("Dump to File"),this);
+    actionDumpToFile.setShortcut(QKeySequence(KS_DUMPTOFILE));
+    connect(&actionDumpToFile,SIGNAL(triggered()),this,SLOT(_dumpToFile()));
+
     if(state.nSelectionSize)
     {
-        QAction actionDumpToFile(tr("Dump to File"),this);
-        actionDumpToFile.setShortcut(QKeySequence(KS_DUMPTOFILE));
-        connect(&actionDumpToFile,SIGNAL(triggered()),this,SLOT(_dumpToFile()));
         contextMenu.addAction(&actionDumpToFile);
     }
 
