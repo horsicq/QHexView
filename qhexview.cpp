@@ -80,7 +80,15 @@ void QHexView::setData(QIODevice *pDevice, OPTIONS *pOptions)
 
     if(pOptions)
     {
-        this->_nBaseAddress=pOptions->nBaseAddress;
+        if(pOptions->nBaseAddress==-1)
+        {
+            this->_nBaseAddress=0;
+        }
+        else
+        {
+            this->_nBaseAddress=pOptions->nBaseAddress;
+        }
+
         this->sBackupFileName=pOptions->sBackupFileName;
     }
 
