@@ -32,6 +32,8 @@
 
 #define KS_GOTOADDRESS          Qt::CTRL+Qt::Key_G
 #define KS_DUMPTOFILE           Qt::CTRL+Qt::Key_D
+#define KS_SELECTALL            QKeySequence::SelectAll
+#define KS_COPYASHEX            QKeySequence::Copy
 
 namespace Ui {
 class QHexViewWidget;
@@ -58,6 +60,7 @@ private slots:
     void _goToAddress();
     void _dumpToFile();
     void _selectAll();
+    void _copyAsHex();
     void _customContextMenu(const QPoint &pos);
     void _errorMessage(QString sText);
 

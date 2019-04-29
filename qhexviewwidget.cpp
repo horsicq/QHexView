@@ -36,6 +36,9 @@ QHexViewWidget::QHexViewWidget(QWidget *parent) :
     connect(ui->scrollAreaHex,SIGNAL(customContextMenu(const QPoint &)),this,SLOT(_customContextMenu(const QPoint &)));
 
     new QShortcut(QKeySequence(KS_GOTOADDRESS),this,SLOT(_goToAddress()));
+    new QShortcut(QKeySequence(KS_DUMPTOFILE),this,SLOT(_dumpToFile()));
+    new QShortcut(QKeySequence(KS_SELECTALL),this,SLOT(_selectAll()));
+    new QShortcut(QKeySequence(KS_COPYASHEX),this,SLOT(_copyAsHex()));
 }
 
 QHexViewWidget::~QHexViewWidget()
@@ -136,6 +139,12 @@ void QHexViewWidget::_selectAll()
     ui->scrollAreaHex->selectAll();
 }
 
+void QHexViewWidget::_copyAsHex()
+{
+    qDebug("void QHexViewWidget::_copyAsHex()");
+    // TODO ui->scrollAreaHex->copyAsHex();
+}
+
 void QHexViewWidget::_customContextMenu(const QPoint &pos)
 {
     QHexView::STATE state=ui->scrollAreaHex->getState();
@@ -159,10 +168,20 @@ void QHexViewWidget::_customContextMenu(const QPoint &pos)
     QMenu menuSelect(tr("Select"),this);
 
     QAction actionSelectAll(tr("Select All"),this);
+    actionSelectAll.setShortcut(QKeySequence(KS_SELECTALL));
     connect(&actionSelectAll,SIGNAL(triggered()),this,SLOT(_selectAll()));
 
     menuSelect.addAction(&actionSelectAll);
     contextMenu.addMenu(&menuSelect);
+
+    QMenu menuCopy(tr("Copy"),this);
+
+    QAction actionCopyAsHex(tr("Copy as Hex"),this);
+    actionCopyAsHex.setShortcut(QKeySequence(KS_COPYASHEX));
+    connect(&actionCopyAsHex,SIGNAL(triggered()),this,SLOT(_copyAsHex()));
+
+    menuCopy.addAction(&actionCopyAsHex);
+    contextMenu.addMenu(&menuCopy);
 
     // TODO Search
     // TODO Select (All/reset)
