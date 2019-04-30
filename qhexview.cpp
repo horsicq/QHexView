@@ -380,6 +380,23 @@ bool QHexView::setReadonly(bool bState)
     return bResult;
 }
 
+QByteArray QHexView::readArray(qint64 nOffset, qint64 nSize)
+{
+    QByteArray baResult;
+
+    if(pDevice->seek(nOffset)&&(nOffset+nSize<=pDevice->size()))
+    {
+        baResult.resize((qint32)nSize);
+        qint64 _nSize=pDevice->read(baResult.data(),nSize);
+        if(_nSize!=nSize)
+        {
+            baResult.resize((qint32)_nSize);
+        }
+    }
+
+    return baResult;
+}
+
 char QHexView::convertANSI(char cByte)
 {
     if((cByte<0x20)||(cByte>0x7e))
@@ -908,10 +925,8 @@ void QHexView::keyPressEvent(QKeyEvent *event)
                     nEndPageOffset=0;
                 }
 
-
                 _goToOffset(nEndPageOffset);
             }
-
 
             adjust();
             viewport()->update();

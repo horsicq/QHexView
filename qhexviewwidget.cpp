@@ -141,8 +141,12 @@ void QHexViewWidget::_selectAll()
 
 void QHexViewWidget::_copyAsHex()
 {
-    qDebug("void QHexViewWidget::_copyAsHex()");
-    // TODO ui->scrollAreaHex->copyAsHex();
+    // TODO limit
+    QHexView::STATE state=ui->scrollAreaHex->getState();
+
+    QByteArray baData=ui->scrollAreaHex->readArray(state.nSelectionOffset,state.nSelectionSize);
+
+    QApplication::clipboard()->setText(baData.toHex());
 }
 
 void QHexViewWidget::_customContextMenu(const QPoint &pos)

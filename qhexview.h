@@ -30,6 +30,7 @@
 #include <QElapsedTimer>
 #include <QTimer>
 #include <QApplication>
+#include <QClipboard>
 
 class QHexView : public QAbstractScrollArea
 {
@@ -76,7 +77,6 @@ public:
 
     QHexView(QWidget *parent=nullptr);
     //    ~QHexView();
-
     QIODevice *getDevice() const;
     void setData(QIODevice *pDevice,OPTIONS *pOptions=nullptr);
     quint32 getBytesProLine() const;
@@ -88,6 +88,8 @@ public:
     void reload();
     STATE getState();
     bool setReadonly(bool bState);
+    QByteArray readArray(qint64 nOffset,qint64 nSize);
+
 private:
     enum SELECT_TYPE
     {
@@ -107,6 +109,7 @@ public slots:
     void selectAll();
     void setWidgetResizable(bool resizable); // hack
     void setWidget(QWidget *widget); // hack
+
 private slots:
     void adjust();
     void init();
@@ -121,6 +124,7 @@ private slots:
     bool readByte(qint64 nOffset,quint8 *pByte);
     bool writeByte(qint64 nOffset,quint8 *pByte);
     void _customContextMenu(const QPoint &pos);
+
 signals:
     void cursorPositionChanged();
     void errorMessage(QString sText);
@@ -132,12 +136,10 @@ protected:
     virtual void mousePressEvent(QMouseEvent *event);
     virtual void resizeEvent(QResizeEvent *);
     virtual void keyPressEvent(QKeyEvent *event);
+
 private:
-
     QIODevice *pDevice;
-
     qint64 _nBaseAddress;
-
     qint32 _nXOffset;
     qint32 _nBytesProLine;
     qint32 _nCharWidth;
