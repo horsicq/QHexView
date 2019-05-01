@@ -188,7 +188,7 @@ void QHexViewWidget::_customContextMenu(const QPoint &pos)
     contextMenu.addMenu(&menuCopy);
 
     // TODO Search
-    // TODO Select (All/reset)
+    // TODO reset select
 
     contextMenu.exec(pos);
 }
