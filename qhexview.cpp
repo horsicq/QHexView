@@ -100,6 +100,7 @@ void QHexView::setData(QIODevice *pDevice, OPTIONS *pOptions)
     if(pOptions)
     {
         goToAddress(pOptions->nStartAddress);
+
         if(pOptions->nSizeOfSelection)
         {
             if(isAddressValid(pOptions->nStartSelectionAddress))
@@ -115,8 +116,8 @@ void QHexView::setData(QIODevice *pDevice, OPTIONS *pOptions)
 
 void QHexView::paintEvent(QPaintEvent *event)
 {
-//    QElapsedTimer timer;
-//    timer.start();
+    //    QElapsedTimer timer;
+    //    timer.start();
 
     QPainter painter(viewport());
     painter.setPen(viewport()->palette().color(QPalette::WindowText));
@@ -248,7 +249,7 @@ void QHexView::paintEvent(QPaintEvent *event)
         }
     }
 
-//    qDebug("QHexView::paintEvent: %d msec",timer.elapsed());
+    //    qDebug("QHexView::paintEvent: %d msec",timer.elapsed());
 }
 
 void QHexView::mouseMoveEvent(QMouseEvent *event)
@@ -354,7 +355,7 @@ QHexView::STATE QHexView::getState()
     }
     else
     {
-//        state.nCursorAddress=0;
+        //        state.nCursorAddress=0;
         state.nSelectionOffset=0;
         state.nSelectionAddress=0;
         state.nSelectionSize=0;
@@ -369,7 +370,7 @@ bool QHexView::setReadonly(bool bState)
 
     if(pDevice)
     {
-        if(     (bState)||
+        if((bState)||
                 ((!bState)&&(pDevice->isWritable())))
         {
             bReadonly=bState;
@@ -388,6 +389,7 @@ QByteArray QHexView::readArray(qint64 nOffset, qint64 nSize)
     {
         baResult.resize((qint32)nSize);
         qint64 _nSize=pDevice->read(baResult.data(),nSize);
+
         if(_nSize!=nSize)
         {
             baResult.resize((qint32)_nSize);
@@ -413,11 +415,11 @@ void QHexView::goToAddress(qint64 nAddress)
     if((isAddressValid(nAddress))&&(_nBytesProLine))
     {
         verticalScrollBar()->setValue((addressToOffset(nAddress))/_nBytesProLine);
-//        posInfo.cursorPosition.nOffset+=(addressToOffset(nAddress))%_nBytesProLine;
-//        posInfo.cursorPosition.nOffset=addressToOffset(nAddress);
-//        qDebug(QString::number(posInfo.cursorPosition.nOffset,16).toLatin1().data());
+        //        posInfo.cursorPosition.nOffset+=(addressToOffset(nAddress))%_nBytesProLine;
+        //        posInfo.cursorPosition.nOffset=addressToOffset(nAddress);
+        //        qDebug(QString::number(posInfo.cursorPosition.nOffset,16).toLatin1().data());
         posInfo.cursorPosition.nOffset=addressToOffset(nAddress);
-//        qDebug(QString::number(posInfo.cursorPosition.nOffset,16).toLatin1().data());
+        //        qDebug(QString::number(posInfo.cursorPosition.nOffset,16).toLatin1().data());
     }
 }
 
@@ -449,9 +451,9 @@ void QHexView::selectAll()
     setSelection(_nBaseAddress,_nDataSize);
 }
 
-void QHexView::setWidgetResizable(bool resizable){}; // hack
+void QHexView::setWidgetResizable(bool resizable) {}; // hack
 
-void QHexView::setWidget(QWidget *widget){}; // hack
+void QHexView::setWidget(QWidget *widget) {}; // hack
 
 
 QHexView::SELECT_TYPE QHexView::getSelectType(qint64 nOffset)
@@ -529,6 +531,7 @@ QPoint QHexView::cursorToPoint(QHexView::CURSOR_POSITION cp)
 bool QHexView::readByte(qint64 nOffset, quint8 *pByte)
 {
     int nCount=0;
+
     if(pDevice->seek(nOffset))
     {
         nCount=(int)pDevice->read((char *)pByte,1);
@@ -540,6 +543,7 @@ bool QHexView::readByte(qint64 nOffset, quint8 *pByte)
 bool QHexView::writeByte(qint64 nOffset, quint8 *pByte)
 {
     int nCount=0;
+
     if(pDevice->seek(nOffset))
     {
         nCount=(int)pDevice->write((char *)pByte,1);
@@ -563,6 +567,7 @@ void QHexView::adjust()
 
     _nAddressPosition=_nCharWidth;
     _nAddressWidthCount=8;
+
     if(pDevice)
     {
         if(pDevice->size()+_nBaseAddress>=0xFFFFFFFF)
@@ -570,6 +575,7 @@ void QHexView::adjust()
             _nAddressWidthCount=16;
         }
     }
+
     _nAddressWidth=(_nAddressWidthCount+3)*_nCharWidth; // TODO set addresswidth
     _nHexPosition=_nAddressPosition+_nAddressWidth;
     _nHexWidth=(_nBytesProLine+1)*_nCharWidth*3;
@@ -633,6 +639,7 @@ void QHexView::init()
 {
     _nStartOffset=0; // mb TODO !!!
     _nDataSize=0;
+
     if(pDevice)
     {
         _nDataSize=pDevice->size();
@@ -746,7 +753,7 @@ void QHexView::resizeEvent(QResizeEvent *)
 void QHexView::keyPressEvent(QKeyEvent *event)
 {
     // Move commands
-    if(     event->matches(QKeySequence::MoveToNextChar)||
+    if(event->matches(QKeySequence::MoveToNextChar)||
             event->matches(QKeySequence::MoveToPreviousChar)||
             event->matches(QKeySequence::MoveToNextLine)||
             event->matches(QKeySequence::MoveToPreviousLine)||
@@ -944,9 +951,9 @@ void QHexView::keyPressEvent(QKeyEvent *event)
     {
         if(!bReadonly)
         {
-            if( (!(event->modifiers()&Qt::AltModifier))&&
-                (!(event->modifiers()&Qt::ControlModifier))&&
-                (!(event->modifiers()&Qt::MetaModifier)))
+            if((!(event->modifiers()&Qt::AltModifier))&&
+                    (!(event->modifiers()&Qt::ControlModifier))&&
+                    (!(event->modifiers()&Qt::MetaModifier)))
             {
                 quint8 nByte=0;
                 quint8 nChar=0;
@@ -963,8 +970,8 @@ void QHexView::keyPressEvent(QKeyEvent *event)
                             bSuccess=true;
                         }
                     }
-                    else if(    (posInfo.cursorPosition.type==CT_HIWORD)||
-                                (posInfo.cursorPosition.type==CT_LOWORD))
+                    else if((posInfo.cursorPosition.type==CT_HIWORD)||
+                            (posInfo.cursorPosition.type==CT_LOWORD))
                     {
                         if((nKey>=Qt::Key_0)&&(nKey<=Qt::Key_9))
                         {
@@ -999,6 +1006,7 @@ void QHexView::keyPressEvent(QKeyEvent *event)
                                     if(pDevice->metaObject()->className()==QString("QFile"))
                                     {
                                         QString sFileName=((QFile *)pDevice)->fileName();
+
                                         if(!QFile::copy(sFileName,sBackupFileName))
                                         {
                                             emit errorMessage(tr("Cannot save file")+QString(": %1").arg(sBackupFileName));

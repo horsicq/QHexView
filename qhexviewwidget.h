@@ -35,7 +35,8 @@
 #define KS_SELECTALL            QKeySequence::SelectAll
 #define KS_COPYASHEX            QKeySequence::Copy
 
-namespace Ui {
+namespace Ui
+{
 class QHexViewWidget;
 }
 

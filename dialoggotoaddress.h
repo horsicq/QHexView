@@ -24,7 +24,8 @@
 #include <QDialog>
 #include "qhexview.h"
 
-namespace Ui {
+namespace Ui
+{
 class DialogGoToAddress;
 }
 
