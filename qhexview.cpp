@@ -120,6 +120,10 @@ void QHexView::paintEvent(QPaintEvent *event)
     //    timer.start();
 
     QPainter painter(viewport());
+    QFont fontNormal=painter.font();
+    QFont fontBold=fontNormal;
+    fontBold.setBold(true);
+
     painter.setPen(viewport()->palette().color(QPalette::WindowText));
 
     if(_rectCursor!=event->rect()) // TODO blink
@@ -147,7 +151,9 @@ void QHexView::paintEvent(QPaintEvent *event)
 
         // HEX
         bool bIsSelected=false;
-        QColor c=viewport()->palette().color(QPalette::Base);
+        QColor color=viewport()->palette().color(QPalette::Base);
+
+        qint32 nDataBufferSize=_baDataBuffer.size();
 
         for(qint32 i=0; i<_nLinesProPage; i++)
         {
@@ -163,7 +169,7 @@ void QHexView::paintEvent(QPaintEvent *event)
                 QString sHex=_baDataHexBuffer.mid(nIndex*2,2);
                 char ch=' ';
 
-                if(nIndex<_baDataBuffer.size())
+                if(nIndex<nDataBufferSize)
                 {
                     ch=_baDataBuffer.at(nIndex);
                     ch=convertANSI(ch);
@@ -179,12 +185,12 @@ void QHexView::paintEvent(QPaintEvent *event)
 
                     if(st==ST_NOTSELECTED)
                     {
-                        c=viewport()->palette().color(QPalette::Base);
+                        color=viewport()->palette().color(QPalette::Base);
                         painter.setPen(viewport()->palette().color(QPalette::WindowText));
                     }
                     else
                     {
-                        c=viewport()->palette().highlight().color();
+                        color=viewport()->palette().highlight().color();
                         painter.setPen(QPen(Qt::white));
                     }
                 }
@@ -199,12 +205,25 @@ void QHexView::paintEvent(QPaintEvent *event)
                 // TODO flag changed if selected
                 QRect rect;
                 rect.setRect(nBytePositionHEX,nLinePosition-_nLineHeight+_nLineDelta,_nCharWidth*nCount,_nLineHeight); // mb TODO fix 3
-                painter.fillRect(rect,c);
+                painter.fillRect(rect,color);
                 rect.setRect(nBytePositionANSI,nLinePosition-_nLineHeight+_nLineDelta,_nCharWidth,_nLineHeight);
-                painter.fillRect(rect,c);
+                painter.fillRect(rect,color);
+
+                bool bBold=(sHex!="00");
+
+                if(bBold)
+                {
+                    painter.setFont(fontBold);
+                }
 
                 painter.drawText(nBytePositionHEX,nLinePosition,sHex);
                 painter.drawText(nBytePositionANSI,nLinePosition,QChar(ch));
+
+                if(bBold)
+                {
+                    // Restore
+                    painter.setFont(fontNormal);
+                }
             }
         }
 
@@ -407,6 +426,22 @@ char QHexView::convertANSI(char cByte)
     }
 
     return cByte;
+}
+
+QString QHexView::getFontName()
+{
+    QString sResult;
+#ifdef Q_OS_WIN32
+    sResult="Courier";
+#endif
+#ifdef Q_OS_LINUX
+    sResult="Monospace";
+#endif
+#ifdef Q_OS_OSX
+    sResult="Courier"; // TODO Check "Menlo"
+#endif
+
+    return sResult;
 }
 
 void QHexView::goToAddress(qint64 nAddress)

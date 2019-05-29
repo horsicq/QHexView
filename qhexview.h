@@ -101,6 +101,7 @@ private:
     };
 
     static char convertANSI(char cByte);
+    static QString getFontName();
 
 public slots:
     void goToAddress(qint64 nAddress);
