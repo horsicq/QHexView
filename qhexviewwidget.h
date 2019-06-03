@@ -52,6 +52,11 @@ public:
     void enableReadOnly(bool bState);
     bool setReadonly(bool bState);
     void reload();
+    bool isEdited();
+    void setEdited(bool bState);
+
+signals:
+    void editState(bool bState);
 
 private slots:
     void on_pushButtonGoTo_clicked();

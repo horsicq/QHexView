@@ -34,6 +34,7 @@ QHexViewWidget::QHexViewWidget(QWidget *parent) :
     connect(ui->scrollAreaHex,SIGNAL(cursorPositionChanged()),this,SLOT(_getState()));
     connect(ui->scrollAreaHex,SIGNAL(errorMessage(QString)),this,SLOT(_errorMessage(QString)));
     connect(ui->scrollAreaHex,SIGNAL(customContextMenu(const QPoint &)),this,SLOT(_customContextMenu(const QPoint &)));
+    connect(ui->scrollAreaHex,SIGNAL(editState(bool)),this,SIGNAL(editState(bool)));
 
     new QShortcut(QKeySequence(KS_GOTOADDRESS),this,SLOT(_goToAddress()));
     new QShortcut(QKeySequence(KS_DUMPTOFILE),this,SLOT(_dumpToFile()));
@@ -85,6 +86,16 @@ bool QHexViewWidget::setReadonly(bool bState)
 void QHexViewWidget::reload()
 {
     ui->scrollAreaHex->reload();
+}
+
+bool QHexViewWidget::isEdited()
+{
+    return ui->scrollAreaHex->isEdited();
+}
+
+void QHexViewWidget::setEdited(bool bState)
+{
+    ui->scrollAreaHex->setEdited(bState);
 }
 
 void QHexViewWidget::_getState()

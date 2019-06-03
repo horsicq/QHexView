@@ -89,6 +89,8 @@ public:
     STATE getState();
     bool setReadonly(bool bState);
     QByteArray readArray(qint64 nOffset,qint64 nSize);
+    bool isEdited();
+    void setEdited(bool bState);
 
 private:
     enum SELECT_TYPE
@@ -130,6 +132,7 @@ signals:
     void cursorPositionChanged();
     void errorMessage(QString sText);
     void customContextMenu(const QPoint &pos);
+    void editState(bool bState);
 
 protected:
     virtual void paintEvent(QPaintEvent *event);
@@ -172,7 +175,7 @@ private:
     bool _bMouseSelection;
 
     bool bReadonly;
-    bool bEdited;
+    bool bIsEdited;
     QString sBackupFileName; // TODO options
 };
 

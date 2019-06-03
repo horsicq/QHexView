@@ -25,7 +25,7 @@ QHexView::QHexView(QWidget *parent):QAbstractScrollArea(parent)
     pDevice=nullptr;
 
     bReadonly=true;
-    bEdited=false;
+    bIsEdited=false;
 
     _bMouseSelection=false;
     _nDataSize=0;
@@ -416,6 +416,16 @@ QByteArray QHexView::readArray(qint64 nOffset, qint64 nSize)
     }
 
     return baResult;
+}
+
+bool QHexView::isEdited()
+{
+    return bIsEdited;
+}
+
+void QHexView::setEdited(bool bState)
+{
+    this->bIsEdited=bState;
 }
 
 char QHexView::convertANSI(char cByte)
@@ -1031,8 +1041,11 @@ void QHexView::keyPressEvent(QKeyEvent *event)
                             nChar=(nByte&0xF0)+nChar;
                         }
 
-                        if(!bEdited)
+                        bool bSave=true;
+
+                        if(!bIsEdited)
                         {
+                            // TODO Check
                             // Save backup
                             if(sBackupFileName!="")
                             {
@@ -1044,6 +1057,7 @@ void QHexView::keyPressEvent(QKeyEvent *event)
 
                                         if(!QFile::copy(sFileName,sBackupFileName))
                                         {
+                                            bSave=false;
                                             emit errorMessage(tr("Cannot save file")+QString(": %1").arg(sBackupFileName));
                                         }
                                     }
@@ -1051,36 +1065,41 @@ void QHexView::keyPressEvent(QKeyEvent *event)
                             }
                         }
 
-                        if(writeByte(posInfo.cursorPosition.nOffset,&nChar))
+                        if(bSave)
                         {
-                            bEdited=true;
+                            if(writeByte(posInfo.cursorPosition.nOffset,&nChar))
+                            {
+                                bIsEdited=true;
 
-                            if(posInfo.cursorPosition.type==CT_ANSI)
-                            {
-                                posInfo.cursorPosition.nOffset++;
-                            }
-                            else if(posInfo.cursorPosition.type==CT_HIWORD)
-                            {
-                                posInfo.cursorPosition.type=CT_LOWORD;
-                            }
-                            else if(posInfo.cursorPosition.type==CT_LOWORD)
-                            {
-                                posInfo.cursorPosition.nOffset++;
-                                posInfo.cursorPosition.type=CT_HIWORD;
-                            }
+                                emit editState(bIsEdited);
 
-                            if(posInfo.cursorPosition.nOffset>_nDataSize-1)
-                            {
-                                posInfo.cursorPosition.nOffset=_nDataSize-1;
-
-                                if(posInfo.cursorPosition.type!=CT_ANSI)
+                                if(posInfo.cursorPosition.type==CT_ANSI)
+                                {
+                                    posInfo.cursorPosition.nOffset++;
+                                }
+                                else if(posInfo.cursorPosition.type==CT_HIWORD)
                                 {
                                     posInfo.cursorPosition.type=CT_LOWORD;
                                 }
-                            }
+                                else if(posInfo.cursorPosition.type==CT_LOWORD)
+                                {
+                                    posInfo.cursorPosition.nOffset++;
+                                    posInfo.cursorPosition.type=CT_HIWORD;
+                                }
 
-                            adjust();
-                            viewport()->update();
+                                if(posInfo.cursorPosition.nOffset>_nDataSize-1)
+                                {
+                                    posInfo.cursorPosition.nOffset=_nDataSize-1;
+
+                                    if(posInfo.cursorPosition.type!=CT_ANSI)
+                                    {
+                                        posInfo.cursorPosition.type=CT_LOWORD;
+                                    }
+                                }
+
+                                adjust();
+                                viewport()->update();
+                            }
                         }
                     }
                 }
