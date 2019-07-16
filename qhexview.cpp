@@ -450,7 +450,6 @@ QString QHexView::getFontName()
 #ifdef Q_OS_OSX
     sResult="Courier"; // TODO Check "Menlo"
 #endif
-
     return sResult;
 }
 
@@ -496,10 +495,15 @@ void QHexView::selectAll()
     setSelection(_nBaseAddress,_nDataSize);
 }
 
-void QHexView::setWidgetResizable(bool resizable) {}; // hack
+void QHexView::setWidgetResizable(bool resizable) // hack
+{
+    Q_UNUSED(resizable)
+}
 
-void QHexView::setWidget(QWidget *widget) {}; // hack
-
+void QHexView::setWidget(QWidget *widget) // hack
+{
+    Q_UNUSED(widget)
+}
 
 QHexView::SELECT_TYPE QHexView::getSelectType(qint64 nOffset)
 {
