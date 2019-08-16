@@ -35,6 +35,7 @@
 class QHexView : public QAbstractScrollArea
 {
     Q_OBJECT
+
 public:
     struct OPTIONS
     {
