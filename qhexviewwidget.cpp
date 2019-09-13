@@ -148,6 +148,7 @@ void QHexViewWidget::_dumpToFile()
 void QHexViewWidget::_selectAll()
 {
     ui->scrollAreaHex->selectAll();
+    _getState();
 }
 
 void QHexViewWidget::_copyAsHex()
