@@ -746,7 +746,7 @@ QHexView::CURSOR_POSITION QHexView::getCursorPosition(QPoint pos)
         nRelOffset=nDeltaY*_nBytesProLine+nDeltaX;
     }
 
-    if(nRelOffset!=-1)
+    if(nRelOffset!=(quint64)-1)
     {
         result.nOffset=_nStartOffset+nRelOffset;
 
