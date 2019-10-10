@@ -126,7 +126,7 @@ void QHexView::paintEvent(QPaintEvent *event)
 
     painter.setPen(viewport()->palette().color(QPalette::WindowText));
 
-    if(_rectCursor!=event->rect()) // TODO blink
+    if(_rectCursor!=event->rect())
     {
         //    qDebug("void QHexView::paintEvent(QPaintEvent *event)");
         qint32 topLeftY=event->rect().topLeft().y();
@@ -455,14 +455,16 @@ QString QHexView::getFontName()
 
 void QHexView::goToAddress(qint64 nAddress)
 {
-    // TODO set Cursor
     if((isAddressValid(nAddress))&&(_nBytesProLine))
     {
-        verticalScrollBar()->setValue((addressToOffset(nAddress))/_nBytesProLine);
+        qint64 nOffset=addressToOffset(nAddress);
+
+        verticalScrollBar()->setValue((nOffset)/_nBytesProLine);
         //        posInfo.cursorPosition.nOffset+=(addressToOffset(nAddress))%_nBytesProLine;
         //        posInfo.cursorPosition.nOffset=addressToOffset(nAddress);
         //        qDebug(QString::number(posInfo.cursorPosition.nOffset,16).toLatin1().data());
-        posInfo.cursorPosition.nOffset=addressToOffset(nAddress);
+        posInfo.cursorPosition.nOffset=nOffset;
+        posInfo.cursorPosition.type=CT_HIWORD;
         //        qDebug(QString::number(posInfo.cursorPosition.nOffset,16).toLatin1().data());
     }
 }

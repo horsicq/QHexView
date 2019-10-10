@@ -40,6 +40,8 @@ QHexViewWidget::QHexViewWidget(QWidget *parent) :
     new QShortcut(QKeySequence(KS_DUMPTOFILE),this,SLOT(_dumpToFile()));
     new QShortcut(QKeySequence(KS_SELECTALL),this,SLOT(_selectAll()));
     new QShortcut(QKeySequence(KS_COPYASHEX),this,SLOT(_copyAsHex()));
+
+    ui->scrollAreaHex->setFocus();
 }
 
 QHexViewWidget::~QHexViewWidget()
