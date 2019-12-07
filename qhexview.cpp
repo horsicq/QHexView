@@ -32,6 +32,9 @@ QHexView::QHexView(QWidget *parent):QAbstractScrollArea(parent)
     _bBlink=false;
     _nBytesProLine=0;
 
+    _nStartOffset=0;
+    _nStartOffsetDelta=0;
+
     setBytesProLine(16);
     this->_nBaseAddress=0;
     _initSelection(-1);
@@ -51,8 +54,8 @@ QHexView::QHexView(QWidget *parent):QAbstractScrollArea(parent)
 
     setContextMenuPolicy(Qt::CustomContextMenu);
 
-    connect(verticalScrollBar(),SIGNAL(valueChanged(int)),this,SLOT(adjust()));
-    connect(horizontalScrollBar(),SIGNAL(valueChanged(int)),this,SLOT(adjust()));
+    connect(verticalScrollBar(),SIGNAL(valueChanged(int)),this,SLOT(verticalScroll()));
+    connect(horizontalScrollBar(),SIGNAL(valueChanged(int)),this,SLOT(horisontalScroll()));
 
     connect(this,SIGNAL(customContextMenuRequested(QPoint)),this,SLOT(_customContextMenu(QPoint)));
 
@@ -175,7 +178,7 @@ void QHexView::paintEvent(QPaintEvent *event)
                     ch=convertANSI(ch);
                 }
 
-                SELECT_TYPE st=getSelectType(_nStartOffset+nIndex);
+                ST st=getSelectType(_nStartOffset+nIndex);
 
                 _bIsSelected=!(st==ST_NOTSELECTED);
 
@@ -460,6 +463,7 @@ void QHexView::goToAddress(qint64 nAddress)
         qint64 nOffset=addressToOffset(nAddress);
 
         verticalScrollBar()->setValue((nOffset)/_nBytesProLine);
+        _nStartOffsetDelta=(nOffset)%_nBytesProLine;
         //        posInfo.cursorPosition.nOffset+=(addressToOffset(nAddress))%_nBytesProLine;
         //        posInfo.cursorPosition.nOffset=addressToOffset(nAddress);
         //        qDebug(QString::number(posInfo.cursorPosition.nOffset,16).toLatin1().data());
@@ -474,7 +478,7 @@ void QHexView::_goToOffset(qint64 nOffset)
     if((isOffsetValid(nOffset))&&(_nBytesProLine))
     {
         verticalScrollBar()->setValue(nOffset/_nBytesProLine);
-        // mb TODO
+        _nStartOffsetDelta=(nOffset)%_nBytesProLine;
     }
 }
 
@@ -497,19 +501,20 @@ void QHexView::selectAll()
     setSelection(_nBaseAddress,_nDataSize);
 }
 
-void QHexView::setWidgetResizable(bool resizable) // hack
+void QHexView::verticalScroll()
 {
-    Q_UNUSED(resizable)
+//    _nStartOffsetDelta=0;
+    adjust();
 }
 
-void QHexView::setWidget(QWidget *widget) // hack
+void QHexView::horisontalScroll()
 {
-    Q_UNUSED(widget)
+    adjust();
 }
 
-QHexView::SELECT_TYPE QHexView::getSelectType(qint64 nOffset)
+QHexView::ST QHexView::getSelectType(qint64 nOffset)
 {
-    SELECT_TYPE result=ST_NOTSELECTED;
+    ST result=ST_NOTSELECTED;
 
     if(nOffset==posInfo.nSelectionStartOffset)
     {
@@ -639,7 +644,7 @@ void QHexView::adjust()
     verticalScrollBar()->setRange(0,_nTotalLineCount-_nLinesProPage);
     verticalScrollBar()->setPageStep(_nLinesProPage);
 
-    _nStartOffset=verticalScrollBar()->value()*_nBytesProLine; // TODO
+    _nStartOffset=verticalScrollBar()->value()*_nBytesProLine+_nStartOffsetDelta;
     _nXOffset=horizontalScrollBar()->value();
 
     // TODO update
@@ -688,7 +693,8 @@ void QHexView::adjust()
 
 void QHexView::init()
 {
-    _nStartOffset=0; // mb TODO !!!
+    _nStartOffset=0;
+    _nStartOffsetDelta=0;
     _nDataSize=0;
 
     if(pDevice)
@@ -804,19 +810,19 @@ void QHexView::resizeEvent(QResizeEvent *)
 void QHexView::keyPressEvent(QKeyEvent *event)
 {
     // Move commands
-    if(event->matches(QKeySequence::MoveToNextChar)||
-            event->matches(QKeySequence::MoveToPreviousChar)||
-            event->matches(QKeySequence::MoveToNextLine)||
-            event->matches(QKeySequence::MoveToPreviousLine)||
-            event->matches(QKeySequence::MoveToNextPage)||
-            event->matches(QKeySequence::MoveToPreviousPage)||
-            event->matches(QKeySequence::MoveToStartOfLine)||
-            event->matches(QKeySequence::MoveToEndOfLine)||
-            event->matches(QKeySequence::MoveToStartOfDocument)||
-            event->matches(QKeySequence::MoveToEndOfDocument))
+    if( event->matches(QKeySequence::MoveToNextChar)||
+        event->matches(QKeySequence::MoveToPreviousChar)||
+        event->matches(QKeySequence::MoveToNextLine)||
+        event->matches(QKeySequence::MoveToPreviousLine)||
+        event->matches(QKeySequence::MoveToNextPage)||
+        event->matches(QKeySequence::MoveToPreviousPage)||
+        event->matches(QKeySequence::MoveToStartOfLine)||
+        event->matches(QKeySequence::MoveToEndOfLine)||
+        event->matches(QKeySequence::MoveToStartOfDocument)||
+        event->matches(QKeySequence::MoveToEndOfDocument))
     {
-        if(event->matches(QKeySequence::MoveToNextChar)||
-                event->matches(QKeySequence::MoveToPreviousChar))
+        if( event->matches(QKeySequence::MoveToNextChar)||
+            event->matches(QKeySequence::MoveToPreviousChar))
         {
             if(posInfo.cursorPosition.type==CT_ANSI)
             {
@@ -908,16 +914,17 @@ void QHexView::keyPressEvent(QKeyEvent *event)
 
         if(posInfo.cursorPosition.type!=CT_NONE)
         {
-            if(event->matches(QKeySequence::MoveToNextChar)||
-                    event->matches(QKeySequence::MoveToPreviousChar)||
-                    event->matches(QKeySequence::MoveToNextLine)||
-                    event->matches(QKeySequence::MoveToPreviousLine)||
-                    event->matches(QKeySequence::MoveToStartOfLine)||
-                    event->matches(QKeySequence::MoveToEndOfLine))
+            if( event->matches(QKeySequence::MoveToNextChar)||
+                event->matches(QKeySequence::MoveToPreviousChar)||
+                event->matches(QKeySequence::MoveToNextLine)||
+                event->matches(QKeySequence::MoveToPreviousLine)||
+                event->matches(QKeySequence::MoveToStartOfLine)||
+                event->matches(QKeySequence::MoveToEndOfLine))
             {
                 if(posInfo.cursorPosition.nOffset<0)
                 {
                     posInfo.cursorPosition.nOffset=0;
+                    _nStartOffsetDelta=0;
 
                     if(posInfo.cursorPosition.type!=CT_ANSI)
                     {
@@ -927,6 +934,7 @@ void QHexView::keyPressEvent(QKeyEvent *event)
                 else if(posInfo.cursorPosition.nOffset>_nDataSize-1)
                 {
                     posInfo.cursorPosition.nOffset=_nDataSize-1;
+                    _nStartOffsetDelta=0;
 
                     if(posInfo.cursorPosition.type!=CT_ANSI)
                     {
@@ -1002,9 +1010,9 @@ void QHexView::keyPressEvent(QKeyEvent *event)
     {
         if(!bReadonly)
         {
-            if((!(event->modifiers()&Qt::AltModifier))&&
-                    (!(event->modifiers()&Qt::ControlModifier))&&
-                    (!(event->modifiers()&Qt::MetaModifier)))
+            if( (!(event->modifiers()&Qt::AltModifier))&&
+                (!(event->modifiers()&Qt::ControlModifier))&&
+                (!(event->modifiers()&Qt::MetaModifier)))
             {
                 quint8 nByte=0;
                 quint8 nChar=0;

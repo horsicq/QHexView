@@ -94,7 +94,7 @@ public:
     void setEdited(bool bState);
 
 private:
-    enum SELECT_TYPE
+    enum ST
     {
         ST_NOTSELECTED=0,
         ST_ONEBYTE,
@@ -111,17 +111,19 @@ public slots:
     void _goToOffset(qint64 nOffset);
     void setSelection(qint64 nAddress,qint64 nSize);
     void selectAll();
-    void setWidgetResizable(bool resizable); // hack
-    void setWidget(QWidget *widget); // hack
+    void setWidgetResizable(bool resizable) {Q_UNUSED(resizable)} // hack
+    void setWidget(QWidget *widget) {Q_UNUSED(widget)} // hack
 
 private slots:
+    void verticalScroll();
+    void horisontalScroll();
     void adjust();
     void init();
     CURSOR_POSITION getCursorPosition(QPoint pos);
     void updateBlink();
     void _initSelection(qint64 nOffset);
     void _setSelection(qint64 nOffset);
-    SELECT_TYPE getSelectType(qint64 nOffset);
+    ST getSelectType(qint64 nOffset);
     qint64 addressToOffset(qint64 nAddress);
     qint64 offsetToAddress(qint64 nOffset);
     QPoint cursorToPoint(CURSOR_POSITION cp);
@@ -152,6 +154,7 @@ private:
     qint32 _nLinesProPage;
     qint32 _nDataBlockSize;
     qint64 _nStartOffset;
+    qint64 _nStartOffsetDelta;
     qint32 _nLineHeight;
     qint32 _nAddressPosition;
     qint32 _nAddressWidth;
