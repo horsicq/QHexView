@@ -24,3 +24,13 @@ FORMS += \
     XCONFIG += dialogdump
     include(../FormatDialogs/dialogdump.pri)
 }
+
+!contains(XCONFIG, dialogsearch) {
+    XCONFIG += dialogsearch
+    include(../FormatDialogs/dialogsearch.pri)
+}
+
+!contains(XCONFIG, xbinary) {
+    XCONFIG += xbinary
+    include(../Formats/xbinary.pri)
+}

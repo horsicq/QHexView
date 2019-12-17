@@ -21,12 +21,13 @@
 #include "dialoggotoaddress.h"
 #include "ui_dialoggotoaddress.h"
 
-DialogGoToAddress::DialogGoToAddress(QWidget *parent, QHexView *pHexView) :
+DialogGoToAddress::DialogGoToAddress(QWidget *parent, QList<XBinary::MEMORY_MAP> *pListMM) :
     QDialog(parent),
     ui(new Ui::DialogGoToAddress)
 {
     ui->setupUi(this);
-    this->pHexView=pHexView;
+    this->pListMM=pListMM;
+    nAddress=0;
 }
 
 DialogGoToAddress::~DialogGoToAddress()
@@ -34,19 +35,24 @@ DialogGoToAddress::~DialogGoToAddress()
     delete ui;
 }
 
+qint64 DialogGoToAddress::getAddress()
+{
+    return nAddress;
+}
+
 void DialogGoToAddress::on_pushButtonCancel_clicked()
 {
-    this->close();
+    reject();
 }
 
 void DialogGoToAddress::on_pushButtonOK_clicked()
 {
     qint64 nAddress=(qint64)ui->lineEditAddress->getValue();
 
-    if(pHexView->isAddressValid(nAddress))
+    if(XBinary::isAddressValid(pListMM,nAddress))
     {
-        pHexView->goToAddress(nAddress);
-        this->close();
+        this->nAddress=nAddress;
+        accept();
     }
     else
     {

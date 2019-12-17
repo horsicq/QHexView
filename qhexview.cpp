@@ -36,7 +36,6 @@ QHexView::QHexView(QWidget *parent):QAbstractScrollArea(parent)
     _nStartOffsetDelta=0;
 
     setBytesProLine(16);
-    this->_nBaseAddress=0;
     _initSelection(-1);
     _nLineDelta=4; // mb 3
     posInfo.cursorPosition.nOffset=0;
@@ -83,16 +82,14 @@ void QHexView::setData(QIODevice *pDevice, OPTIONS *pOptions)
 
     if(pOptions)
     {
-        if(pOptions->nBaseAddress==-1)
-        {
-            this->_nBaseAddress=0;
-        }
-        else
-        {
-            this->_nBaseAddress=pOptions->nBaseAddress;
-        }
-
         this->sBackupFileName=pOptions->sBackupFileName;
+        this->_listMM=pOptions->listMM;
+    }
+
+    if(this->_listMM.count()==0)
+    {
+        XBinary binary(pDevice);
+        this->_listMM=binary.getMemoryMapList();
     }
 
     init();
@@ -139,9 +136,9 @@ void QHexView::paintEvent(QPaintEvent *event)
 
         for(qint32 i=0; i<_nLinesProPage; i++)
         {
-            qint64 nLineAddress=_nBaseAddress+_nStartOffset+i*_nBytesProLine;
+            qint64 nLineAddress=XBinary::offsetToAddress(&_listMM,_nStartOffset+i*_nBytesProLine);
 
-            if(nLineAddress<_nBaseAddress+_nDataSize)
+            if(nLineAddress!=-1)
             {
                 qint32 nLinePosition=topLeftY+(i+1)*_nLineHeight;
                 QString sLineAddress=QString("%1").arg(nLineAddress,_nAddressWidthCount,16,QChar('0'));
@@ -324,10 +321,10 @@ void QHexView::setBytesProLine(const quint32 nBytesProLine)
     _nBytesProLine=nBytesProLine;
 }
 
-qint64 QHexView::getBaseAddress() const
-{
-    return _nBaseAddress;
-}
+//qint64 QHexView::getBaseAddress() const
+//{
+//    return _nBaseAddress;
+//}
 
 void QHexView::setFont(const QFont &font)
 {
@@ -344,12 +341,14 @@ void QHexView::setFont(const QFont &font)
 
 bool QHexView::isAddressValid(qint64 nAddress)
 {
-    return ((_nBaseAddress<=nAddress)&&(nAddress<_nDataSize+_nBaseAddress));
+//    return ((_nBaseAddress<=nAddress)&&(nAddress<_nDataSize+_nBaseAddress));
+    return XBinary::isAddressValid(&_listMM,nAddress);
 }
 
 bool QHexView::isOffsetValid(qint64 nOffset)
 {
-    return ((0<=nOffset)&&(nOffset<_nDataSize));
+//    return ((0<=nOffset)&&(nOffset<_nDataSize));
+    return XBinary::isOffsetValid(&_listMM,nOffset);
 }
 
 void QHexView::reload()
@@ -498,7 +497,12 @@ void QHexView::setSelection(qint64 nAddress, qint64 nSize)
 
 void QHexView::selectAll()
 {
-    setSelection(_nBaseAddress,_nDataSize);
+    setSelection(XBinary::getLowestAddress(&_listMM),_nDataSize);
+}
+
+QList<XBinary::MEMORY_MAP> *QHexView::getListMM()
+{
+    return &_listMM;
 }
 
 void QHexView::verticalScroll()
@@ -541,20 +545,20 @@ QHexView::ST QHexView::getSelectType(qint64 nOffset)
 
 qint64 QHexView::addressToOffset(qint64 nAddress)
 {
-    // TODO more checks
-    return nAddress-_nBaseAddress;
+    return XBinary::addressToOffset(&_listMM,nAddress);
 }
 
 qint64 QHexView::offsetToAddress(qint64 nOffset)
 {
-    qint64 nResult=-1;
+//    qint64 nResult=-1;
 
-    if(nOffset!=-1)
-    {
-        nResult=nOffset+_nBaseAddress;
-    }
+//    if(nOffset!=-1)
+//    {
+//        nResult=nOffset+_nBaseAddress;
+//    }
 
-    return nResult;
+//    return nResult;
+    return XBinary::offsetToAddress(&_listMM,nOffset);
 }
 
 QPoint QHexView::cursorToPoint(QHexView::CURSOR_POSITION cp)
@@ -626,7 +630,7 @@ void QHexView::adjust()
 
     if(pDevice)
     {
-        if(pDevice->size()+_nBaseAddress>=0xFFFFFFFF)
+        if(pDevice->size()+XBinary::getLowestAddress(&_listMM)>=0xFFFFFFFF)
         {
             _nAddressWidthCount=16;
         }

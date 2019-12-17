@@ -29,11 +29,13 @@
 #include "qhexview.h"
 #include "dialoggotoaddress.h"
 #include "dialogdump.h"
+#include "dialogsearch.h"
 
 #define KS_GOTOADDRESS          Qt::CTRL+Qt::Key_G
 #define KS_DUMPTOFILE           Qt::CTRL+Qt::Key_D
 #define KS_SELECTALL            QKeySequence::SelectAll
 #define KS_COPYASHEX            QKeySequence::Copy
+#define KS_SEARCH               QKeySequence::Find
 
 namespace Ui
 {
@@ -65,6 +67,7 @@ private slots:
     void _getState();
     void _goToAddress();
     void _dumpToFile();
+    void _search();
     void _selectAll();
     void _copyAsHex();
     void _customContextMenu(const QPoint &pos);

@@ -40,6 +40,7 @@ QHexViewWidget::QHexViewWidget(QWidget *parent) :
     new QShortcut(QKeySequence(KS_DUMPTOFILE),this,SLOT(_dumpToFile()));
     new QShortcut(QKeySequence(KS_SELECTALL),this,SLOT(_selectAll()));
     new QShortcut(QKeySequence(KS_COPYASHEX),this,SLOT(_copyAsHex()));
+    new QShortcut(QKeySequence(KS_SEARCH),this,SLOT(_search()));
 
     ui->scrollAreaHex->setFocus();
 }
@@ -121,11 +122,13 @@ void QHexViewWidget::on_checkBoxReadonly_toggled(bool checked)
 
 void QHexViewWidget::_goToAddress()
 {
-    DialogGoToAddress da(this,ui->scrollAreaHex);
-    da.exec();
-
-    ui->scrollAreaHex->setFocus();
-    ui->scrollAreaHex->reload();
+    DialogGoToAddress da(this,ui->scrollAreaHex->getListMM());
+    if(da.exec()==QDialog::Accepted)
+    {
+        ui->scrollAreaHex->goToAddress(da.getAddress());
+        ui->scrollAreaHex->setFocus();
+        ui->scrollAreaHex->reload();
+    }
 }
 
 void QHexViewWidget::_dumpToFile()
@@ -139,12 +142,16 @@ void QHexViewWidget::_dumpToFile()
     {
         QHexView::STATE state=ui->scrollAreaHex->getState();
 
-        DialogDump dd(this);
-
-        dd.dumpToFile(ui->scrollAreaHex->getDevice(),state.nSelectionOffset,state.nSelectionSize,sFileName);
+        DialogDump dd(this,ui->scrollAreaHex->getDevice(),state.nSelectionOffset,state.nSelectionSize,sFileName);
 
         dd.exec();
     }
+}
+
+void QHexViewWidget::_search()
+{
+    // TODO
+    qDebug("void QHexViewWidget::_search()");
 }
 
 void QHexViewWidget::_selectAll()
@@ -183,6 +190,11 @@ void QHexViewWidget::_customContextMenu(const QPoint &pos)
         contextMenu.addAction(&actionDumpToFile);
     }
 
+    QAction actionSearch(tr("Search"),this);
+    actionSearch.setShortcut(QKeySequence(KS_SEARCH));
+    connect(&actionSearch,SIGNAL(triggered()),this,SLOT(_search()));
+    contextMenu.addAction(&actionSearch);
+
     QMenu menuSelect(tr("Select"),this);
 
     QAction actionSelectAll(tr("Select All"),this);
@@ -201,7 +213,6 @@ void QHexViewWidget::_customContextMenu(const QPoint &pos)
     menuCopy.addAction(&actionCopyAsHex);
     contextMenu.addMenu(&menuCopy);
 
-    // TODO Search
     // TODO reset select
 
     contextMenu.exec(pos);

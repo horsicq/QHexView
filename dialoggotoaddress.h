@@ -22,7 +22,7 @@
 #define DIALOGGOTOADDRESS_H
 
 #include <QDialog>
-#include "qhexview.h"
+#include "xbinary.h"
 
 namespace Ui
 {
@@ -34,8 +34,9 @@ class DialogGoToAddress : public QDialog
     Q_OBJECT
 
 public:
-    explicit DialogGoToAddress(QWidget *parent,QHexView *pHexView);
+    explicit DialogGoToAddress(QWidget *parent,QList<XBinary::MEMORY_MAP> *pListMM);
     ~DialogGoToAddress();
+    qint64 getAddress();
 
 private slots:
     void on_pushButtonCancel_clicked();
@@ -43,7 +44,8 @@ private slots:
 
 private:
     Ui::DialogGoToAddress *ui;
-    QHexView *pHexView;
+    QList<XBinary::MEMORY_MAP> *pListMM;
+    qint64 nAddress;
 };
 
 #endif // DIALOGGOTOADDRESS_H

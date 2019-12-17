@@ -31,6 +31,7 @@
 #include <QTimer>
 #include <QApplication>
 #include <QClipboard>
+#include "xbinary.h"
 
 class QHexView : public QAbstractScrollArea
 {
@@ -39,11 +40,11 @@ class QHexView : public QAbstractScrollArea
 public:
     struct OPTIONS
     {
-        qint64 nBaseAddress;
         qint64 nStartAddress;
         qint64 nStartSelectionAddress;
         qint64 nSizeOfSelection;
         QString sBackupFileName;
+        QList<XBinary::MEMORY_MAP> listMM;
     };
 
     enum CURSOR_TYPE
@@ -82,7 +83,7 @@ public:
     void setData(QIODevice *pDevice,OPTIONS *pOptions=nullptr);
     quint32 getBytesProLine() const;
     void setBytesProLine(const quint32 nBytesProLine);
-    qint64 getBaseAddress() const;
+//    qint64 getBaseAddress() const;
     void setFont(const QFont &font);
     bool isAddressValid(qint64 nAddress);
     bool isOffsetValid(qint64 nOffset);
@@ -113,6 +114,7 @@ public slots:
     void selectAll();
     void setWidgetResizable(bool resizable) {Q_UNUSED(resizable)} // hack
     void setWidget(QWidget *widget) {Q_UNUSED(widget)} // hack
+    QList<XBinary::MEMORY_MAP> *getListMM();
 
 private slots:
     void verticalScroll();
@@ -180,7 +182,8 @@ private:
 
     bool bReadonly;
     bool bIsEdited;
-    QString sBackupFileName; // TODO options
+    QString sBackupFileName;
+    QList<XBinary::MEMORY_MAP> _listMM;
 };
 
 #endif // QHEXVIEW_H
