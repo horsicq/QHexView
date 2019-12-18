@@ -34,7 +34,7 @@ class DialogGoToAddress : public QDialog
     Q_OBJECT
 
 public:
-    explicit DialogGoToAddress(QWidget *parent,QList<XBinary::MEMORY_MAP> *pListMM);
+    explicit DialogGoToAddress(QWidget *parent,XBinary::_MEMORY_MAP *pMemoryMap);
     ~DialogGoToAddress();
     qint64 getAddress();
 
@@ -44,7 +44,7 @@ private slots:
 
 private:
     Ui::DialogGoToAddress *ui;
-    QList<XBinary::MEMORY_MAP> *pListMM;
+    XBinary::_MEMORY_MAP *pMemoryMap;
     qint64 nAddress;
 };
 

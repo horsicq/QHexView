@@ -28,8 +28,8 @@
 #include <QFileDialog>
 #include "qhexview.h"
 #include "dialoggotoaddress.h"
-#include "dialogdump.h"
-#include "dialogsearch.h"
+#include "dialogdumpprocess.h"
+#include "dialogsearchprocess.h"
 
 #define KS_GOTOADDRESS          Qt::CTRL+Qt::Key_G
 #define KS_DUMPTOFILE           Qt::CTRL+Qt::Key_D

@@ -83,13 +83,13 @@ void QHexView::setData(QIODevice *pDevice, OPTIONS *pOptions)
     if(pOptions)
     {
         this->sBackupFileName=pOptions->sBackupFileName;
-        this->_listMM=pOptions->listMM;
+        this->_memoryMap=pOptions->memoryMap;
     }
 
-    if(this->_listMM.count()==0)
+    if(this->_memoryMap.listRecords.count()==0)
     {
         XBinary binary(pDevice);
-        this->_listMM=binary.getMemoryMapList();
+        this->_memoryMap=binary.getMemoryMap();
     }
 
     init();
@@ -136,7 +136,7 @@ void QHexView::paintEvent(QPaintEvent *event)
 
         for(qint32 i=0; i<_nLinesProPage; i++)
         {
-            qint64 nLineAddress=XBinary::offsetToAddress(&_listMM,_nStartOffset+i*_nBytesProLine);
+            qint64 nLineAddress=XBinary::offsetToAddress(&_memoryMap,_nStartOffset+i*_nBytesProLine);
 
             if(nLineAddress!=-1)
             {
@@ -342,13 +342,13 @@ void QHexView::setFont(const QFont &font)
 bool QHexView::isAddressValid(qint64 nAddress)
 {
 //    return ((_nBaseAddress<=nAddress)&&(nAddress<_nDataSize+_nBaseAddress));
-    return XBinary::isAddressValid(&_listMM,nAddress);
+    return XBinary::isAddressValid(&_memoryMap,nAddress);
 }
 
 bool QHexView::isOffsetValid(qint64 nOffset)
 {
 //    return ((0<=nOffset)&&(nOffset<_nDataSize));
-    return XBinary::isOffsetValid(&_listMM,nOffset);
+    return XBinary::isOffsetValid(&_memoryMap,nOffset);
 }
 
 void QHexView::reload()
@@ -463,6 +463,7 @@ void QHexView::goToAddress(qint64 nAddress)
 
         verticalScrollBar()->setValue((nOffset)/_nBytesProLine);
         _nStartOffsetDelta=(nOffset)%_nBytesProLine;
+
         //        posInfo.cursorPosition.nOffset+=(addressToOffset(nAddress))%_nBytesProLine;
         //        posInfo.cursorPosition.nOffset=addressToOffset(nAddress);
         //        qDebug(QString::number(posInfo.cursorPosition.nOffset,16).toLatin1().data());
@@ -476,7 +477,7 @@ void QHexView::_goToOffset(qint64 nOffset)
 {
     if((isOffsetValid(nOffset))&&(_nBytesProLine))
     {
-        verticalScrollBar()->setValue(nOffset/_nBytesProLine);
+        verticalScrollBar()->setValue((nOffset)/_nBytesProLine);
         _nStartOffsetDelta=(nOffset)%_nBytesProLine;
     }
 }
@@ -497,12 +498,12 @@ void QHexView::setSelection(qint64 nAddress, qint64 nSize)
 
 void QHexView::selectAll()
 {
-    setSelection(XBinary::getLowestAddress(&_listMM),_nDataSize);
+    setSelection(_memoryMap.nBaseAddress,_nDataSize);
 }
 
-QList<XBinary::MEMORY_MAP> *QHexView::getListMM()
+XBinary::_MEMORY_MAP *QHexView::getMemoryMap()
 {
-    return &_listMM;
+    return &_memoryMap;
 }
 
 void QHexView::verticalScroll()
@@ -545,7 +546,7 @@ QHexView::ST QHexView::getSelectType(qint64 nOffset)
 
 qint64 QHexView::addressToOffset(qint64 nAddress)
 {
-    return XBinary::addressToOffset(&_listMM,nAddress);
+    return XBinary::addressToOffset(&_memoryMap,nAddress);
 }
 
 qint64 QHexView::offsetToAddress(qint64 nOffset)
@@ -558,7 +559,7 @@ qint64 QHexView::offsetToAddress(qint64 nOffset)
 //    }
 
 //    return nResult;
-    return XBinary::offsetToAddress(&_listMM,nOffset);
+    return XBinary::offsetToAddress(&_memoryMap,nOffset);
 }
 
 QPoint QHexView::cursorToPoint(QHexView::CURSOR_POSITION cp)
@@ -630,7 +631,7 @@ void QHexView::adjust()
 
     if(pDevice)
     {
-        if(pDevice->size()+XBinary::getLowestAddress(&_listMM)>=0xFFFFFFFF)
+        if((pDevice->size()+_memoryMap.nBaseAddress)>=0xFFFFFFFF)
         {
             _nAddressWidthCount=16;
         }
@@ -647,6 +648,11 @@ void QHexView::adjust()
 
     verticalScrollBar()->setRange(0,_nTotalLineCount-_nLinesProPage);
     verticalScrollBar()->setPageStep(_nLinesProPage);
+
+    if(verticalScrollBar()->value()==0)
+    {
+        _nStartOffsetDelta=0;
+    }
 
     _nStartOffset=verticalScrollBar()->value()*_nBytesProLine+_nStartOffsetDelta;
     _nXOffset=horizontalScrollBar()->value();

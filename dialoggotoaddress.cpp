@@ -21,12 +21,12 @@
 #include "dialoggotoaddress.h"
 #include "ui_dialoggotoaddress.h"
 
-DialogGoToAddress::DialogGoToAddress(QWidget *parent, QList<XBinary::MEMORY_MAP> *pListMM) :
+DialogGoToAddress::DialogGoToAddress(QWidget *parent, XBinary::_MEMORY_MAP *pMemoryMap) :
     QDialog(parent),
     ui(new Ui::DialogGoToAddress)
 {
     ui->setupUi(this);
-    this->pListMM=pListMM;
+    this->pMemoryMap=pMemoryMap;
     nAddress=0;
 }
 
@@ -49,7 +49,7 @@ void DialogGoToAddress::on_pushButtonOK_clicked()
 {
     qint64 nAddress=(qint64)ui->lineEditAddress->getValue();
 
-    if(XBinary::isAddressValid(pListMM,nAddress))
+    if(XBinary::isAddressValid(pMemoryMap,nAddress))
     {
         this->nAddress=nAddress;
         accept();

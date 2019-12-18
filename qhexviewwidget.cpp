@@ -122,7 +122,7 @@ void QHexViewWidget::on_checkBoxReadonly_toggled(bool checked)
 
 void QHexViewWidget::_goToAddress()
 {
-    DialogGoToAddress da(this,ui->scrollAreaHex->getListMM());
+    DialogGoToAddress da(this,ui->scrollAreaHex->getMemoryMap());
     if(da.exec()==QDialog::Accepted)
     {
         ui->scrollAreaHex->goToAddress(da.getAddress());
@@ -142,7 +142,7 @@ void QHexViewWidget::_dumpToFile()
     {
         QHexView::STATE state=ui->scrollAreaHex->getState();
 
-        DialogDump dd(this,ui->scrollAreaHex->getDevice(),state.nSelectionOffset,state.nSelectionSize,sFileName);
+        DialogDumpProcess dd(this,ui->scrollAreaHex->getDevice(),state.nSelectionOffset,state.nSelectionSize,sFileName);
 
         dd.exec();
     }

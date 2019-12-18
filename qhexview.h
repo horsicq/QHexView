@@ -44,7 +44,7 @@ public:
         qint64 nStartSelectionAddress;
         qint64 nSizeOfSelection;
         QString sBackupFileName;
-        QList<XBinary::MEMORY_MAP> listMM;
+        XBinary::_MEMORY_MAP memoryMap;
     };
 
     enum CURSOR_TYPE
@@ -114,7 +114,7 @@ public slots:
     void selectAll();
     void setWidgetResizable(bool resizable) {Q_UNUSED(resizable)} // hack
     void setWidget(QWidget *widget) {Q_UNUSED(widget)} // hack
-    QList<XBinary::MEMORY_MAP> *getListMM();
+    XBinary::_MEMORY_MAP *getMemoryMap();
 
 private slots:
     void verticalScroll();
@@ -183,7 +183,7 @@ private:
     bool bReadonly;
     bool bIsEdited;
     QString sBackupFileName;
-    QList<XBinary::MEMORY_MAP> _listMM;
+    XBinary::_MEMORY_MAP _memoryMap;
 };
 
 #endif // QHEXVIEW_H
