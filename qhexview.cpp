@@ -430,6 +430,11 @@ void QHexView::setEdited(bool bState)
     this->bIsEdited=bState;
 }
 
+qint64 QHexView::getBaseAddress()
+{
+    return this->getMemoryMap()->nBaseAddress;
+}
+
 char QHexView::convertANSI(char cByte)
 {
     if((cByte<0x20)||(cByte>0x7e))

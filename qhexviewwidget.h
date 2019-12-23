@@ -56,6 +56,8 @@ public:
     void reload();
     bool isEdited();
     void setEdited(bool bState);
+    qint64 getBaseAddress();
+    void setSelection(qint64 nAddress,qint64 nSize);
 
 signals:
     void editState(bool bState);

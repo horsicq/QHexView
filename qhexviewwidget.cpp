@@ -101,6 +101,16 @@ void QHexViewWidget::setEdited(bool bState)
     ui->scrollAreaHex->setEdited(bState);
 }
 
+qint64 QHexViewWidget::getBaseAddress()
+{
+    return ui->scrollAreaHex->getBaseAddress();
+}
+
+void QHexViewWidget::setSelection(qint64 nAddress, qint64 nSize)
+{
+    ui->scrollAreaHex->setSelection(nAddress,nSize);
+}
+
 void QHexViewWidget::_getState()
 {
     QHexView::STATE state=ui->scrollAreaHex->getState();

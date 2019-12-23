@@ -93,6 +93,7 @@ public:
     QByteArray readArray(qint64 nOffset,qint64 nSize);
     bool isEdited();
     void setEdited(bool bState);
+    qint64 getBaseAddress();
 
 private:
     enum ST
