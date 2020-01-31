@@ -3,17 +3,14 @@ DEPENDPATH += $$PWD
 
 HEADERS += \
     $$PWD/qhexview.h \
-    $$PWD/qhexviewwidget.h \
-    $$PWD/dialoggotoaddress.h
+    $$PWD/qhexviewwidget.h
 
 SOURCES += \
     $$PWD/qhexview.cpp \
-    $$PWD/qhexviewwidget.cpp \
-    $$PWD/dialoggotoaddress.cpp
+    $$PWD/qhexviewwidget.cpp
 
 FORMS += \
-    $$PWD/qhexviewwidget.ui \
-    $$PWD/dialoggotoaddress.ui
+    $$PWD/qhexviewwidget.ui
 
 !contains(XCONFIG, xlineedithex) {
     XCONFIG += xlineedithex
@@ -28,6 +25,11 @@ FORMS += \
 !contains(XCONFIG, dialogsearch) {
     XCONFIG += dialogsearch
     include(../FormatDialogs/dialogsearch.pri)
+}
+
+!contains(XCONFIG, dialoggotoaddress) {
+    XCONFIG += dialoggotoaddress
+    include(../FormatDialogs/dialoggotoaddress.pri)
 }
 
 !contains(XCONFIG, xbinary) {

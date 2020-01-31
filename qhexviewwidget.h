@@ -30,12 +30,7 @@
 #include "dialoggotoaddress.h"
 #include "dialogdumpprocess.h"
 #include "dialogsearchprocess.h"
-
-#define KS_GOTOADDRESS          Qt::CTRL+Qt::Key_G
-#define KS_DUMPTOFILE           Qt::CTRL+Qt::Key_D
-#define KS_SELECTALL            QKeySequence::SelectAll
-#define KS_COPYASHEX            QKeySequence::Copy
-#define KS_SEARCH               QKeySequence::Find
+#include "xshortcuts.h"
 
 namespace Ui
 {
