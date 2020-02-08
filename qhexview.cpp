@@ -493,8 +493,9 @@ void QHexView::setSelection(qint64 nAddress, qint64 nSize)
     {
         if(isAddressValid(nAddress))
         {
-            _initSelection(addressToOffset(nAddress));
-            _setSelection(addressToOffset(nAddress)+nSize-1);
+            qint64 nOffset=addressToOffset(nAddress);
+            _initSelection(nOffset);
+            _setSelection(nOffset+nSize-1);
 
             viewport()->update();
         }
