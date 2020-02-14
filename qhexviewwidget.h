@@ -28,6 +28,7 @@
 #include <QFileDialog>
 #include "qhexview.h"
 #include "dialoggotoaddress.h"
+#include "dialogsearch.h"
 #include "dialogdumpprocess.h"
 #include "dialogsearchprocess.h"
 #include "xshortcuts.h"

@@ -160,8 +160,10 @@ void QHexViewWidget::_dumpToFile()
 
 void QHexViewWidget::_search()
 {
+    DialogSearch dialogSearch(this);
     // TODO
-    qDebug("void QHexViewWidget::_search()");
+
+    dialogSearch.exec();
 }
 
 void QHexViewWidget::_selectAll()
