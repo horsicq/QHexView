@@ -170,17 +170,12 @@ private:
     qint64 _nDataSize;
     QByteArray _baDataBuffer;
     QByteArray _baDataHexBuffer;
-
     qint32 _nLineDelta;
-
     bool _bBlink;
     QTimer timerCursor;
     QRect _rectCursor;
-
     POS_INFO posInfo;
-
     bool _bMouseSelection;
-
     bool bReadonly;
     bool bIsEdited;
     QString sBackupFileName;
