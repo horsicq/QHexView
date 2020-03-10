@@ -160,7 +160,10 @@ void QHexViewWidget::_dumpToFile()
 
 void QHexViewWidget::_search()
 {
-    DialogSearch dialogSearch(this);
+    QHexView::STATE state=ui->scrollAreaHex->getState();
+
+    DialogSearch dialogSearch(this,ui->scrollAreaHex->getDevice(),state.nSelectionOffset,state.nSelectionSize);
+
     // TODO
 
     dialogSearch.exec();
