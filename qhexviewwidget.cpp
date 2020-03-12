@@ -152,7 +152,7 @@ void QHexViewWidget::_dumpToFile()
     {
         QHexView::STATE state=ui->scrollAreaHex->getState();
 
-        DialogDumpProcess dd(this,ui->scrollAreaHex->getDevice(),state.nSelectionOffset,state.nSelectionSize,sFileName);
+        DialogDumpProcess dd(this,ui->scrollAreaHex->getDevice(),state.nSelectionOffset,state.nSelectionSize,sFileName,DumpProcess::DT_OFFSET);
 
         dd.exec();
     }
