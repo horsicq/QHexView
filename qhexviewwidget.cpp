@@ -43,6 +43,8 @@ QHexViewWidget::QHexViewWidget(QWidget *parent) :
     new QShortcut(QKeySequence(XShortcuts::SEARCH),this,SLOT(_search()));
 
     ui->scrollAreaHex->setFocus();
+
+    searchData={};
 }
 
 QHexViewWidget::~QHexViewWidget()
@@ -162,9 +164,10 @@ void QHexViewWidget::_search()
 {
     QHexView::STATE state=ui->scrollAreaHex->getState();
 
-    DialogSearch dialogSearch(this,ui->scrollAreaHex->getDevice(),state.nSelectionOffset,state.nSelectionSize);
+    searchData={};
+    searchData.nCurrentOffset=state.nCursorOffset;
 
-    // TODO
+    DialogSearch dialogSearch(this,ui->scrollAreaHex->getDevice(),&searchData);
 
     dialogSearch.exec();
 }

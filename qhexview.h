@@ -64,6 +64,7 @@ public:
     struct STATE
     {
         qint64 nCursorAddress;
+        qint64 nCursorOffset;
         qint64 nSelectionAddress;
         qint64 nSelectionOffset;
         qint64 nSelectionSize;

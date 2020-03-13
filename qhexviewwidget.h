@@ -73,6 +73,7 @@ private slots:
 
 private:
     Ui::QHexViewWidget *ui;
+    SearchProcess::SEARCHDATA searchData;
 };
 
 #endif // QHEXVIEWWIDGET_H

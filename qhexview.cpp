@@ -361,6 +361,7 @@ QHexView::STATE QHexView::getState()
 {
     STATE state=STATE();
 
+    state.nCursorOffset=posInfo.cursorPosition.nOffset;
     state.nCursorAddress=offsetToAddress(posInfo.cursorPosition.nOffset);
 
     if(state.nCursorAddress==-1)
