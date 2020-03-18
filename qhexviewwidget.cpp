@@ -171,8 +171,11 @@ void QHexViewWidget::_search()
 
     if(dialogSearch.exec()==QDialog::Accepted)
     {
-        // TODO
-        qDebug("Accepted");
+        DialogSearchProcess dialogSearchProcess(this,ui->scrollAreaHex->getDevice(),&searchData);
+        if(dialogSearchProcess.exec()==QDialog::Accepted)
+        {
+            // TODO go to address
+        }
     }
 }
 
