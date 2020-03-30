@@ -36,3 +36,8 @@ FORMS += \
     XCONFIG += xbinary
     include($$PWD/../Formats/xbinary.pri)
 }
+
+#!contains(XCONFIG, formatwidget) {
+#    XCONFIG += formatwidget
+#    include($$PWD/../FormatWidgets/formatwidget.pri)
+#}
