@@ -171,11 +171,14 @@ void QHexViewWidget::_search()
 
     if(dialogSearch.exec()==QDialog::Accepted)
     {
-        DialogSearchProcess dialogSearchProcess(this,ui->scrollAreaHex->getDevice(),&searchData);
-        if(dialogSearchProcess.exec()==QDialog::Accepted)
-        {
-            // TODO go to address
-        }
+//        DialogSearchProcess dialogSearchProcess(this,ui->scrollAreaHex->getDevice(),&searchData);
+//        if(dialogSearchProcess.exec()==QDialog::Accepted)
+//        {
+//            // TODO go to address
+//        }
+        ui->scrollAreaHex->_goToOffset(searchData.nResult);
+        ui->scrollAreaHex->setFocus();
+        ui->scrollAreaHex->reload();
     }
 }
 
