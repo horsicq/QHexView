@@ -467,6 +467,14 @@ void QHexView::goToAddress(qint64 nAddress)
     {
         qint64 nOffset=addressToOffset(nAddress);
 
+        goToOffset(nOffset);
+    }
+}
+
+void QHexView::goToOffset(qint64 nOffset)
+{
+    if((isOffsetValid(nOffset))&&(_nBytesProLine))
+    {
         verticalScrollBar()->setValue((nOffset)/_nBytesProLine);
         _nStartOffsetDelta=(nOffset)%_nBytesProLine;
 

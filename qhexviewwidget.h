@@ -65,7 +65,7 @@ private slots:
     void _getState();
     void _goToAddress();
     void _dumpToFile();
-    void _search();
+    void _find();
     void _selectAll();
     void _copyAsHex();
     void _customContextMenu(const QPoint &pos);

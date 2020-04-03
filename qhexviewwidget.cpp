@@ -40,7 +40,7 @@ QHexViewWidget::QHexViewWidget(QWidget *parent) :
     new QShortcut(QKeySequence(XShortcuts::DUMPTOFILE),this,SLOT(_dumpToFile()));
     new QShortcut(QKeySequence(XShortcuts::SELECTALL),this,SLOT(_selectAll()));
     new QShortcut(QKeySequence(XShortcuts::COPYASHEX),this,SLOT(_copyAsHex()));
-    new QShortcut(QKeySequence(XShortcuts::SEARCH),this,SLOT(_search()));
+    new QShortcut(QKeySequence(XShortcuts::FIND),this,SLOT(_find()));
 
     ui->scrollAreaHex->setFocus();
 
@@ -160,7 +160,7 @@ void QHexViewWidget::_dumpToFile()
     }
 }
 
-void QHexViewWidget::_search()
+void QHexViewWidget::_find()
 {
     QHexView::STATE state=ui->scrollAreaHex->getState();
 
@@ -171,12 +171,7 @@ void QHexViewWidget::_search()
 
     if(dialogSearch.exec()==QDialog::Accepted)
     {
-//        DialogSearchProcess dialogSearchProcess(this,ui->scrollAreaHex->getDevice(),&searchData);
-//        if(dialogSearchProcess.exec()==QDialog::Accepted)
-//        {
-//            // TODO go to address
-//        }
-        ui->scrollAreaHex->_goToOffset(searchData.nResult);
+        ui->scrollAreaHex->goToOffset(searchData.nResult);
         ui->scrollAreaHex->setFocus();
         ui->scrollAreaHex->reload();
     }
@@ -218,10 +213,10 @@ void QHexViewWidget::_customContextMenu(const QPoint &pos)
         contextMenu.addAction(&actionDumpToFile);
     }
 
-    QAction actionSearch(tr("Search"),this);
-    actionSearch.setShortcut(QKeySequence(XShortcuts::SEARCH));
-    connect(&actionSearch,SIGNAL(triggered()),this,SLOT(_search()));
-    contextMenu.addAction(&actionSearch);
+    QAction actionFind(tr("Find"),this);
+    actionFind.setShortcut(QKeySequence(XShortcuts::FIND));
+    connect(&actionFind,SIGNAL(triggered()),this,SLOT(_find()));
+    contextMenu.addAction(&actionFind);
 
     QMenu menuSelect(tr("Select"),this);
 
