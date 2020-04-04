@@ -41,6 +41,7 @@ QHexViewWidget::QHexViewWidget(QWidget *parent) :
     new QShortcut(QKeySequence(XShortcuts::SELECTALL),this,SLOT(_selectAll()));
     new QShortcut(QKeySequence(XShortcuts::COPYASHEX),this,SLOT(_copyAsHex()));
     new QShortcut(QKeySequence(XShortcuts::FIND),this,SLOT(_find()));
+    new QShortcut(QKeySequence(XShortcuts::FINDNEXT),this,SLOT(_findNext()));
 
     ui->scrollAreaHex->setFocus();
 
@@ -177,6 +178,12 @@ void QHexViewWidget::_find()
     }
 }
 
+void QHexViewWidget::_findNext()
+{
+    qDebug("void QHexViewWidget::_findNext()");
+    // TODO
+}
+
 void QHexViewWidget::_selectAll()
 {
     ui->scrollAreaHex->selectAll();
@@ -217,6 +224,8 @@ void QHexViewWidget::_customContextMenu(const QPoint &pos)
     actionFind.setShortcut(QKeySequence(XShortcuts::FIND));
     connect(&actionFind,SIGNAL(triggered()),this,SLOT(_find()));
     contextMenu.addAction(&actionFind);
+
+    // TODO find next
 
     QMenu menuSelect(tr("Select"),this);
 
