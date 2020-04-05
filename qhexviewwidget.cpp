@@ -225,6 +225,11 @@ void QHexViewWidget::_customContextMenu(const QPoint &pos)
     connect(&actionFind,SIGNAL(triggered()),this,SLOT(_find()));
     contextMenu.addAction(&actionFind);
 
+    QAction actionFindNext(tr("Find next"),this);
+    actionFindNext.setShortcut(QKeySequence(XShortcuts::FINDNEXT));
+    connect(&actionFindNext,SIGNAL(triggered()),this,SLOT(_findNext()));
+    contextMenu.addAction(&actionFindNext);
+
     // TODO find next
 
     QMenu menuSelect(tr("Select"),this);
