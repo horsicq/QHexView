@@ -184,6 +184,7 @@ void QHexViewWidget::_findNext()
 {
     if(searchData.variant.isValid())
     {
+        // TODO Check
         if(searchData.nCurrentOffset>=0)
         {
             if(searchData.nCurrentOffset==searchData.nResult)
