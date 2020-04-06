@@ -46,6 +46,7 @@ QHexViewWidget::QHexViewWidget(QWidget *parent) :
     ui->scrollAreaHex->setFocus();
 
     searchData={};
+    searchData.nResult=-1;
 }
 
 QHexViewWidget::~QHexViewWidget()
@@ -166,6 +167,7 @@ void QHexViewWidget::_find()
     QHexView::STATE state=ui->scrollAreaHex->getState();
 
     searchData={};
+    searchData.nResult=-1;
     searchData.nCurrentOffset=state.nCursorOffset;
 
     DialogSearch dialogSearch(this,ui->scrollAreaHex->getDevice(),&searchData);
@@ -180,8 +182,25 @@ void QHexViewWidget::_find()
 
 void QHexViewWidget::_findNext()
 {
-    qDebug("void QHexViewWidget::_findNext()");
-    // TODO
+    if(searchData.variant.isValid())
+    {
+        if(searchData.nCurrentOffset>=0)
+        {
+            if(searchData.nCurrentOffset==searchData.nResult)
+            {
+                searchData.nCurrentOffset=searchData.nResult+1;
+            }
+        }
+
+        DialogSearchProcess dialogSearch(this,ui->scrollAreaHex->getDevice(),&searchData);
+
+        if(dialogSearch.exec()==QDialog::Accepted)
+        {
+            ui->scrollAreaHex->goToOffset(searchData.nResult);
+            ui->scrollAreaHex->setFocus();
+            ui->scrollAreaHex->reload();
+        }
+    }
 }
 
 void QHexViewWidget::_selectAll()
@@ -229,8 +248,6 @@ void QHexViewWidget::_customContextMenu(const QPoint &pos)
     actionFindNext.setShortcut(QKeySequence(XShortcuts::FINDNEXT));
     connect(&actionFindNext,SIGNAL(triggered()),this,SLOT(_findNext()));
     contextMenu.addAction(&actionFindNext);
-
-    // TODO find next
 
     QMenu menuSelect(tr("Select"),this);
 
