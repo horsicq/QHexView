@@ -182,16 +182,10 @@ void QHexViewWidget::_find()
 
 void QHexViewWidget::_findNext()
 {
-    if(searchData.variant.isValid())
+    if(searchData.bInit)
     {
-        // TODO Check
-        if(searchData.nCurrentOffset>=0)
-        {
-            if(searchData.nCurrentOffset==searchData.nResult)
-            {
-                searchData.nCurrentOffset=searchData.nResult+1;
-            }
-        }
+        searchData.nCurrentOffset=searchData.nResult+1;
+        searchData.startFrom=SearchProcess::SF_CURRENTOFFSET;
 
         DialogSearchProcess dialogSearch(this,ui->scrollAreaHex->getDevice(),&searchData);
 
