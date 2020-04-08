@@ -54,6 +54,8 @@ public:
     void setEdited(bool bState);
     qint64 getBaseAddress();
     void setSelection(qint64 nAddress,qint64 nSize);
+    void goToAddress(qint64 nAddress);
+    void goToOffset(qint64 nOffset);
 
 signals:
     void editState(bool bState);

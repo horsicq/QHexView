@@ -115,6 +115,18 @@ void QHexViewWidget::setSelection(qint64 nAddress, qint64 nSize)
     ui->scrollAreaHex->setSelection(nAddress,nSize);
 }
 
+void QHexViewWidget::goToAddress(qint64 nAddress)
+{
+    ui->scrollAreaHex->goToAddress(nAddress);
+    ui->scrollAreaHex->reload();
+}
+
+void QHexViewWidget::goToOffset(qint64 nOffset)
+{
+    ui->scrollAreaHex->goToOffset(nOffset);
+    ui->scrollAreaHex->reload();
+}
+
 void QHexViewWidget::_getState()
 {
     QHexView::STATE state=ui->scrollAreaHex->getState();

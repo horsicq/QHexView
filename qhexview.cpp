@@ -664,11 +664,6 @@ void QHexView::adjust()
     verticalScrollBar()->setRange(0,_nTotalLineCount-_nLinesProPage);
     verticalScrollBar()->setPageStep(_nLinesProPage);
 
-    if(verticalScrollBar()->value()==0)
-    {
-        _nStartOffsetDelta=0;
-    }
-
     _nStartOffset=verticalScrollBar()->value()*_nBytesProLine+_nStartOffsetDelta;
     _nXOffset=horizontalScrollBar()->value();
 
@@ -1147,4 +1142,16 @@ void QHexView::keyPressEvent(QKeyEvent *event)
 
         QAbstractScrollArea::keyPressEvent(event);
     }
+}
+
+void QHexView::wheelEvent(QWheelEvent *event)
+{
+    if((verticalScrollBar()->value()==0)&&(event->angleDelta().y()>0))
+    {
+        _nStartOffsetDelta=0;
+        adjust();
+        viewport()->update();
+    }
+
+    QAbstractScrollArea::wheelEvent(event);
 }
