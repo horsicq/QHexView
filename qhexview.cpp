@@ -1151,11 +1151,14 @@ void QHexView::keyPressEvent(QKeyEvent *event)
 
 void QHexView::wheelEvent(QWheelEvent *event)
 {
-    if((verticalScrollBar()->value()==0)&&(event->angleDelta().y()>0))
+    if((_nStartOffsetDelta)&&(event->angleDelta().y()>0))
     {
-        _nStartOffsetDelta=0;
-        adjust();
-        viewport()->update();
+        if(verticalScrollBar()->value()==0)
+        {
+            _nStartOffsetDelta=0;
+            adjust();
+            viewport()->update();
+        }
     }
 
     QAbstractScrollArea::wheelEvent(event);
