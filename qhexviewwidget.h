@@ -46,6 +46,7 @@ public:
     explicit QHexViewWidget(QWidget *parent=nullptr);
     ~QHexViewWidget();
     void setData(QIODevice *pDevice,QHexView::OPTIONS *pOptions=nullptr);
+    void setBackupFileName(QString sBackupFileName);
     void enableHeader(bool bState);
     void enableReadOnly(bool bState);
     bool setReadonly(bool bState);

@@ -114,6 +114,11 @@ void QHexView::setData(QIODevice *pDevice, OPTIONS *pOptions)
     emit cursorPositionChanged();
 }
 
+void QHexView::setBackupFileName(QString sBackupFileName)
+{
+    this->sBackupFileName=sBackupFileName;
+}
+
 void QHexView::paintEvent(QPaintEvent *event)
 {
     //    QElapsedTimer timer;

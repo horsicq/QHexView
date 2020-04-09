@@ -61,6 +61,11 @@ void QHexViewWidget::setData(QIODevice *pDevice,QHexView::OPTIONS *pOptions)
     ui->checkBoxReadonly->setEnabled(pDevice->isWritable());
 }
 
+void QHexViewWidget::setBackupFileName(QString sBackupFileName)
+{
+    ui->scrollAreaHex->setBackupFileName(sBackupFileName);
+}
+
 void QHexViewWidget::enableHeader(bool bState)
 {
     if(bState)
