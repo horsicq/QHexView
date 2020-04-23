@@ -58,6 +58,9 @@ public:
     void goToAddress(qint64 nAddress);
     void goToOffset(qint64 nOffset);
 
+protected:
+    bool eventFilter(QObject *obj, QEvent *event) override;
+
 signals:
     void editState(bool bState);
 
@@ -78,6 +81,13 @@ private slots:
 private:
     Ui::QHexViewWidget *ui;
     SearchProcess::SEARCHDATA searchData;
+
+    QShortcut *scGoToAddress;
+    QShortcut *scDumpToFile;
+    QShortcut *scSelectAll;
+    QShortcut *scCopyAsHex;
+    QShortcut *scFind;
+    QShortcut *scFindNext;
 };
 
 #endif // QHEXVIEWWIDGET_H

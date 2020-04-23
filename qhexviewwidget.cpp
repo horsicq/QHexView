@@ -27,6 +27,8 @@ QHexViewWidget::QHexViewWidget(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    ui->scrollAreaHex->installEventFilter(this);
+
     ui->lineEditCursorAddress->setReadOnly(true);
     ui->lineEditSelectionAddress->setReadOnly(true);
     ui->lineEditSelectionSize->setReadOnly(true);
@@ -36,12 +38,12 @@ QHexViewWidget::QHexViewWidget(QWidget *parent) :
     connect(ui->scrollAreaHex,SIGNAL(customContextMenu(const QPoint &)),this,SLOT(_customContextMenu(const QPoint &)));
     connect(ui->scrollAreaHex,SIGNAL(editState(bool)),this,SIGNAL(editState(bool)));
 
-    new QShortcut(QKeySequence(XShortcuts::GOTOADDRESS),this,SLOT(_goToAddress()));
-    new QShortcut(QKeySequence(XShortcuts::DUMPTOFILE),this,SLOT(_dumpToFile()));
-    new QShortcut(QKeySequence(XShortcuts::SELECTALL),this,SLOT(_selectAll()));
-    new QShortcut(QKeySequence(XShortcuts::COPYASHEX),this,SLOT(_copyAsHex()));
-    new QShortcut(QKeySequence(XShortcuts::FIND),this,SLOT(_find()));
-    new QShortcut(QKeySequence(XShortcuts::FINDNEXT),this,SLOT(_findNext()));
+    scGoToAddress=0;
+    scDumpToFile=0;
+    scSelectAll=0;
+    scCopyAsHex=0;
+    scFind=0;
+    scFindNext=0;
 
     ui->scrollAreaHex->setFocus();
 
@@ -130,6 +132,30 @@ void QHexViewWidget::goToOffset(qint64 nOffset)
 {
     ui->scrollAreaHex->goToOffset(nOffset);
     ui->scrollAreaHex->reload();
+}
+
+bool QHexViewWidget::eventFilter(QObject *obj, QEvent *event)
+{
+    if(event->type()==QEvent::FocusIn)
+    {
+        scGoToAddress   =new QShortcut(QKeySequence(XShortcuts::GOTOADDRESS),   this,SLOT(_goToAddress()));
+        scDumpToFile    =new QShortcut(QKeySequence(XShortcuts::DUMPTOFILE),    this,SLOT(_dumpToFile()));
+        scSelectAll     =new QShortcut(QKeySequence(XShortcuts::SELECTALL),     this,SLOT(_selectAll()));
+        scCopyAsHex     =new QShortcut(QKeySequence(XShortcuts::COPYASHEX),     this,SLOT(_copyAsHex()));
+        scFind          =new QShortcut(QKeySequence(XShortcuts::FIND),          this,SLOT(_find()));
+        scFindNext      =new QShortcut(QKeySequence(XShortcuts::FINDNEXT),      this,SLOT(_findNext()));
+    }
+    else if(event->type()==QEvent::FocusOut)
+    {
+        if(scGoToAddress)   delete scGoToAddress;
+        if(scDumpToFile)    delete scDumpToFile;
+        if(scSelectAll)     delete scSelectAll;
+        if(scCopyAsHex)     delete scCopyAsHex;
+        if(scFind)          delete scFind;
+        if(scFindNext)      delete scFindNext;
+    }
+
+    return false;
 }
 
 void QHexViewWidget::_getState()
