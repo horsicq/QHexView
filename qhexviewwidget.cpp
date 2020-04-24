@@ -38,12 +38,12 @@ QHexViewWidget::QHexViewWidget(QWidget *parent) :
     connect(ui->scrollAreaHex,SIGNAL(customContextMenu(const QPoint &)),this,SLOT(_customContextMenu(const QPoint &)));
     connect(ui->scrollAreaHex,SIGNAL(editState(bool)),this,SIGNAL(editState(bool)));
 
-    scGoToAddress=0;
-    scDumpToFile=0;
-    scSelectAll=0;
-    scCopyAsHex=0;
-    scFind=0;
-    scFindNext=0;
+    scGoToAddress=nullptr;
+    scDumpToFile=nullptr;
+    scSelectAll=nullptr;
+    scCopyAsHex=nullptr;
+    scFind=nullptr;
+    scFindNext=nullptr;
 
     ui->scrollAreaHex->setFocus();
 
@@ -282,7 +282,7 @@ void QHexViewWidget::_customContextMenu(const QPoint &pos)
     connect(&actionFind,SIGNAL(triggered()),this,SLOT(_find()));
     contextMenu.addAction(&actionFind);
 
-    QAction actionFindNext(tr("Find next"),this);
+    QAction actionFindNext(tr("Find Next"),this);
     actionFindNext.setShortcut(QKeySequence(XShortcuts::FINDNEXT));
     connect(&actionFindNext,SIGNAL(triggered()),this,SLOT(_findNext()));
     contextMenu.addAction(&actionFindNext);
