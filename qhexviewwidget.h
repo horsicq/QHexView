@@ -67,7 +67,6 @@ signals:
 private slots:
     void on_pushButtonGoTo_clicked();
     void on_checkBoxReadonly_toggled(bool checked);
-
     void _getState();
     void _goToAddress();
     void _dumpToFile();
@@ -81,7 +80,6 @@ private slots:
 private:
     Ui::QHexViewWidget *ui;
     SearchProcess::SEARCHDATA searchData;
-
     QShortcut *scGoToAddress;
     QShortcut *scDumpToFile;
     QShortcut *scSelectAll;
