@@ -136,6 +136,8 @@ void QHexViewWidget::goToOffset(qint64 nOffset)
 
 bool QHexViewWidget::eventFilter(QObject *obj, QEvent *event)
 {
+    Q_UNUSED(obj)
+
     if(event->type()==QEvent::FocusIn)
     {
         scGoToAddress   =new QShortcut(QKeySequence(XShortcuts::GOTOADDRESS),   this,SLOT(_goToAddress()));
