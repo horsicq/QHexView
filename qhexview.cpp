@@ -62,8 +62,6 @@ QHexView::QHexView(QWidget *parent):QAbstractScrollArea(parent)
 
     timerCursor.setInterval(500);
     timerCursor.start();
-
-    // TODO readonly
 }
 
 //QHexView::~QHexView()
