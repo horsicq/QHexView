@@ -181,10 +181,10 @@ void QHexViewWidget::on_checkBoxReadonly_toggled(bool checked)
 
 void QHexViewWidget::_goToAddress()
 {
-    DialogGoToAddress da(this,ui->scrollAreaHex->getMemoryMap());
+    DialogGoToAddress da(this,ui->scrollAreaHex->getMemoryMap(),DialogGoToAddress::TYPE_ADDRESS);
     if(da.exec()==QDialog::Accepted)
     {
-        ui->scrollAreaHex->goToAddress(da.getAddress());
+        ui->scrollAreaHex->goToAddress(da.getValue());
         ui->scrollAreaHex->setFocus();
         ui->scrollAreaHex->reload();
     }
@@ -265,14 +265,15 @@ void QHexViewWidget::_customContextMenu(const QPoint &pos)
 
     QMenu contextMenu(this);
 
-    QAction actionGoToAddress(tr("Go to Address"),this);
+    QAction actionGoToAddress(tr("Go to address"),this);
     actionGoToAddress.setShortcut(QKeySequence(XShortcuts::GOTOADDRESS));
     connect(&actionGoToAddress,SIGNAL(triggered()),this,SLOT(_goToAddress()));
     contextMenu.addAction(&actionGoToAddress);
 
-    QAction actionDumpToFile(tr("Dump to File"),this);
+    QAction actionDumpToFile(tr("Dump to file"),this);
     actionDumpToFile.setShortcut(QKeySequence(XShortcuts::DUMPTOFILE));
     connect(&actionDumpToFile,SIGNAL(triggered()),this,SLOT(_dumpToFile()));
+    contextMenu.addAction(&actionDumpToFile);
 
     if(state.nSelectionSize)
     {
@@ -284,14 +285,14 @@ void QHexViewWidget::_customContextMenu(const QPoint &pos)
     connect(&actionFind,SIGNAL(triggered()),this,SLOT(_find()));
     contextMenu.addAction(&actionFind);
 
-    QAction actionFindNext(tr("Find Next"),this);
+    QAction actionFindNext(tr("Find next"),this);
     actionFindNext.setShortcut(QKeySequence(XShortcuts::FINDNEXT));
     connect(&actionFindNext,SIGNAL(triggered()),this,SLOT(_findNext()));
     contextMenu.addAction(&actionFindNext);
 
     QMenu menuSelect(tr("Select"),this);
 
-    QAction actionSelectAll(tr("Select All"),this);
+    QAction actionSelectAll(tr("Select all"),this);
     actionSelectAll.setShortcut(QKeySequence(XShortcuts::SELECTALL));
     connect(&actionSelectAll,SIGNAL(triggered()),this,SLOT(_selectAll()));
 
@@ -300,7 +301,7 @@ void QHexViewWidget::_customContextMenu(const QPoint &pos)
 
     QMenu menuCopy(tr("Copy"),this);
 
-    QAction actionCopyAsHex(tr("Copy as Hex"),this);
+    QAction actionCopyAsHex(tr("Copy as hex"),this);
     actionCopyAsHex.setShortcut(QKeySequence(XShortcuts::COPYASHEX));
     connect(&actionCopyAsHex,SIGNAL(triggered()),this,SLOT(_copyAsHex()));
 
