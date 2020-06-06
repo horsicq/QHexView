@@ -348,6 +348,11 @@ bool QHexView::isAddressValid(qint64 nAddress)
     return XBinary::isAddressValid(&_memoryMap,nAddress);
 }
 
+bool QHexView::isRelAddressValid(qint64 nRelAddress)
+{
+    return XBinary::isRelAddressValid(&_memoryMap,nRelAddress);
+}
+
 bool QHexView::isOffsetValid(qint64 nOffset)
 {
 //    return ((0<=nOffset)&&(nOffset<_nDataSize));
@@ -474,6 +479,16 @@ void QHexView::goToAddress(qint64 nAddress)
     }
 }
 
+void QHexView::goToRelAddress(qint64 nRelAddress)
+{
+    if((isRelAddressValid(nRelAddress))&&(_nBytesProLine))
+    {
+        qint64 nOffset=relAddressToOffset(nRelAddress);
+
+        goToOffset(nOffset);
+    }
+}
+
 void QHexView::goToOffset(qint64 nOffset)
 {
     if((isOffsetValid(nOffset))&&(_nBytesProLine))
@@ -565,6 +580,11 @@ QHexView::ST QHexView::getSelectType(qint64 nOffset)
 qint64 QHexView::addressToOffset(qint64 nAddress)
 {
     return XBinary::addressToOffset(&_memoryMap,nAddress);
+}
+
+qint64 QHexView::relAddressToOffset(qint64 nRelAddress)
+{
+    return XBinary::relAddressToOffset(&_memoryMap,nRelAddress);
 }
 
 qint64 QHexView::offsetToAddress(qint64 nOffset)

@@ -88,6 +88,7 @@ public:
 //    qint64 getBaseAddress() const;
     void setFont(const QFont &font);
     bool isAddressValid(qint64 nAddress);
+    bool isRelAddressValid(qint64 nRelAddress);
     bool isOffsetValid(qint64 nOffset);
     void reload();
     STATE getState();
@@ -112,6 +113,7 @@ private:
 
 public slots:
     void goToAddress(qint64 nAddress);
+    void goToRelAddress(qint64 nRelAddress);
     void goToOffset(qint64 nOffset);
     void _goToOffset(qint64 nOffset);
     void setSelection(qint64 nAddress,qint64 nSize);
@@ -131,6 +133,7 @@ private slots:
     void _setSelection(qint64 nOffset);
     ST getSelectType(qint64 nOffset);
     qint64 addressToOffset(qint64 nAddress);
+    qint64 relAddressToOffset(qint64 nRelAddress);
     qint64 offsetToAddress(qint64 nOffset);
     QPoint cursorToPoint(CURSOR_POSITION cp);
     bool readByte(qint64 nOffset,quint8 *pByte);
