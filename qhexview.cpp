@@ -1118,6 +1118,7 @@ void QHexView::keyPressEvent(QKeyEvent *event)
                                             emit errorMessage(tr("Cannot save file")+QString(": %1").arg(sBackupFileName));
                                         }
                                     }
+                                    // TODO if not file/ Create file/ Write data
                                 }
                             }
                         }
