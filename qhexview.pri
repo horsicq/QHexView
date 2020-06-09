@@ -2,14 +2,17 @@ INCLUDEPATH += $$PWD
 DEPENDPATH += $$PWD
 
 HEADERS += \
+    $$PWD/dialoghex.h \
     $$PWD/qhexview.h \
     $$PWD/qhexviewwidget.h
 
 SOURCES += \
+    $$PWD/dialoghex.cpp \
     $$PWD/qhexview.cpp \
     $$PWD/qhexviewwidget.cpp
 
 FORMS += \
+    $$PWD/dialoghex.ui \
     $$PWD/qhexviewwidget.ui
 
 !contains(XCONFIG, xlineedithex) {
