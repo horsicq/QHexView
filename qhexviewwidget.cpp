@@ -146,6 +146,7 @@ bool QHexViewWidget::eventFilter(QObject *obj, QEvent *event)
         scCopyAsHex     =new QShortcut(QKeySequence(XShortcuts::COPYASHEX),     this,SLOT(_copyAsHex()));
         scFind          =new QShortcut(QKeySequence(XShortcuts::FIND),          this,SLOT(_find()));
         scFindNext      =new QShortcut(QKeySequence(XShortcuts::FINDNEXT),      this,SLOT(_findNext()));
+        scSignature     =new QShortcut(QKeySequence(XShortcuts::SIGNATURE),     this,SLOT(_signature()));
     }
     else if(event->type()==QEvent::FocusOut)
     {
@@ -155,6 +156,7 @@ bool QHexViewWidget::eventFilter(QObject *obj, QEvent *event)
         if(scCopyAsHex)     delete scCopyAsHex;
         if(scFind)          delete scFind;
         if(scFindNext)      delete scFindNext;
+        if(scSignature)     delete scSignature;
     }
 
     return false;
@@ -251,12 +253,22 @@ void QHexViewWidget::_selectAll()
 
 void QHexViewWidget::_copyAsHex()
 {
-    // TODO limit
     QHexView::STATE state=ui->scrollAreaHex->getState();
 
-    QByteArray baData=ui->scrollAreaHex->readArray(state.nSelectionOffset,state.nSelectionSize);
+    qint64 nSize=qMin(state.nSelectionSize,(qint64)0x10000);
+
+    QByteArray baData=ui->scrollAreaHex->readArray(state.nSelectionOffset,nSize);
 
     QApplication::clipboard()->setText(baData.toHex());
+}
+
+void QHexViewWidget::_signature()
+{
+    QHexView::STATE state=ui->scrollAreaHex->getState();
+
+    DialogHexSignature dsh(this);
+
+    dsh.exec();
 }
 
 void QHexViewWidget::_customContextMenu(const QPoint &pos)
@@ -275,9 +287,15 @@ void QHexViewWidget::_customContextMenu(const QPoint &pos)
     connect(&actionDumpToFile,SIGNAL(triggered()),this,SLOT(_dumpToFile()));
     contextMenu.addAction(&actionDumpToFile);
 
+    QAction actionSignature(tr("Signature"),this);
+    actionSignature.setShortcut(QKeySequence(XShortcuts::SIGNATURE));
+    connect(&actionSignature,SIGNAL(triggered()),this,SLOT(_signature()));
+    contextMenu.addAction(&actionSignature);
+
     if(state.nSelectionSize)
     {
         contextMenu.addAction(&actionDumpToFile);
+        contextMenu.addAction(&actionSignature);
     }
 
     QAction actionFind(tr("Find"),this);

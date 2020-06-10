@@ -32,6 +32,7 @@
 #include "dialogdumpprocess.h"
 #include "dialogsearchprocess.h"
 #include "xshortcuts.h"
+#include "dialoghexsignature.h"
 
 namespace Ui
 {
@@ -74,6 +75,7 @@ private slots:
     void _findNext();
     void _selectAll();
     void _copyAsHex();
+    void _signature();
     void _customContextMenu(const QPoint &pos);
     void _errorMessage(QString sText);
 
@@ -86,6 +88,7 @@ private:
     QShortcut *scCopyAsHex;
     QShortcut *scFind;
     QShortcut *scFindNext;
+    QShortcut *scSignature;
 };
 
 #endif // QHEXVIEWWIDGET_H
