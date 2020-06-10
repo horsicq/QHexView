@@ -35,6 +35,11 @@ FORMS += \
     include($$PWD/../FormatDialogs/dialoggotoaddress.pri)
 }
 
+!contains(XCONFIG, dialoghexsignature) {
+    XCONFIG += dialoghexsignature
+    include($$PWD/../FormatDialogs/dialoghexsignature.pri)
+}
+
 !contains(XCONFIG, xbinary) {
     XCONFIG += xbinary
     include($$PWD/../Formats/xbinary.pri)
