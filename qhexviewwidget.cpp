@@ -68,6 +68,11 @@ void QHexViewWidget::setBackupFileName(QString sBackupFileName)
     ui->scrollAreaHex->setBackupFileName(sBackupFileName);
 }
 
+void QHexViewWidget::setSaveDirectory(QString sSaveDirectory)
+{
+    this->sSaveDirectory=sSaveDirectory;
+}
+
 void QHexViewWidget::enableHeader(bool bState)
 {
     if(bState)
@@ -196,7 +201,7 @@ void QHexViewWidget::_dumpToFile()
 {
     QString sFilter;
     sFilter+=QString("%1 (*.bin)").arg(tr("Raw data"));
-    QString sSaveFileName="Result"; // TODO default directory
+    QString sSaveFileName=getDumpName();
     QString sFileName=QFileDialog::getSaveFileName(this,tr("Save dump"),sSaveFileName,sFilter);
 
     if(!sFileName.isEmpty())
@@ -334,4 +339,19 @@ void QHexViewWidget::_customContextMenu(const QPoint &pos)
 void QHexViewWidget::_errorMessage(QString sText)
 {
     QMessageBox::critical(this,tr("Error"),sText);
+}
+
+QString QHexViewWidget::getDumpName()
+{
+    QString sResult;
+
+    if(sSaveDirectory!="")
+    {
+        sResult+=sSaveDirectory;
+        sResult+=QDir::separator();
+    }
+
+    sResult+="dump.bin";
+
+    return sResult;
 }

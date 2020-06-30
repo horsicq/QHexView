@@ -48,6 +48,7 @@ public:
     ~QHexViewWidget();
     void setData(QIODevice *pDevice,QHexView::OPTIONS *pOptions=nullptr);
     void setBackupFileName(QString sBackupFileName);
+    void setSaveDirectory(QString sSaveDirectory);
     void enableHeader(bool bState);
     void enableReadOnly(bool bState);
     bool setReadonly(bool bState);
@@ -78,6 +79,7 @@ private slots:
     void _signature();
     void _customContextMenu(const QPoint &pos);
     void _errorMessage(QString sText);
+    QString getDumpName();
 
 private:
     Ui::QHexViewWidget *ui;
@@ -89,6 +91,8 @@ private:
     QShortcut *scFind;
     QShortcut *scFindNext;
     QShortcut *scSignature;
+
+    QString sSaveDirectory;
 };
 
 #endif // QHEXVIEWWIDGET_H
