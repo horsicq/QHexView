@@ -183,7 +183,7 @@ void QHexViewWidget::on_pushButtonGoTo_clicked()
 
 void QHexViewWidget::on_checkBoxReadonly_toggled(bool bChecked)
 {
-    ui->scrollAreaHex->setReadonly(checked);
+    ui->scrollAreaHex->setReadonly(bChecked);
 }
 
 void QHexViewWidget::_goToAddress()
