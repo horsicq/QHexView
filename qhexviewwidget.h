@@ -68,7 +68,7 @@ signals:
 
 private slots:
     void on_pushButtonGoTo_clicked();
-    void on_checkBoxReadonly_toggled(bool checked);
+    void on_checkBoxReadonly_toggled(bool bChecked);
     void _getState();
     void _goToAddress();
     void _dumpToFile();
