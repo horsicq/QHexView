@@ -41,7 +41,7 @@ QHexView::QHexView(QWidget *parent):QAbstractScrollArea(parent)
     posInfo.cursorPosition.nOffset=0;
     posInfo.cursorPosition.type=CT_HIWORD;
 
-#ifdef Q_OS_WIN32
+#ifdef Q_OS_WIN
     setFont(QFont("Courier",10));
 #endif
 #ifdef Q_OS_LINUX
@@ -457,7 +457,7 @@ char QHexView::convertANSI(char cByte)
 QString QHexView::getFontName()
 {
     QString sResult;
-#ifdef Q_OS_WIN32
+#ifdef Q_OS_WIN
     sResult="Courier";
 #endif
 #ifdef Q_OS_LINUX
