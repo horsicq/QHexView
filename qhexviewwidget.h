@@ -44,7 +44,7 @@ class QHexViewWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit QHexViewWidget(QWidget *parent=nullptr);
+    explicit QHexViewWidget(QWidget *pParent=nullptr);
     ~QHexViewWidget();
     void setData(QIODevice *pDevice,QHexView::OPTIONS *pOptions=nullptr);
     void setBackupFileName(QString sBackupFileName);

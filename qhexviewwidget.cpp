@@ -21,8 +21,8 @@
 #include "qhexviewwidget.h"
 #include "ui_qhexviewwidget.h"
 
-QHexViewWidget::QHexViewWidget(QWidget *parent) :
-    QWidget(parent),
+QHexViewWidget::QHexViewWidget(QWidget *pParent) :
+    QWidget(pParent),
     ui(new Ui::QHexViewWidget)
 {
     ui->setupUi(this);
