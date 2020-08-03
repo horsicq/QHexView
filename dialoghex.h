@@ -33,7 +33,7 @@ class DialogHex : public QDialog
     Q_OBJECT
 
 public:
-    explicit DialogHex(QWidget *parent, QIODevice *pDevice, QHexView::OPTIONS *pOptions);
+    explicit DialogHex(QWidget *pParent, QIODevice *pDevice, QHexView::OPTIONS *pOptions);
     ~DialogHex();
 
 signals:
