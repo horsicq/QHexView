@@ -20,7 +20,7 @@
 //
 #include "qhexview.h"
 
-QHexView::QHexView(QWidget *parent):QAbstractScrollArea(parent)
+QHexView::QHexView(QWidget *pParent):QAbstractScrollArea(pParent)
 {
     pDevice=nullptr;
 

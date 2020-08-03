@@ -78,7 +78,7 @@ public:
         CURSOR_POSITION cursorPosition;
     };
 
-    QHexView(QWidget *parent=nullptr);
+    QHexView(QWidget *pParent=nullptr);
     //    ~QHexView();
     QIODevice *getDevice() const;
     void setData(QIODevice *pDevice,OPTIONS *pOptions=nullptr);
