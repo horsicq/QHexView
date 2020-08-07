@@ -139,9 +139,9 @@ void QHexViewWidget::goToOffset(qint64 nOffset)
     ui->scrollAreaHex->reload();
 }
 
-bool QHexViewWidget::eventFilter(QObject *obj, QEvent *pEvent)
+bool QHexViewWidget::eventFilter(QObject *pObj, QEvent *pEvent)
 {
-    Q_UNUSED(obj)
+    Q_UNUSED(pObj)
 
     if(pEvent->type()==QEvent::FocusIn)
     {
