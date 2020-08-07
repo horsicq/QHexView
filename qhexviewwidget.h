@@ -61,7 +61,7 @@ public:
     void goToOffset(qint64 nOffset);
 
 protected:
-    bool eventFilter(QObject *obj, QEvent *event) override;
+    bool eventFilter(QObject *obj, QEvent *pEvent) override;
 
 signals:
     void editState(bool bState);

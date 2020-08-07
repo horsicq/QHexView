@@ -139,11 +139,11 @@ void QHexViewWidget::goToOffset(qint64 nOffset)
     ui->scrollAreaHex->reload();
 }
 
-bool QHexViewWidget::eventFilter(QObject *obj, QEvent *event)
+bool QHexViewWidget::eventFilter(QObject *obj, QEvent *pEvent)
 {
     Q_UNUSED(obj)
 
-    if(event->type()==QEvent::FocusIn)
+    if(pEvent->type()==QEvent::FocusIn)
     {
         scGoToAddress   =new QShortcut(QKeySequence(XShortcuts::GOTOADDRESS),   this,SLOT(_goToAddress()));
         scDumpToFile    =new QShortcut(QKeySequence(XShortcuts::DUMPTOFILE),    this,SLOT(_dumpToFile()));
@@ -153,7 +153,7 @@ bool QHexViewWidget::eventFilter(QObject *obj, QEvent *event)
         scFindNext      =new QShortcut(QKeySequence(XShortcuts::FINDNEXT),      this,SLOT(_findNext()));
         scSignature     =new QShortcut(QKeySequence(XShortcuts::SIGNATURE),     this,SLOT(_signature()));
     }
-    else if(event->type()==QEvent::FocusOut)
+    else if(pEvent->type()==QEvent::FocusOut)
     {
         if(scGoToAddress)   delete scGoToAddress;
         if(scDumpToFile)    delete scDumpToFile;
