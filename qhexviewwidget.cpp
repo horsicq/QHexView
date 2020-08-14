@@ -44,6 +44,7 @@ QHexViewWidget::QHexViewWidget(QWidget *pParent) :
     scCopyAsHex=nullptr;
     scFind=nullptr;
     scFindNext=nullptr;
+    scSignature=nullptr;
 
     ui->scrollAreaHex->setFocus();
 
@@ -145,23 +146,11 @@ bool QHexViewWidget::eventFilter(QObject *pObj, QEvent *pEvent)
 
     if(pEvent->type()==QEvent::FocusIn)
     {
-        scGoToAddress   =new QShortcut(QKeySequence(XShortcuts::GOTOADDRESS),   this,SLOT(_goToAddress()));
-        scDumpToFile    =new QShortcut(QKeySequence(XShortcuts::DUMPTOFILE),    this,SLOT(_dumpToFile()));
-        scSelectAll     =new QShortcut(QKeySequence(XShortcuts::SELECTALL),     this,SLOT(_selectAll()));
-        scCopyAsHex     =new QShortcut(QKeySequence(XShortcuts::COPYASHEX),     this,SLOT(_copyAsHex()));
-        scFind          =new QShortcut(QKeySequence(XShortcuts::FIND),          this,SLOT(_find()));
-        scFindNext      =new QShortcut(QKeySequence(XShortcuts::FINDNEXT),      this,SLOT(_findNext()));
-        scSignature     =new QShortcut(QKeySequence(XShortcuts::SIGNATURE),     this,SLOT(_signature()));
+        registerShortcuts(true);
     }
     else if(pEvent->type()==QEvent::FocusOut)
     {
-        if(scGoToAddress)   delete scGoToAddress;
-        if(scDumpToFile)    delete scDumpToFile;
-        if(scSelectAll)     delete scSelectAll;
-        if(scCopyAsHex)     delete scCopyAsHex;
-        if(scFind)          delete scFind;
-        if(scFindNext)      delete scFindNext;
-        if(scSignature)     delete scSignature;
+        registerShortcuts(false);
     }
 
     return false;
@@ -354,4 +343,28 @@ QString QHexViewWidget::getDumpName()
     sResult+="dump.bin";
 
     return sResult;
+}
+
+void QHexViewWidget::registerShortcuts(bool bState)
+{
+    if(bState)
+    {
+        if(!scGoToAddress)  scGoToAddress   =new QShortcut(QKeySequence(XShortcuts::GOTOADDRESS),   this,SLOT(_goToAddress()));
+        if(!scDumpToFile)   scDumpToFile    =new QShortcut(QKeySequence(XShortcuts::DUMPTOFILE),    this,SLOT(_dumpToFile()));
+        if(!scSelectAll)    scSelectAll     =new QShortcut(QKeySequence(XShortcuts::SELECTALL),     this,SLOT(_selectAll()));
+        if(!scCopyAsHex)    scCopyAsHex     =new QShortcut(QKeySequence(XShortcuts::COPYASHEX),     this,SLOT(_copyAsHex()));
+        if(!scFind)         scFind          =new QShortcut(QKeySequence(XShortcuts::FIND),          this,SLOT(_find()));
+        if(!scFindNext)     scFindNext      =new QShortcut(QKeySequence(XShortcuts::FINDNEXT),      this,SLOT(_findNext()));
+        if(!scSignature)    scSignature     =new QShortcut(QKeySequence(XShortcuts::SIGNATURE),     this,SLOT(_signature()));
+    }
+    else
+    {
+        if(scGoToAddress)   {delete scGoToAddress;  scGoToAddress=nullptr;}
+        if(scDumpToFile)    {delete scDumpToFile;   scDumpToFile=nullptr;}
+        if(scSelectAll)     {delete scSelectAll;    scSelectAll=nullptr;}
+        if(scCopyAsHex)     {delete scCopyAsHex;    scCopyAsHex=nullptr;}
+        if(scFind)          {delete scFind;         scFind=nullptr;}
+        if(scFindNext)      {delete scFindNext;     scFindNext=nullptr;}
+        if(scSignature)     {delete scSignature;    scSignature=nullptr;}
+    }
 }

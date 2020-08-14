@@ -80,6 +80,7 @@ private slots:
     void _customContextMenu(const QPoint &pos);
     void _errorMessage(QString sText);
     QString getDumpName();
+    void registerShortcuts(bool bState);
 
 private:
     Ui::QHexViewWidget *ui;
