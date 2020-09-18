@@ -133,7 +133,7 @@ void QHexView::paintEvent(QPaintEvent *pEvent)
     {
         //    qDebug("void QHexView::paintEvent(QPaintEvent *event)");
         qint32 topLeftY=pEvent->rect().topLeft().y();
-        qint32 topLeftX=pEvent->rect().topLeft().x()-_nXOffset;
+        qint32 topLeftX=pEvent->rect().topLeft().x()-g_nXOffset;
 
         painter.setPen(QPen(Qt::gray));
 
@@ -688,7 +688,7 @@ void QHexView::adjust()
     verticalScrollBar()->setPageStep(_nLinesProPage);
 
     _nStartOffset=verticalScrollBar()->value()*_nBytesProLine+_nStartOffsetDelta;
-    _nXOffset=horizontalScrollBar()->value();
+    g_nXOffset=horizontalScrollBar()->value();
 
     // TODO update
     if(pDevice)

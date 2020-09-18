@@ -156,7 +156,7 @@ protected:
 
 private:
     QIODevice *pDevice;
-    qint32 _nXOffset;
+    qint32 g_nXOffset;
     qint32 _nBytesProLine;
     qint32 _nCharWidth;
     qint32 _nCharHeight;
