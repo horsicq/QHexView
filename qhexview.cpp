@@ -30,7 +30,7 @@ QHexView::QHexView(QWidget *pParent):QAbstractScrollArea(pParent)
     _bMouseSelection=false;
     _nDataSize=0;
     _bBlink=false;
-    _nBytesProLine=0;
+    g_nBytesProLine=0;
 
     _nStartOffset=0;
     _nStartOffsetDelta=0;
@@ -139,7 +139,7 @@ void QHexView::paintEvent(QPaintEvent *pEvent)
 
         for(qint32 i=0; i<_nLinesProPage; i++)
         {
-            qint64 nLineAddress=XBinary::offsetToAddress(&_memoryMap,_nStartOffset+i*_nBytesProLine);
+            qint64 nLineAddress=XBinary::offsetToAddress(&_memoryMap,_nStartOffset+i*g_nBytesProLine);
 
             if(nLineAddress!=-1)
             {
@@ -162,13 +162,13 @@ void QHexView::paintEvent(QPaintEvent *pEvent)
         {
             qint32 nLinePosition=topLeftY+(i+1)*_nLineHeight;
 
-            for(qint32 j=0; j<_nBytesProLine; j++)
+            for(qint32 j=0; j<g_nBytesProLine; j++)
             {
                 bool _bIsSelected=false;
 
                 qint32 nBytePositionHEX=topLeftX+_nHexPosition+j*_nCharWidth*3;
                 qint32 nBytePositionANSI=topLeftX+_nAnsiPosition+j*_nCharWidth;
-                qint32 nIndex=(j+i*_nBytesProLine);
+                qint32 nIndex=(j+i*g_nBytesProLine);
                 QString sHex=_baDataHexBuffer.mid(nIndex*2,2);
                 char ch=' ';
 
@@ -200,7 +200,7 @@ void QHexView::paintEvent(QPaintEvent *pEvent)
 
                 int nCount=3;
 
-                if((st==ST_END)||(st==ST_ONEBYTE)||((st!=ST_NOTSELECTED)&&(j==_nBytesProLine-1)))
+                if((st==ST_END)||(st==ST_ONEBYTE)||((st!=ST_NOTSELECTED)&&(j==g_nBytesProLine-1)))
                 {
                     nCount=2;
                 }
@@ -316,12 +316,12 @@ void QHexView::mousePressEvent(QMouseEvent *pEvent)
 
 quint32 QHexView::getBytesProLine() const
 {
-    return _nBytesProLine;
+    return g_nBytesProLine;
 }
 
 void QHexView::setBytesProLine(const quint32 nBytesProLine)
 {
-    _nBytesProLine=nBytesProLine;
+    g_nBytesProLine=nBytesProLine;
 }
 
 //qint64 QHexView::getBaseAddress() const
@@ -471,7 +471,7 @@ QString QHexView::getFontName()
 
 void QHexView::goToAddress(qint64 nAddress)
 {
-    if((isAddressValid(nAddress))&&(_nBytesProLine))
+    if((isAddressValid(nAddress))&&(g_nBytesProLine))
     {
         qint64 nOffset=addressToOffset(nAddress);
 
@@ -481,7 +481,7 @@ void QHexView::goToAddress(qint64 nAddress)
 
 void QHexView::goToRelAddress(qint64 nRelAddress)
 {
-    if((isRelAddressValid(nRelAddress))&&(_nBytesProLine))
+    if((isRelAddressValid(nRelAddress))&&(g_nBytesProLine))
     {
         qint64 nOffset=relAddressToOffset(nRelAddress);
 
@@ -491,10 +491,10 @@ void QHexView::goToRelAddress(qint64 nRelAddress)
 
 void QHexView::goToOffset(qint64 nOffset)
 {
-    if((isOffsetValid(nOffset))&&(_nBytesProLine))
+    if((isOffsetValid(nOffset))&&(g_nBytesProLine))
     {
-        verticalScrollBar()->setValue((nOffset)/_nBytesProLine);
-        _nStartOffsetDelta=(nOffset)%_nBytesProLine;
+        verticalScrollBar()->setValue((nOffset)/g_nBytesProLine);
+        _nStartOffsetDelta=(nOffset)%g_nBytesProLine;
 
         //        posInfo.cursorPosition.nOffset+=(addressToOffset(nAddress))%_nBytesProLine;
         //        posInfo.cursorPosition.nOffset=addressToOffset(nAddress);
@@ -507,10 +507,10 @@ void QHexView::goToOffset(qint64 nOffset)
 
 void QHexView::_goToOffset(qint64 nOffset)
 {
-    if((isOffsetValid(nOffset))&&(_nBytesProLine))
+    if((isOffsetValid(nOffset))&&(g_nBytesProLine))
     {
-        verticalScrollBar()->setValue((nOffset)/_nBytesProLine);
-        _nStartOffsetDelta=(nOffset)%_nBytesProLine;
+        verticalScrollBar()->setValue((nOffset)/g_nBytesProLine);
+        _nStartOffsetDelta=(nOffset)%g_nBytesProLine;
     }
 }
 
@@ -608,20 +608,20 @@ QPoint QHexView::cursorToPoint(QHexView::CURSOR_POSITION cp)
 
     if(cp.type!=CT_NONE)
     {
-        result.setY((nRelOffset/_nBytesProLine)*_nLineHeight);
+        result.setY((nRelOffset/g_nBytesProLine)*_nLineHeight);
     }
 
     if(cp.type==CT_ANSI)
     {
-        result.setX(_nAnsiPosition+(nRelOffset%_nBytesProLine)*_nCharWidth);
+        result.setX(_nAnsiPosition+(nRelOffset%g_nBytesProLine)*_nCharWidth);
     }
     else if(cp.type==CT_HIWORD)
     {
-        result.setX(_nHexPosition+(nRelOffset%_nBytesProLine)*_nCharWidth*3);
+        result.setX(_nHexPosition+(nRelOffset%g_nBytesProLine)*_nCharWidth*3);
     }
     else if(cp.type==CT_LOWORD)
     {
-        result.setX(_nHexPosition+(nRelOffset%_nBytesProLine)*_nCharWidth*3+_nCharWidth);
+        result.setX(_nHexPosition+(nRelOffset%g_nBytesProLine)*_nCharWidth*3+_nCharWidth);
     }
 
     return result;
@@ -662,7 +662,7 @@ void QHexView::adjust()
     int nHeight=viewport()->height();
     _nLineHeight=_nCharHeight+5;
     _nLinesProPage=(nHeight)/_nLineHeight; // mb nHeight-4
-    _nDataBlockSize=_nLinesProPage*_nBytesProLine;
+    _nDataBlockSize=_nLinesProPage*g_nBytesProLine;
 
     _nAddressPosition=_nCharWidth;
     _nAddressWidthCount=8;
@@ -677,9 +677,9 @@ void QHexView::adjust()
 
     _nAddressWidth=(_nAddressWidthCount+3)*_nCharWidth; // TODO set addresswidth
     _nHexPosition=_nAddressPosition+_nAddressWidth;
-    _nHexWidth=(_nBytesProLine+1)*_nCharWidth*3;
+    _nHexWidth=(g_nBytesProLine+1)*_nCharWidth*3;
     _nAnsiPosition=_nHexPosition+_nHexWidth;
-    _nAnsiWidth=(_nBytesProLine+1)*_nCharWidth;
+    _nAnsiWidth=(g_nBytesProLine+1)*_nCharWidth;
 
     horizontalScrollBar()->setRange(0,_nAnsiPosition+_nAnsiWidth-viewport()->width());
     horizontalScrollBar()->setPageStep(viewport()->width());
@@ -687,7 +687,7 @@ void QHexView::adjust()
     verticalScrollBar()->setRange(0,_nTotalLineCount-_nLinesProPage);
     verticalScrollBar()->setPageStep(_nLinesProPage);
 
-    _nStartOffset=verticalScrollBar()->value()*_nBytesProLine+_nStartOffsetDelta;
+    _nStartOffset=verticalScrollBar()->value()*g_nBytesProLine+_nStartOffsetDelta;
     g_nXOffset=horizontalScrollBar()->value();
 
     // TODO update
@@ -711,13 +711,13 @@ void QHexView::adjust()
 
     if(nRelOffset<0)
     {
-        nRelOffset=posInfo.cursorPosition.nOffset%_nBytesProLine;
+        nRelOffset=posInfo.cursorPosition.nOffset%g_nBytesProLine;
         posInfo.cursorPosition.nOffset=_nStartOffset+nRelOffset;
     }
-    else if(nRelOffset>=_nBytesProLine*_nLinesProPage)
+    else if(nRelOffset>=g_nBytesProLine*_nLinesProPage)
     {
-        nRelOffset=posInfo.cursorPosition.nOffset%_nBytesProLine;
-        posInfo.cursorPosition.nOffset=_nStartOffset+_nBytesProLine*(_nLinesProPage-1)+nRelOffset;
+        nRelOffset=posInfo.cursorPosition.nOffset%g_nBytesProLine;
+        posInfo.cursorPosition.nOffset=_nStartOffset+g_nBytesProLine*(_nLinesProPage-1)+nRelOffset;
     }
 
     if(posInfo.cursorPosition.nOffset>_nDataSize-1)
@@ -745,7 +745,7 @@ void QHexView::init()
         _nDataSize=pDevice->size();
     }
 
-    _nTotalLineCount=_nDataSize/_nBytesProLine+1;
+    _nTotalLineCount=_nDataSize/g_nBytesProLine+1;
     verticalScrollBar()->setValue(0);
 }
 
@@ -769,7 +769,7 @@ QHexView::CURSOR_POSITION QHexView::getCursorPosition(QPoint pos)
 
         result.type=CT_HIWORD;
 
-        nRelOffset=nDeltaY*_nBytesProLine+nDeltaX;
+        nRelOffset=nDeltaY*g_nBytesProLine+nDeltaX;
     }
     else if((nX>_nHexPosition)&&(nX<_nHexPosition+_nHexWidth))
     {
@@ -785,7 +785,7 @@ QHexView::CURSOR_POSITION QHexView::getCursorPosition(QPoint pos)
             result.type=CT_LOWORD;
         }
 
-        nRelOffset=nDeltaY*_nBytesProLine+nDeltaX;
+        nRelOffset=nDeltaY*g_nBytesProLine+nDeltaX;
         // TODO !!!
     }
     else if((nX>_nAnsiPosition)&&(nX<_nAnsiPosition+_nAnsiWidth))
@@ -794,7 +794,7 @@ QHexView::CURSOR_POSITION QHexView::getCursorPosition(QPoint pos)
         nDeltaY=(nY-_nLineDelta)/_nLineHeight; // mb TODO LindeDelta
 
         result.type=CT_ANSI;
-        nRelOffset=nDeltaY*_nBytesProLine+nDeltaX;
+        nRelOffset=nDeltaY*g_nBytesProLine+nDeltaX;
     }
 
     if(nRelOffset!=(quint64)-1)
@@ -910,11 +910,11 @@ void QHexView::keyPressEvent(QKeyEvent *pEvent)
         {
             if(pEvent->matches(QKeySequence::MoveToNextLine))
             {
-                posInfo.cursorPosition.nOffset+=_nBytesProLine;
+                posInfo.cursorPosition.nOffset+=g_nBytesProLine;
             }
             else if(pEvent->matches(QKeySequence::MoveToPreviousLine))
             {
-                posInfo.cursorPosition.nOffset-=_nBytesProLine;
+                posInfo.cursorPosition.nOffset-=g_nBytesProLine;
             }
         }
         else if(pEvent->matches(QKeySequence::MoveToNextPage)||
@@ -922,11 +922,11 @@ void QHexView::keyPressEvent(QKeyEvent *pEvent)
         {
             if(pEvent->matches(QKeySequence::MoveToNextPage))
             {
-                posInfo.cursorPosition.nOffset+=_nBytesProLine*_nLinesProPage;
+                posInfo.cursorPosition.nOffset+=g_nBytesProLine*_nLinesProPage;
             }
             else if(pEvent->matches(QKeySequence::MoveToPreviousPage))
             {
-                posInfo.cursorPosition.nOffset-=_nBytesProLine*_nLinesProPage;
+                posInfo.cursorPosition.nOffset-=g_nBytesProLine*_nLinesProPage;
             }
         }
         else if(pEvent->matches(QKeySequence::MoveToStartOfLine)||
@@ -941,11 +941,11 @@ void QHexView::keyPressEvent(QKeyEvent *pEvent)
 
             if(pEvent->matches(QKeySequence::MoveToStartOfLine))
             {
-                posInfo.cursorPosition.nOffset=(posInfo.cursorPosition.nOffset/_nBytesProLine)*_nBytesProLine;
+                posInfo.cursorPosition.nOffset=(posInfo.cursorPosition.nOffset/g_nBytesProLine)*g_nBytesProLine;
             }
             else if(pEvent->matches(QKeySequence::MoveToEndOfLine))
             {
-                posInfo.cursorPosition.nOffset=((posInfo.cursorPosition.nOffset/_nBytesProLine)+1)*_nBytesProLine-1;
+                posInfo.cursorPosition.nOffset=((posInfo.cursorPosition.nOffset/g_nBytesProLine)+1)*g_nBytesProLine-1;
             }
             else if(pEvent->matches(QKeySequence::MoveToStartOfDocument))
             {
@@ -989,13 +989,13 @@ void QHexView::keyPressEvent(QKeyEvent *pEvent)
 
                 qint64 nRelOffset=posInfo.cursorPosition.nOffset-_nStartOffset;
 
-                if(nRelOffset>=_nBytesProLine*_nLinesProPage)
+                if(nRelOffset>=g_nBytesProLine*_nLinesProPage)
                 {
-                    _goToOffset(_nStartOffset+_nBytesProLine);
+                    _goToOffset(_nStartOffset+g_nBytesProLine);
                 }
                 else if(nRelOffset<0)
                 {
-                    _goToOffset(_nStartOffset-_nBytesProLine);
+                    _goToOffset(_nStartOffset-g_nBytesProLine);
                 }
             }
             else if(pEvent->matches(QKeySequence::MoveToNextPage)||
@@ -1003,22 +1003,22 @@ void QHexView::keyPressEvent(QKeyEvent *pEvent)
             {
                 if(posInfo.cursorPosition.nOffset<0)
                 {
-                    posInfo.cursorPosition.nOffset+=_nBytesProLine*_nLinesProPage;
+                    posInfo.cursorPosition.nOffset+=g_nBytesProLine*_nLinesProPage;
 
                 }
                 else if(posInfo.cursorPosition.nOffset>_nDataSize-1)
                 {
-                    posInfo.cursorPosition.nOffset-=_nBytesProLine*_nLinesProPage;
+                    posInfo.cursorPosition.nOffset-=g_nBytesProLine*_nLinesProPage;
                 }
                 else
                 {
                     if(pEvent->matches(QKeySequence::MoveToNextPage))
                     {
-                        _goToOffset(_nStartOffset+_nBytesProLine*_nLinesProPage);
+                        _goToOffset(_nStartOffset+g_nBytesProLine*_nLinesProPage);
                     }
                     else if(pEvent->matches(QKeySequence::MoveToPreviousPage))
                     {
-                        _goToOffset(_nStartOffset-_nBytesProLine*_nLinesProPage);
+                        _goToOffset(_nStartOffset-g_nBytesProLine*_nLinesProPage);
                     }
                 }
             }
@@ -1029,7 +1029,7 @@ void QHexView::keyPressEvent(QKeyEvent *pEvent)
             else if(pEvent->matches(QKeySequence::MoveToEndOfDocument))
             {
                 qint64 nEndPageOffset=0;
-                nEndPageOffset=(_nDataSize-(_nDataSize)%_nBytesProLine-_nBytesProLine*(_nLinesProPage-1));
+                nEndPageOffset=(_nDataSize-(_nDataSize)%g_nBytesProLine-g_nBytesProLine*(_nLinesProPage-1));
 
                 if(nEndPageOffset<0)
                 {
