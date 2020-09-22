@@ -159,7 +159,7 @@ private:
     qint32 g_nXOffset;
     qint32 g_nBytesProLine;
     qint32 g_nCharWidth;
-    qint32 _nCharHeight;
+    qint32 g_nCharHeight;
     qint32 _nLinesProPage;
     qint32 _nDataBlockSize;
     qint64 _nStartOffset;

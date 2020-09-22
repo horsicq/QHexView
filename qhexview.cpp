@@ -334,7 +334,7 @@ void QHexView::setFont(const QFont &font)
     const QFontMetricsF fm(font);
     g_nCharWidth=fm.width('2');
     g_nCharWidth=qMax(fm.width('W'),(qreal)g_nCharWidth);
-    _nCharHeight=fm.height();
+    g_nCharHeight=fm.height();
 
     QAbstractScrollArea::setFont(font);
 
@@ -660,7 +660,7 @@ void QHexView::_customContextMenu(const QPoint &pos)
 void QHexView::adjust()
 {
     int nHeight=viewport()->height();
-    _nLineHeight=_nCharHeight+5;
+    _nLineHeight=g_nCharHeight+5;
     _nLinesProPage=(nHeight)/_nLineHeight; // mb nHeight-4
     _nDataBlockSize=_nLinesProPage*g_nBytesProLine;
 
