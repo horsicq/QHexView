@@ -662,7 +662,7 @@ void QHexView::adjust()
     int nHeight=viewport()->height();
     _nLineHeight=g_nCharHeight+5;
     g_nLinesProPage=(nHeight)/_nLineHeight; // mb nHeight-4
-    _nDataBlockSize=g_nLinesProPage*g_nBytesProLine;
+    g_nDataBlockSize=g_nLinesProPage*g_nBytesProLine;
 
     _nAddressPosition=g_nCharWidth;
     _nAddressWidthCount=8;
@@ -695,8 +695,8 @@ void QHexView::adjust()
     {
         if(pDevice->seek(_nStartOffset))
         {
-            _baDataBuffer.resize(_nDataBlockSize*g_nLinesProPage);
-            int nCount=(int)pDevice->read(_baDataBuffer.data(),_nDataBlockSize*g_nLinesProPage);
+            _baDataBuffer.resize(g_nDataBlockSize*g_nLinesProPage);
+            int nCount=(int)pDevice->read(_baDataBuffer.data(),g_nDataBlockSize*g_nLinesProPage);
             _baDataBuffer.resize(nCount);
             _baDataHexBuffer=QByteArray(_baDataBuffer.toHex());
         }
