@@ -166,8 +166,8 @@ void QHexView::paintEvent(QPaintEvent *pEvent)
             {
                 bool _bIsSelected=false;
 
-                qint32 nBytePositionHEX=topLeftX+_nHexPosition+j*_nCharWidth*3;
-                qint32 nBytePositionANSI=topLeftX+_nAnsiPosition+j*_nCharWidth;
+                qint32 nBytePositionHEX=topLeftX+_nHexPosition+j*g_nCharWidth*3;
+                qint32 nBytePositionANSI=topLeftX+_nAnsiPosition+j*g_nCharWidth;
                 qint32 nIndex=(j+i*g_nBytesProLine);
                 QString sHex=_baDataHexBuffer.mid(nIndex*2,2);
                 char ch=' ';
@@ -207,9 +207,9 @@ void QHexView::paintEvent(QPaintEvent *pEvent)
 
                 // TODO flag changed if selected
                 QRect rect;
-                rect.setRect(nBytePositionHEX,nLinePosition-_nLineHeight+_nLineDelta,_nCharWidth*nCount,_nLineHeight); // mb TODO fix 3
+                rect.setRect(nBytePositionHEX,nLinePosition-_nLineHeight+_nLineDelta,g_nCharWidth*nCount,_nLineHeight); // mb TODO fix 3
                 painter.fillRect(rect,color);
-                rect.setRect(nBytePositionANSI,nLinePosition-_nLineHeight+_nLineDelta,_nCharWidth,_nLineHeight);
+                rect.setRect(nBytePositionANSI,nLinePosition-_nLineHeight+_nLineDelta,g_nCharWidth,_nLineHeight);
                 painter.fillRect(rect,color);
 
                 bool bBold=(sHex!="00");
@@ -332,8 +332,8 @@ void QHexView::setBytesProLine(const quint32 nBytesProLine)
 void QHexView::setFont(const QFont &font)
 {
     const QFontMetricsF fm(font);
-    _nCharWidth=fm.width('2');
-    _nCharWidth=qMax(fm.width('W'),(qreal)_nCharWidth);
+    g_nCharWidth=fm.width('2');
+    g_nCharWidth=qMax(fm.width('W'),(qreal)g_nCharWidth);
     _nCharHeight=fm.height();
 
     QAbstractScrollArea::setFont(font);
@@ -613,15 +613,15 @@ QPoint QHexView::cursorToPoint(QHexView::CURSOR_POSITION cp)
 
     if(cp.type==CT_ANSI)
     {
-        result.setX(_nAnsiPosition+(nRelOffset%g_nBytesProLine)*_nCharWidth);
+        result.setX(_nAnsiPosition+(nRelOffset%g_nBytesProLine)*g_nCharWidth);
     }
     else if(cp.type==CT_HIWORD)
     {
-        result.setX(_nHexPosition+(nRelOffset%g_nBytesProLine)*_nCharWidth*3);
+        result.setX(_nHexPosition+(nRelOffset%g_nBytesProLine)*g_nCharWidth*3);
     }
     else if(cp.type==CT_LOWORD)
     {
-        result.setX(_nHexPosition+(nRelOffset%g_nBytesProLine)*_nCharWidth*3+_nCharWidth);
+        result.setX(_nHexPosition+(nRelOffset%g_nBytesProLine)*g_nCharWidth*3+g_nCharWidth);
     }
 
     return result;
@@ -664,7 +664,7 @@ void QHexView::adjust()
     _nLinesProPage=(nHeight)/_nLineHeight; // mb nHeight-4
     _nDataBlockSize=_nLinesProPage*g_nBytesProLine;
 
-    _nAddressPosition=_nCharWidth;
+    _nAddressPosition=g_nCharWidth;
     _nAddressWidthCount=8;
 
     if(pDevice)
@@ -675,11 +675,11 @@ void QHexView::adjust()
         }
     }
 
-    _nAddressWidth=(_nAddressWidthCount+3)*_nCharWidth; // TODO set addresswidth
+    _nAddressWidth=(_nAddressWidthCount+3)*g_nCharWidth; // TODO set addresswidth
     _nHexPosition=_nAddressPosition+_nAddressWidth;
-    _nHexWidth=(g_nBytesProLine+1)*_nCharWidth*3;
+    _nHexWidth=(g_nBytesProLine+1)*g_nCharWidth*3;
     _nAnsiPosition=_nHexPosition+_nHexWidth;
-    _nAnsiWidth=(g_nBytesProLine+1)*_nCharWidth;
+    _nAnsiWidth=(g_nBytesProLine+1)*g_nCharWidth;
 
     horizontalScrollBar()->setRange(0,_nAnsiPosition+_nAnsiWidth-viewport()->width());
     horizontalScrollBar()->setPageStep(viewport()->width());
@@ -728,7 +728,7 @@ void QHexView::adjust()
     if((posInfo.cursorPosition.nOffset!=-1)&&(posInfo.cursorPosition.type!=CT_NONE))
     {
         QPoint point=cursorToPoint(posInfo.cursorPosition);
-        _rectCursor.setRect(point.x()-horizontalScrollBar()->value(),point.y()+_nLineDelta,_nCharWidth,_nLineHeight);
+        _rectCursor.setRect(point.x()-horizontalScrollBar()->value(),point.y()+_nLineDelta,g_nCharWidth,_nLineHeight);
     }
 
     emit cursorPositionChanged();
@@ -773,10 +773,10 @@ QHexView::CURSOR_POSITION QHexView::getCursorPosition(QPoint pos)
     }
     else if((nX>_nHexPosition)&&(nX<_nHexPosition+_nHexWidth))
     {
-        nDeltaX=(nX-_nHexPosition)/(_nCharWidth*3);
+        nDeltaX=(nX-_nHexPosition)/(g_nCharWidth*3);
         nDeltaY=(nY-_nLineDelta)/_nLineHeight;
 
-        if((nX-_nHexPosition)%(_nCharWidth*3)<=_nCharWidth)
+        if((nX-_nHexPosition)%(g_nCharWidth*3)<=g_nCharWidth)
         {
             result.type=CT_HIWORD;
         }
@@ -790,7 +790,7 @@ QHexView::CURSOR_POSITION QHexView::getCursorPosition(QPoint pos)
     }
     else if((nX>_nAnsiPosition)&&(nX<_nAnsiPosition+_nAnsiWidth))
     {
-        nDeltaX=(nX-_nAnsiPosition)/_nCharWidth;
+        nDeltaX=(nX-_nAnsiPosition)/g_nCharWidth;
         nDeltaY=(nY-_nLineDelta)/_nLineHeight; // mb TODO LindeDelta
 
         result.type=CT_ANSI;
