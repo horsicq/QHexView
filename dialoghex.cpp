@@ -27,6 +27,8 @@ DialogHex::DialogHex(QWidget *pParent, QIODevice *pDevice, QHexView::OPTIONS *pO
 {
     ui->setupUi(this);
 
+    setWindowFlags(Qt::Window);
+
     connect(ui->widgetHex,SIGNAL(editState(bool)),this,SIGNAL(editState(bool)));
 
     ui->widgetHex->enableHeader(true);
