@@ -165,11 +165,11 @@ private:
     qint64 g_nStartOffset;
     qint64 g_nStartOffsetDelta;
     qint32 g_nLineHeight;
-    qint32 _nAddressPosition;
-    qint32 _nAddressWidth;
-    qint32 _nAddressWidthCount;
-    qint32 _nHexPosition;
-    qint32 _nHexWidth;
+    qint32 g_nAddressPosition;
+    qint32 g_nAddressWidth;
+    qint32 g_nAddressWidthCount;
+    qint32 g_nHexPosition;
+    qint32 g_nHexWidth;
     qint32 _nAnsiPosition;
     qint32 _nAnsiWidth;
     qint32 _nTotalLineCount;
