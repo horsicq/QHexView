@@ -400,8 +400,8 @@ bool QHexView::setReadonly(bool bState)
 
     if(g_pDevice)
     {
-        if((bState)||
-                ((!bState)&&(g_pDevice->isWritable())))
+        if( (bState)||
+            ((!bState)&&(g_pDevice->isWritable())))
         {
             bReadonly=bState;
             bResult=true;
