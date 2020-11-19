@@ -22,13 +22,13 @@
 
 QHexView::QHexView(QWidget *pParent):QAbstractScrollArea(pParent)
 {
-    pDevice=nullptr;
+    g_pDevice=nullptr;
 
     bReadonly=true;
     bIsEdited=false;
 
     _bMouseSelection=false;
-    _nDataSize=0;
+    g_nDataSize=0;
     _bBlink=false;
     g_nBytesProLine=0;
 
@@ -71,12 +71,12 @@ QHexView::QHexView(QWidget *pParent):QAbstractScrollArea(pParent)
 
 QIODevice *QHexView::getDevice() const
 {
-    return pDevice;
+    return g_pDevice;
 }
 
 void QHexView::setData(QIODevice *pDevice, OPTIONS *pOptions)
 {
-    this->pDevice=pDevice;
+    this->g_pDevice=pDevice;
 
     if(pOptions)
     {
@@ -167,7 +167,7 @@ void QHexView::paintEvent(QPaintEvent *pEvent)
                 bool _bIsSelected=false;
 
                 qint32 nBytePositionHEX=topLeftX+g_nHexPosition+j*g_nCharWidth*3;
-                qint32 nBytePositionANSI=topLeftX+_nAnsiPosition+j*g_nCharWidth;
+                qint32 nBytePositionANSI=topLeftX+g_nAnsiPosition+j*g_nCharWidth;
                 qint32 nIndex=(j+i*g_nBytesProLine);
                 QString sHex=_baDataHexBuffer.mid(nIndex*2,2);
                 char ch=' ';
@@ -194,7 +194,7 @@ void QHexView::paintEvent(QPaintEvent *pEvent)
                     else
                     {
                         color=viewport()->palette().highlight().color();
-                        painter.setPen(QPen(Qt::white));
+                        painter.setPen(viewport()->palette().color(QPalette::WindowText));
                     }
                 }
 
@@ -398,10 +398,10 @@ bool QHexView::setReadonly(bool bState)
 {
     bool bResult=false;
 
-    if(pDevice)
+    if(g_pDevice)
     {
         if((bState)||
-                ((!bState)&&(pDevice->isWritable())))
+                ((!bState)&&(g_pDevice->isWritable())))
         {
             bReadonly=bState;
             bResult=true;
@@ -415,10 +415,10 @@ QByteArray QHexView::readArray(qint64 nOffset, qint64 nSize)
 {
     QByteArray baResult;
 
-    if(pDevice->seek(nOffset)&&(nOffset+nSize<=pDevice->size()))
+    if(g_pDevice->seek(nOffset)&&(nOffset+nSize<=g_pDevice->size()))
     {
         baResult.resize((qint32)nSize);
-        qint64 _nSize=pDevice->read(baResult.data(),nSize);
+        qint64 _nSize=g_pDevice->read(baResult.data(),nSize);
 
         if(_nSize!=nSize)
         {
@@ -531,7 +531,7 @@ void QHexView::setSelection(qint64 nAddress, qint64 nSize)
 
 void QHexView::selectAll()
 {
-    setSelection(_memoryMap.nBaseAddress,_nDataSize);
+    setSelection(_memoryMap.nBaseAddress,g_nDataSize);
 }
 
 XBinary::_MEMORY_MAP *QHexView::getMemoryMap()
@@ -613,7 +613,7 @@ QPoint QHexView::cursorToPoint(QHexView::CURSOR_POSITION cp)
 
     if(cp.type==CT_ANSI)
     {
-        result.setX(_nAnsiPosition+(nRelOffset%g_nBytesProLine)*g_nCharWidth);
+        result.setX(g_nAnsiPosition+(nRelOffset%g_nBytesProLine)*g_nCharWidth);
     }
     else if(cp.type==CT_HIWORD)
     {
@@ -631,9 +631,9 @@ bool QHexView::readByte(qint64 nOffset, quint8 *pByte)
 {
     int nCount=0;
 
-    if(pDevice->seek(nOffset))
+    if(g_pDevice->seek(nOffset))
     {
-        nCount=(int)pDevice->read((char *)pByte,1);
+        nCount=(int)g_pDevice->read((char *)pByte,1);
     }
 
     return (nCount==1);
@@ -643,9 +643,9 @@ bool QHexView::writeByte(qint64 nOffset, quint8 *pByte)
 {
     int nCount=0;
 
-    if(pDevice->seek(nOffset))
+    if(g_pDevice->seek(nOffset))
     {
-        nCount=(int)pDevice->write((char *)pByte,1);
+        nCount=(int)g_pDevice->write((char *)pByte,1);
     }
 
     return (nCount==1);
@@ -667,9 +667,9 @@ void QHexView::adjust()
     g_nAddressPosition=g_nCharWidth;
     g_nAddressWidthCount=8;
 
-    if(pDevice)
+    if(g_pDevice)
     {
-        if((pDevice->size()+_memoryMap.nBaseAddress)>=0xFFFFFFFF)
+        if((g_pDevice->size()+_memoryMap.nBaseAddress)>=0xFFFFFFFF)
         {
             g_nAddressWidthCount=16;
         }
@@ -678,25 +678,25 @@ void QHexView::adjust()
     g_nAddressWidth=(g_nAddressWidthCount+3)*g_nCharWidth; // TODO set addresswidth
     g_nHexPosition=g_nAddressPosition+g_nAddressWidth;
     g_nHexWidth=(g_nBytesProLine+1)*g_nCharWidth*3;
-    _nAnsiPosition=g_nHexPosition+g_nHexWidth;
-    _nAnsiWidth=(g_nBytesProLine+1)*g_nCharWidth;
+    g_nAnsiPosition=g_nHexPosition+g_nHexWidth;
+    g_nAnsiWidth=(g_nBytesProLine+1)*g_nCharWidth;
 
-    horizontalScrollBar()->setRange(0,_nAnsiPosition+_nAnsiWidth-viewport()->width());
+    horizontalScrollBar()->setRange(0,g_nAnsiPosition+g_nAnsiWidth-viewport()->width());
     horizontalScrollBar()->setPageStep(viewport()->width());
 
-    verticalScrollBar()->setRange(0,_nTotalLineCount-g_nLinesProPage);
+    verticalScrollBar()->setRange(0,g_nTotalLineCount-g_nLinesProPage);
     verticalScrollBar()->setPageStep(g_nLinesProPage);
 
     g_nStartOffset=verticalScrollBar()->value()*g_nBytesProLine+g_nStartOffsetDelta;
     g_nXOffset=horizontalScrollBar()->value();
 
     // TODO update
-    if(pDevice)
+    if(g_pDevice)
     {
-        if(pDevice->seek(g_nStartOffset))
+        if(g_pDevice->seek(g_nStartOffset))
         {
             _baDataBuffer.resize(g_nDataBlockSize*g_nLinesProPage);
-            int nCount=(int)pDevice->read(_baDataBuffer.data(),g_nDataBlockSize*g_nLinesProPage);
+            int nCount=(int)g_pDevice->read(_baDataBuffer.data(),g_nDataBlockSize*g_nLinesProPage);
             _baDataBuffer.resize(nCount);
             _baDataHexBuffer=QByteArray(_baDataBuffer.toHex());
         }
@@ -720,9 +720,9 @@ void QHexView::adjust()
         posInfo.cursorPosition.nOffset=g_nStartOffset+g_nBytesProLine*(g_nLinesProPage-1)+nRelOffset;
     }
 
-    if(posInfo.cursorPosition.nOffset>_nDataSize-1)
+    if(posInfo.cursorPosition.nOffset>g_nDataSize-1)
     {
-        posInfo.cursorPosition.nOffset=_nDataSize-1;
+        posInfo.cursorPosition.nOffset=g_nDataSize-1;
     }
 
     if((posInfo.cursorPosition.nOffset!=-1)&&(posInfo.cursorPosition.type!=CT_NONE))
@@ -738,14 +738,14 @@ void QHexView::init()
 {
     g_nStartOffset=0;
     g_nStartOffsetDelta=0;
-    _nDataSize=0;
+    g_nDataSize=0;
 
-    if(pDevice)
+    if(g_pDevice)
     {
-        _nDataSize=pDevice->size();
+        g_nDataSize=g_pDevice->size();
     }
 
-    _nTotalLineCount=_nDataSize/g_nBytesProLine+1;
+    g_nTotalLineCount=g_nDataSize/g_nBytesProLine+1;
     verticalScrollBar()->setValue(0);
 }
 
@@ -788,9 +788,9 @@ QHexView::CURSOR_POSITION QHexView::getCursorPosition(QPoint pos)
         nRelOffset=nDeltaY*g_nBytesProLine+nDeltaX;
         // TODO !!!
     }
-    else if((nX>_nAnsiPosition)&&(nX<_nAnsiPosition+_nAnsiWidth))
+    else if((nX>g_nAnsiPosition)&&(nX<g_nAnsiPosition+g_nAnsiWidth))
     {
-        nDeltaX=(nX-_nAnsiPosition)/g_nCharWidth;
+        nDeltaX=(nX-g_nAnsiPosition)/g_nCharWidth;
         nDeltaY=(nY-_nLineDelta)/g_nLineHeight; // mb TODO LindeDelta
 
         result.type=CT_ANSI;
@@ -953,7 +953,7 @@ void QHexView::keyPressEvent(QKeyEvent *pEvent)
             }
             else if(pEvent->matches(QKeySequence::MoveToEndOfDocument))
             {
-                posInfo.cursorPosition.nOffset=_nDataSize-1;
+                posInfo.cursorPosition.nOffset=g_nDataSize-1;
             }
         }
 
@@ -976,9 +976,9 @@ void QHexView::keyPressEvent(QKeyEvent *pEvent)
                         posInfo.cursorPosition.type=CT_HIWORD;
                     }
                 }
-                else if(posInfo.cursorPosition.nOffset>_nDataSize-1)
+                else if(posInfo.cursorPosition.nOffset>g_nDataSize-1)
                 {
-                    posInfo.cursorPosition.nOffset=_nDataSize-1;
+                    posInfo.cursorPosition.nOffset=g_nDataSize-1;
                     g_nStartOffsetDelta=0;
 
                     if(posInfo.cursorPosition.type!=CT_ANSI)
@@ -1006,7 +1006,7 @@ void QHexView::keyPressEvent(QKeyEvent *pEvent)
                     posInfo.cursorPosition.nOffset+=g_nBytesProLine*g_nLinesProPage;
 
                 }
-                else if(posInfo.cursorPosition.nOffset>_nDataSize-1)
+                else if(posInfo.cursorPosition.nOffset>g_nDataSize-1)
                 {
                     posInfo.cursorPosition.nOffset-=g_nBytesProLine*g_nLinesProPage;
                 }
@@ -1029,7 +1029,7 @@ void QHexView::keyPressEvent(QKeyEvent *pEvent)
             else if(pEvent->matches(QKeySequence::MoveToEndOfDocument))
             {
                 qint64 nEndPageOffset=0;
-                nEndPageOffset=(_nDataSize-(_nDataSize)%g_nBytesProLine-g_nBytesProLine*(g_nLinesProPage-1));
+                nEndPageOffset=(g_nDataSize-(g_nDataSize)%g_nBytesProLine-g_nBytesProLine*(g_nLinesProPage-1));
 
                 if(nEndPageOffset<0)
                 {
@@ -1046,7 +1046,7 @@ void QHexView::keyPressEvent(QKeyEvent *pEvent)
     else if(pEvent->matches(QKeySequence::SelectAll)) // TODO select chars
     {
         _initSelection(0);
-        _setSelection(_nDataSize-1);
+        _setSelection(g_nDataSize-1);
 
         adjust();
         viewport()->update();
@@ -1110,9 +1110,9 @@ void QHexView::keyPressEvent(QKeyEvent *pEvent)
                             {
                                 if(!QFile::exists(sBackupFileName))
                                 {
-                                    if(pDevice->metaObject()->className()==QString("QFile"))
+                                    if(g_pDevice->metaObject()->className()==QString("QFile"))
                                     {
-                                        QString sFileName=((QFile *)pDevice)->fileName();
+                                        QString sFileName=((QFile *)g_pDevice)->fileName();
 
                                         if(!QFile::copy(sFileName,sBackupFileName))
                                         {
@@ -1147,9 +1147,9 @@ void QHexView::keyPressEvent(QKeyEvent *pEvent)
                                     posInfo.cursorPosition.type=CT_HIWORD;
                                 }
 
-                                if(posInfo.cursorPosition.nOffset>_nDataSize-1)
+                                if(posInfo.cursorPosition.nOffset>g_nDataSize-1)
                                 {
-                                    posInfo.cursorPosition.nOffset=_nDataSize-1;
+                                    posInfo.cursorPosition.nOffset=g_nDataSize-1;
 
                                     if(posInfo.cursorPosition.type!=CT_ANSI)
                                     {

@@ -155,7 +155,7 @@ protected:
     virtual void wheelEvent(QWheelEvent *pEvent);
 
 private:
-    QIODevice *pDevice;
+    QIODevice *g_pDevice;
     qint32 g_nXOffset;
     qint32 g_nBytesProLine;
     qint32 g_nCharWidth;
@@ -170,10 +170,10 @@ private:
     qint32 g_nAddressWidthCount;
     qint32 g_nHexPosition;
     qint32 g_nHexWidth;
-    qint32 _nAnsiPosition;
-    qint32 _nAnsiWidth;
-    qint32 _nTotalLineCount;
-    qint64 _nDataSize;
+    qint32 g_nAnsiPosition;
+    qint32 g_nAnsiWidth;
+    qint32 g_nTotalLineCount;
+    qint64 g_nDataSize;
     QByteArray _baDataBuffer;
     QByteArray _baDataHexBuffer;
     qint32 _nLineDelta;
