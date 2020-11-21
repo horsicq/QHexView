@@ -156,7 +156,7 @@ void QHexView::paintEvent(QPaintEvent *pEvent)
         bool bIsSelected=false;
         QColor color=viewport()->palette().color(QPalette::Base);
 
-        qint32 nDataBufferSize=_baDataBuffer.size();
+        qint32 nDataBufferSize=g_baDataBuffer.size();
 
         for(qint32 i=0; i<g_nLinesProPage; i++)
         {
@@ -169,12 +169,12 @@ void QHexView::paintEvent(QPaintEvent *pEvent)
                 qint32 nBytePositionHEX=topLeftX+g_nHexPosition+j*g_nCharWidth*3;
                 qint32 nBytePositionANSI=topLeftX+g_nAnsiPosition+j*g_nCharWidth;
                 qint32 nIndex=(j+i*g_nBytesProLine);
-                QString sHex=_baDataHexBuffer.mid(nIndex*2,2);
+                QString sHex=g_baDataHexBuffer.mid(nIndex*2,2);
                 char ch=' ';
 
                 if(nIndex<nDataBufferSize)
                 {
-                    ch=_baDataBuffer.at(nIndex);
+                    ch=g_baDataBuffer.at(nIndex);
                     ch=convertANSI(ch);
                 }
 
@@ -253,9 +253,9 @@ void QHexView::paintEvent(QPaintEvent *pEvent)
         {
             char ch=' ';
 
-            if(nRelOffset<_baDataBuffer.size())
+            if(nRelOffset<g_baDataBuffer.size())
             {
-                ch=_baDataBuffer.at(nRelOffset);
+                ch=g_baDataBuffer.at(nRelOffset);
                 ch=convertANSI(ch);
             }
 
@@ -263,11 +263,11 @@ void QHexView::paintEvent(QPaintEvent *pEvent)
         }
         else if(posInfo.cursorPosition.type==CT_HIWORD)
         {
-            painter.drawText(_rectCursor.x(),_rectCursor.y()+g_nLineHeight-_nLineDelta,_baDataHexBuffer.mid(nRelOffset*2,1));
+            painter.drawText(_rectCursor.x(),_rectCursor.y()+g_nLineHeight-_nLineDelta,g_baDataHexBuffer.mid(nRelOffset*2,1));
         }
         else if(posInfo.cursorPosition.type==CT_LOWORD)
         {
-            painter.drawText(_rectCursor.x(),_rectCursor.y()+g_nLineHeight-_nLineDelta,_baDataHexBuffer.mid(nRelOffset*2+1,1));
+            painter.drawText(_rectCursor.x(),_rectCursor.y()+g_nLineHeight-_nLineDelta,g_baDataHexBuffer.mid(nRelOffset*2+1,1));
         }
     }
 
@@ -695,15 +695,15 @@ void QHexView::adjust()
     {
         if(g_pDevice->seek(g_nStartOffset))
         {
-            _baDataBuffer.resize(g_nDataBlockSize*g_nLinesProPage);
-            int nCount=(int)g_pDevice->read(_baDataBuffer.data(),g_nDataBlockSize*g_nLinesProPage);
-            _baDataBuffer.resize(nCount);
-            _baDataHexBuffer=QByteArray(_baDataBuffer.toHex());
+            g_baDataBuffer.resize(g_nDataBlockSize);
+            int nCount=(int)g_pDevice->read(g_baDataBuffer.data(),g_nDataBlockSize);
+            g_baDataBuffer.resize(nCount);
+            g_baDataHexBuffer=QByteArray(g_baDataBuffer.toHex());
         }
         else
         {
-            _baDataBuffer.clear();
-            _baDataHexBuffer.clear();
+            g_baDataBuffer.clear();
+            g_baDataHexBuffer.clear();
         }
     }
 

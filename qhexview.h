@@ -174,8 +174,8 @@ private:
     qint32 g_nAnsiWidth;
     qint32 g_nTotalLineCount;
     qint64 g_nDataSize;
-    QByteArray _baDataBuffer;
-    QByteArray _baDataHexBuffer;
+    QByteArray g_baDataBuffer;
+    QByteArray g_baDataHexBuffer;
     qint32 _nLineDelta;
     bool _bBlink;
     QTimer timerCursor;
