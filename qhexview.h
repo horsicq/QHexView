@@ -176,9 +176,9 @@ private:
     qint64 g_nDataSize;
     QByteArray g_baDataBuffer;
     QByteArray g_baDataHexBuffer;
-    qint32 _nLineDelta;
-    bool _bBlink;
-    QTimer timerCursor;
+    qint32 g_nLineDelta;
+    bool g_bBlink;
+    QTimer g_timerCursor;
     QRect _rectCursor;
     POS_INFO posInfo;
     bool _bMouseSelection;
