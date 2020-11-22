@@ -179,13 +179,13 @@ private:
     qint32 g_nLineDelta;
     bool g_bBlink;
     QTimer g_timerCursor;
-    QRect _rectCursor;
-    POS_INFO posInfo;
-    bool _bMouseSelection;
-    bool bReadonly;
-    bool bIsEdited;
-    QString sBackupFileName;
-    XBinary::_MEMORY_MAP _memoryMap;
+    QRect g_rectCursor;
+    POS_INFO g_posInfo;
+    bool g_bMouseSelection;
+    bool g_bReadonly;
+    bool g_bIsEdited;
+    QString g_sBackupFileName;
+    XBinary::_MEMORY_MAP g_memoryMap;
 };
 
 #endif // QHEXVIEW_H
