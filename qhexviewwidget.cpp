@@ -38,7 +38,7 @@ QHexViewWidget::QHexViewWidget(QWidget *pParent) :
     connect(ui->scrollAreaHex,SIGNAL(customContextMenu(const QPoint &)),this,SLOT(_customContextMenu(const QPoint &)));
     connect(ui->scrollAreaHex,SIGNAL(editState(bool)),this,SIGNAL(editState(bool)));
 
-    scGoToAddress=nullptr;
+    g_scGoToAddress=nullptr;
     scDumpToFile=nullptr;
     scSelectAll=nullptr;
     scCopyAsHex=nullptr;
@@ -48,8 +48,8 @@ QHexViewWidget::QHexViewWidget(QWidget *pParent) :
 
     ui->scrollAreaHex->setFocus();
 
-    searchData={};
-    searchData.nResult=-1;
+    g_searchData={};
+    g_searchData.nResult=-1;
 }
 
 QHexViewWidget::~QHexViewWidget()
@@ -207,15 +207,15 @@ void QHexViewWidget::_find()
 {
     QHexView::STATE state=ui->scrollAreaHex->getState();
 
-    searchData={};
-    searchData.nResult=-1;
-    searchData.nCurrentOffset=state.nCursorOffset;
+    g_searchData={};
+    g_searchData.nResult=-1;
+    g_searchData.nCurrentOffset=state.nCursorOffset;
 
-    DialogSearch dialogSearch(this,ui->scrollAreaHex->getDevice(),&searchData);
+    DialogSearch dialogSearch(this,ui->scrollAreaHex->getDevice(),&g_searchData);
 
     if(dialogSearch.exec()==QDialog::Accepted)
     {
-        ui->scrollAreaHex->goToOffset(searchData.nResult);
+        ui->scrollAreaHex->goToOffset(g_searchData.nResult);
         ui->scrollAreaHex->setFocus();
         ui->scrollAreaHex->reload();
     }
@@ -223,16 +223,16 @@ void QHexViewWidget::_find()
 
 void QHexViewWidget::_findNext()
 {
-    if(searchData.bInit)
+    if(g_searchData.bInit)
     {
-        searchData.nCurrentOffset=searchData.nResult+1;
-        searchData.startFrom=SearchProcess::SF_CURRENTOFFSET;
+        g_searchData.nCurrentOffset=g_searchData.nResult+1;
+        g_searchData.startFrom=SearchProcess::SF_CURRENTOFFSET;
 
-        DialogSearchProcess dialogSearch(this,ui->scrollAreaHex->getDevice(),&searchData);
+        DialogSearchProcess dialogSearch(this,ui->scrollAreaHex->getDevice(),&g_searchData);
 
         if(dialogSearch.exec()==QDialog::Accepted)
         {
-            ui->scrollAreaHex->goToOffset(searchData.nResult);
+            ui->scrollAreaHex->goToOffset(g_searchData.nResult);
             ui->scrollAreaHex->setFocus();
             ui->scrollAreaHex->reload();
         }
@@ -349,7 +349,7 @@ void QHexViewWidget::registerShortcuts(bool bState)
 {
     if(bState)
     {
-        if(!scGoToAddress)  scGoToAddress   =new QShortcut(QKeySequence(XShortcuts::GOTOADDRESS),   this,SLOT(_goToAddress()));
+        if(!g_scGoToAddress)  g_scGoToAddress   =new QShortcut(QKeySequence(XShortcuts::GOTOADDRESS),   this,SLOT(_goToAddress()));
         if(!scDumpToFile)   scDumpToFile    =new QShortcut(QKeySequence(XShortcuts::DUMPTOFILE),    this,SLOT(_dumpToFile()));
         if(!scSelectAll)    scSelectAll     =new QShortcut(QKeySequence(XShortcuts::SELECTALL),     this,SLOT(_selectAll()));
         if(!scCopyAsHex)    scCopyAsHex     =new QShortcut(QKeySequence(XShortcuts::COPYASHEX),     this,SLOT(_copyAsHex()));
@@ -359,7 +359,7 @@ void QHexViewWidget::registerShortcuts(bool bState)
     }
     else
     {
-        if(scGoToAddress)   {delete scGoToAddress;  scGoToAddress=nullptr;}
+        if(g_scGoToAddress)   {delete g_scGoToAddress;  g_scGoToAddress=nullptr;}
         if(scDumpToFile)    {delete scDumpToFile;   scDumpToFile=nullptr;}
         if(scSelectAll)     {delete scSelectAll;    scSelectAll=nullptr;}
         if(scCopyAsHex)     {delete scCopyAsHex;    scCopyAsHex=nullptr;}
