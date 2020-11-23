@@ -89,11 +89,11 @@ private:
     QShortcut *g_scDumpToFile;
     QShortcut *g_scSelectAll;
     QShortcut *g_scCopyAsHex;
-    QShortcut *scFind;
-    QShortcut *scFindNext;
-    QShortcut *scSignature;
+    QShortcut *g_scFind;
+    QShortcut *g_scFindNext;
+    QShortcut *g_scSignature;
 
-    QString sSaveDirectory;
+    QString g_sSaveDirectory;
 };
 
 #endif // QHEXVIEWWIDGET_H

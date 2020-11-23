@@ -42,9 +42,9 @@ QHexViewWidget::QHexViewWidget(QWidget *pParent) :
     g_scDumpToFile=nullptr;
     g_scSelectAll=nullptr;
     g_scCopyAsHex=nullptr;
-    scFind=nullptr;
-    scFindNext=nullptr;
-    scSignature=nullptr;
+    g_scFind=nullptr;
+    g_scFindNext=nullptr;
+    g_scSignature=nullptr;
 
     ui->scrollAreaHex->setFocus();
 
@@ -71,7 +71,7 @@ void QHexViewWidget::setBackupFileName(QString sBackupFileName)
 
 void QHexViewWidget::setSaveDirectory(QString sSaveDirectory)
 {
-    this->sSaveDirectory=sSaveDirectory;
+    this->g_sSaveDirectory=sSaveDirectory;
 }
 
 void QHexViewWidget::enableHeader(bool bState)
@@ -334,9 +334,9 @@ QString QHexViewWidget::getDumpName()
 {
     QString sResult;
 
-    if(sSaveDirectory!="")
+    if(g_sSaveDirectory!="")
     {
-        sResult+=sSaveDirectory;
+        sResult+=g_sSaveDirectory;
         sResult+=QDir::separator();
     }
 
@@ -353,9 +353,9 @@ void QHexViewWidget::registerShortcuts(bool bState)
         if(!g_scDumpToFile)   g_scDumpToFile    =new QShortcut(QKeySequence(XShortcuts::DUMPTOFILE),    this,SLOT(_dumpToFile()));
         if(!g_scSelectAll)    g_scSelectAll     =new QShortcut(QKeySequence(XShortcuts::SELECTALL),     this,SLOT(_selectAll()));
         if(!g_scCopyAsHex)    g_scCopyAsHex     =new QShortcut(QKeySequence(XShortcuts::COPYASHEX),     this,SLOT(_copyAsHex()));
-        if(!scFind)         scFind          =new QShortcut(QKeySequence(XShortcuts::FIND),          this,SLOT(_find()));
-        if(!scFindNext)     scFindNext      =new QShortcut(QKeySequence(XShortcuts::FINDNEXT),      this,SLOT(_findNext()));
-        if(!scSignature)    scSignature     =new QShortcut(QKeySequence(XShortcuts::SIGNATURE),     this,SLOT(_signature()));
+        if(!g_scFind)         g_scFind          =new QShortcut(QKeySequence(XShortcuts::FIND),          this,SLOT(_find()));
+        if(!g_scFindNext)     g_scFindNext      =new QShortcut(QKeySequence(XShortcuts::FINDNEXT),      this,SLOT(_findNext()));
+        if(!g_scSignature)    g_scSignature     =new QShortcut(QKeySequence(XShortcuts::SIGNATURE),     this,SLOT(_signature()));
     }
     else
     {
@@ -363,8 +363,8 @@ void QHexViewWidget::registerShortcuts(bool bState)
         if(g_scDumpToFile)    {delete g_scDumpToFile;   g_scDumpToFile=nullptr;}
         if(g_scSelectAll)     {delete g_scSelectAll;    g_scSelectAll=nullptr;}
         if(g_scCopyAsHex)     {delete g_scCopyAsHex;    g_scCopyAsHex=nullptr;}
-        if(scFind)          {delete scFind;         scFind=nullptr;}
-        if(scFindNext)      {delete scFindNext;     scFindNext=nullptr;}
-        if(scSignature)     {delete scSignature;    scSignature=nullptr;}
+        if(g_scFind)          {delete g_scFind;         g_scFind=nullptr;}
+        if(g_scFindNext)      {delete g_scFindNext;     g_scFindNext=nullptr;}
+        if(g_scSignature)     {delete g_scSignature;    g_scSignature=nullptr;}
     }
 }
