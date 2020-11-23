@@ -39,9 +39,9 @@ QHexViewWidget::QHexViewWidget(QWidget *pParent) :
     connect(ui->scrollAreaHex,SIGNAL(editState(bool)),this,SIGNAL(editState(bool)));
 
     g_scGoToAddress=nullptr;
-    scDumpToFile=nullptr;
-    scSelectAll=nullptr;
-    scCopyAsHex=nullptr;
+    g_scDumpToFile=nullptr;
+    g_scSelectAll=nullptr;
+    g_scCopyAsHex=nullptr;
     scFind=nullptr;
     scFindNext=nullptr;
     scSignature=nullptr;
@@ -350,9 +350,9 @@ void QHexViewWidget::registerShortcuts(bool bState)
     if(bState)
     {
         if(!g_scGoToAddress)  g_scGoToAddress   =new QShortcut(QKeySequence(XShortcuts::GOTOADDRESS),   this,SLOT(_goToAddress()));
-        if(!scDumpToFile)   scDumpToFile    =new QShortcut(QKeySequence(XShortcuts::DUMPTOFILE),    this,SLOT(_dumpToFile()));
-        if(!scSelectAll)    scSelectAll     =new QShortcut(QKeySequence(XShortcuts::SELECTALL),     this,SLOT(_selectAll()));
-        if(!scCopyAsHex)    scCopyAsHex     =new QShortcut(QKeySequence(XShortcuts::COPYASHEX),     this,SLOT(_copyAsHex()));
+        if(!g_scDumpToFile)   g_scDumpToFile    =new QShortcut(QKeySequence(XShortcuts::DUMPTOFILE),    this,SLOT(_dumpToFile()));
+        if(!g_scSelectAll)    g_scSelectAll     =new QShortcut(QKeySequence(XShortcuts::SELECTALL),     this,SLOT(_selectAll()));
+        if(!g_scCopyAsHex)    g_scCopyAsHex     =new QShortcut(QKeySequence(XShortcuts::COPYASHEX),     this,SLOT(_copyAsHex()));
         if(!scFind)         scFind          =new QShortcut(QKeySequence(XShortcuts::FIND),          this,SLOT(_find()));
         if(!scFindNext)     scFindNext      =new QShortcut(QKeySequence(XShortcuts::FINDNEXT),      this,SLOT(_findNext()));
         if(!scSignature)    scSignature     =new QShortcut(QKeySequence(XShortcuts::SIGNATURE),     this,SLOT(_signature()));
@@ -360,9 +360,9 @@ void QHexViewWidget::registerShortcuts(bool bState)
     else
     {
         if(g_scGoToAddress)   {delete g_scGoToAddress;  g_scGoToAddress=nullptr;}
-        if(scDumpToFile)    {delete scDumpToFile;   scDumpToFile=nullptr;}
-        if(scSelectAll)     {delete scSelectAll;    scSelectAll=nullptr;}
-        if(scCopyAsHex)     {delete scCopyAsHex;    scCopyAsHex=nullptr;}
+        if(g_scDumpToFile)    {delete g_scDumpToFile;   g_scDumpToFile=nullptr;}
+        if(g_scSelectAll)     {delete g_scSelectAll;    g_scSelectAll=nullptr;}
+        if(g_scCopyAsHex)     {delete g_scCopyAsHex;    g_scCopyAsHex=nullptr;}
         if(scFind)          {delete scFind;         scFind=nullptr;}
         if(scFindNext)      {delete scFindNext;     scFindNext=nullptr;}
         if(scSignature)     {delete scSignature;    scSignature=nullptr;}

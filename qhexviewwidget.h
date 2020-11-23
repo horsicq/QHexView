@@ -86,9 +86,9 @@ private:
     Ui::QHexViewWidget *ui;
     SearchProcess::SEARCHDATA g_searchData;
     QShortcut *g_scGoToAddress;
-    QShortcut *scDumpToFile;
-    QShortcut *scSelectAll;
-    QShortcut *scCopyAsHex;
+    QShortcut *g_scDumpToFile;
+    QShortcut *g_scSelectAll;
+    QShortcut *g_scCopyAsHex;
     QShortcut *scFind;
     QShortcut *scFindNext;
     QShortcut *scSignature;
