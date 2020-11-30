@@ -189,12 +189,12 @@ void QHexView::paintEvent(QPaintEvent *pEvent)
                     if(st==ST_NOTSELECTED)
                     {
                         color=viewport()->palette().color(QPalette::Base);
-                        painter.setPen(viewport()->palette().color(QPalette::WindowText));
+//                        painter.setPen(viewport()->palette().color(QPalette::WindowText));
                     }
                     else
                     {
-                        color=viewport()->palette().highlight().color();
-                        painter.setPen(viewport()->palette().color(QPalette::WindowText));
+                        color=viewport()->palette().color(QPalette::Highlight);
+//                        painter.setPen(viewport()->palette().color(QPalette::WindowText));
                     }
                 }
 
