@@ -239,12 +239,12 @@ void QHexView::paintEvent(QPaintEvent *pEvent)
         if(g_bBlink&&hasFocus())
         {
             painter.setPen(viewport()->palette().color(QPalette::Highlight));
-            painter.fillRect(g_rectCursor, this->palette().color(QPalette::WindowText));
+            painter.fillRect(g_rectCursor,this->palette().color(QPalette::WindowText));
         }
         else
         {
             painter.setPen(viewport()->palette().color(QPalette::WindowText));
-            painter.fillRect(g_rectCursor, this->palette().color(QPalette::Base));
+            painter.fillRect(g_rectCursor,this->palette().color(QPalette::Base));
         }
 
         qint32 nRelOffset=g_posInfo.cursorPosition.nOffset-g_nStartOffset;
@@ -1004,7 +1004,6 @@ void QHexView::keyPressEvent(QKeyEvent *pEvent)
                 if(g_posInfo.cursorPosition.nOffset<0)
                 {
                     g_posInfo.cursorPosition.nOffset+=g_nBytesProLine*g_nLinesProPage;
-
                 }
                 else if(g_posInfo.cursorPosition.nOffset>g_nDataSize-1)
                 {

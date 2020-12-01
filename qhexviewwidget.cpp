@@ -279,12 +279,10 @@ void QHexViewWidget::_customContextMenu(const QPoint &pos)
     QAction actionDumpToFile(tr("Dump to file"),this);
     actionDumpToFile.setShortcut(QKeySequence(XShortcuts::DUMPTOFILE));
     connect(&actionDumpToFile,SIGNAL(triggered()),this,SLOT(_dumpToFile()));
-    contextMenu.addAction(&actionDumpToFile);
 
     QAction actionSignature(tr("Signature"),this);
     actionSignature.setShortcut(QKeySequence(XShortcuts::SIGNATURE));
     connect(&actionSignature,SIGNAL(triggered()),this,SLOT(_signature()));
-    contextMenu.addAction(&actionSignature);
 
     if(state.nSelectionSize)
     {
