@@ -859,10 +859,10 @@ void QHexView::keyPressEvent(QKeyEvent *pEvent)
         pEvent->matches(QKeySequence::MoveToPreviousChar)||
         pEvent->matches(QKeySequence::MoveToNextLine)||
         pEvent->matches(QKeySequence::MoveToPreviousLine)||
-        pEvent->matches(QKeySequence::MoveToNextPage)||
-        pEvent->matches(QKeySequence::MoveToPreviousPage)||
         pEvent->matches(QKeySequence::MoveToStartOfLine)||
         pEvent->matches(QKeySequence::MoveToEndOfLine)||
+        pEvent->matches(QKeySequence::MoveToNextPage)||
+        pEvent->matches(QKeySequence::MoveToPreviousPage)||
         pEvent->matches(QKeySequence::MoveToStartOfDocument)||
         pEvent->matches(QKeySequence::MoveToEndOfDocument))
     {
