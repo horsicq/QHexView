@@ -118,8 +118,8 @@ public slots:
     void _goToOffset(qint64 nOffset);
     void setSelection(qint64 nAddress,qint64 nSize);
     void selectAll();
-    void setWidgetResizable(bool resizable) {Q_UNUSED(resizable)} // hack
-    void setWidget(QWidget *widget) {Q_UNUSED(widget)} // hack
+    void setWidgetResizable(bool resizable) {Q_UNUSED(resizable)} // hack TODO Check
+    void setWidget(QWidget *widget) {Q_UNUSED(widget)} // hack TODO Check
     XBinary::_MEMORY_MAP *getMemoryMap();
 
 private slots:
