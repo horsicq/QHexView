@@ -493,7 +493,7 @@ void QHexView::goToOffset(qint64 nOffset)
 {
     if((isOffsetValid(nOffset))&&(g_nBytesProLine))
     {
-        verticalScrollBar()->setValue((nOffset)/g_nBytesProLine);
+        verticalScrollBar()->setValue((nOffset)/g_nBytesProLine); // TODO check for large files
         g_nStartOffsetDelta=(nOffset)%g_nBytesProLine;
 
         //        posInfo.cursorPosition.nOffset+=(addressToOffset(nAddress))%_nBytesProLine;
