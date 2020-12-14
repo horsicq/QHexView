@@ -332,8 +332,8 @@ void QHexView::setBytesProLine(const quint32 nBytesProLine)
 void QHexView::setFont(const QFont &font)
 {
     const QFontMetricsF fm(font);
-    g_nCharWidth=fm.width('2');
-    g_nCharWidth=qMax(fm.width('W'),(qreal)g_nCharWidth);
+    g_nCharWidth=fm.boundingRect('2').width();
+    g_nCharWidth=qMax(fm.boundingRect('W').width(),(qreal)g_nCharWidth);
     g_nCharHeight=fm.height();
 
     QAbstractScrollArea::setFont(font);
