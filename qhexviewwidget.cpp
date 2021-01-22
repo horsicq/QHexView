@@ -281,7 +281,7 @@ void QHexViewWidget::_customContextMenu(const QPoint &pos)
     connect(&actionDumpToFile,SIGNAL(triggered()),this,SLOT(_dumpToFile()));
 
     QAction actionSignature(tr("Signature"),this);
-    actionSignature.setShortcut(QKeySequence(XShortcuts::SIGNATURE));
+    actionSignature.setShortcut(QKeySequence(XShortcuts::HEXSIGNATURE));
     connect(&actionSignature,SIGNAL(triggered()),this,SLOT(_signature()));
 
     if(state.nSelectionSize)
@@ -353,7 +353,7 @@ void QHexViewWidget::registerShortcuts(bool bState)
         if(!g_scCopyAsHex)    g_scCopyAsHex     =new QShortcut(QKeySequence(XShortcuts::COPYASHEX),     this,SLOT(_copyAsHex()));
         if(!g_scFind)         g_scFind          =new QShortcut(QKeySequence(XShortcuts::FIND),          this,SLOT(_find()));
         if(!g_scFindNext)     g_scFindNext      =new QShortcut(QKeySequence(XShortcuts::FINDNEXT),      this,SLOT(_findNext()));
-        if(!g_scSignature)    g_scSignature     =new QShortcut(QKeySequence(XShortcuts::SIGNATURE),     this,SLOT(_signature()));
+        if(!g_scSignature)    g_scSignature     =new QShortcut(QKeySequence(XShortcuts::HEXSIGNATURE),  this,SLOT(_signature()));
     }
     else
     {
