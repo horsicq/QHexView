@@ -441,7 +441,7 @@ void QHexView::setEdited(bool bState)
 
 qint64 QHexView::getBaseAddress()
 {
-    return this->getMemoryMap()->nBaseAddress;
+    return this->getMemoryMap()->nModuleAddress;
 }
 
 char QHexView::convertANSI(char cByte)
@@ -531,7 +531,7 @@ void QHexView::setSelection(qint64 nAddress, qint64 nSize)
 
 void QHexView::selectAll()
 {
-    setSelection(g_memoryMap.nBaseAddress,g_nDataSize);
+    setSelection(g_memoryMap.nModuleAddress,g_nDataSize);
 }
 
 XBinary::_MEMORY_MAP *QHexView::getMemoryMap()
@@ -669,7 +669,7 @@ void QHexView::adjust()
 
     if(g_pDevice)
     {
-        if((g_pDevice->size()+g_memoryMap.nBaseAddress)>=0xFFFFFFFF)
+        if((g_pDevice->size()+g_memoryMap.nModuleAddress)>=0xFFFFFFFF)
         {
             g_nAddressWidthCount=16;
         }
