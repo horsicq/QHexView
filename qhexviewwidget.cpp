@@ -260,7 +260,7 @@ void QHexViewWidget::_signature()
 {
     QHexView::STATE state=ui->scrollAreaHex->getState();
 
-    DialogHexSignature dsh(this,ui->scrollAreaHex->getDevice(),state.nSelectionOffset,state.nSelectionSize,"");
+    DialogHexSignature dsh(this,ui->scrollAreaHex->getDevice(),state.nSelectionOffset,state.nSelectionSize);
 
     dsh.exec();
 }
