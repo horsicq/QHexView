@@ -211,7 +211,7 @@ void QHexViewWidget::_find()
     g_searchData.nResultOffset=-1;
     g_searchData.nCurrentOffset=state.nCursorOffset;
 
-    DialogSearch dialogSearch(this,ui->scrollAreaHex->getDevice(),&g_searchData);
+    DialogSearch dialogSearch(this,ui->scrollAreaHex->getDevice(),&g_searchData,DialogSearch::SEARCHMODE_SIGNATURE);
 
     if(dialogSearch.exec()==QDialog::Accepted)
     {
