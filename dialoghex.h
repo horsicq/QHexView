@@ -22,18 +22,18 @@
 #define DIALOGHEX_H
 
 #include <QDialog>
+
 #include "qhexview.h"
 
 namespace Ui {
 class DialogHex;
 }
 
-class DialogHex : public QDialog
-{
+class DialogHex : public QDialog {
     Q_OBJECT
 
 public:
-    explicit DialogHex(QWidget *pParent,QIODevice *pDevice,QHexView::OPTIONS *pOptions=nullptr);
+    explicit DialogHex(QWidget *pParent, QIODevice *pDevice, QHexView::OPTIONS *pOptions = nullptr);
     ~DialogHex();
 
 signals:
@@ -46,4 +46,4 @@ private:
     Ui::DialogHex *ui;
 };
 
-#endif // DIALOGHEX_H
+#endif  // DIALOGHEX_H

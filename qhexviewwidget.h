@@ -21,32 +21,31 @@
 #ifndef QHEXVIEWWIDGET_H
 #define QHEXVIEWWIDGET_H
 
-#include <QWidget>
-#include <QMessageBox>
-#include <QMenu>
-#include <QShortcut>
 #include <QFileDialog>
-#include "qhexview.h"
-#include "dialoggotoaddress.h"
-#include "dialogsearch.h"
-#include "dialogdumpprocess.h"
-#include "dialogsearchprocess.h"
-#include "xshortcuts.h"
-#include "dialoghexsignature.h"
+#include <QMenu>
+#include <QMessageBox>
+#include <QShortcut>
+#include <QWidget>
 
-namespace Ui
-{
+#include "dialogdumpprocess.h"
+#include "dialoggotoaddress.h"
+#include "dialoghexsignature.h"
+#include "dialogsearch.h"
+#include "dialogsearchprocess.h"
+#include "qhexview.h"
+#include "xshortcuts.h"
+
+namespace Ui {
 class QHexViewWidget;
 }
 
-class QHexViewWidget : public QWidget
-{
+class QHexViewWidget : public QWidget {
     Q_OBJECT
 
 public:
-    explicit QHexViewWidget(QWidget *pParent=nullptr);
+    explicit QHexViewWidget(QWidget *pParent = nullptr);
     ~QHexViewWidget();
-    void setData(QIODevice *pDevice,QHexView::OPTIONS *pOptions=nullptr);
+    void setData(QIODevice *pDevice, QHexView::OPTIONS *pOptions = nullptr);
     void setBackupFileName(QString sBackupFileName);
     void setSaveDirectory(QString sSaveDirectory);
     void enableHeader(bool bState);
@@ -56,12 +55,12 @@ public:
     bool isEdited();
     void setEdited(bool bState);
     qint64 getBaseAddress();
-    void setSelection(qint64 nAddress,qint64 nSize);
+    void setSelection(qint64 nAddress, qint64 nSize);
     void goToAddress(qint64 nAddress);
     void goToOffset(qint64 nOffset);
 
 protected:
-    bool eventFilter(QObject *pObj,QEvent *pEvent) override;
+    bool eventFilter(QObject *pObj, QEvent *pEvent) override;
 
 signals:
     void editState(bool bState);
@@ -96,4 +95,4 @@ private:
     QString g_sSaveDirectory;
 };
 
-#endif // QHEXVIEWWIDGET_H
+#endif  // QHEXVIEWWIDGET_H

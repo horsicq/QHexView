@@ -21,25 +21,24 @@
 #ifndef QHEXVIEW_H
 #define QHEXVIEW_H
 
-#include <QWidget>
 #include <QAbstractScrollArea>
-#include <QScrollBar>
-#include <QIODevice>
-#include <QPainter>
-#include <QPaintEvent>
-#include <QElapsedTimer>
-#include <QTimer>
 #include <QApplication>
 #include <QClipboard>
+#include <QElapsedTimer>
+#include <QIODevice>
+#include <QPaintEvent>
+#include <QPainter>
+#include <QScrollBar>
+#include <QTimer>
+#include <QWidget>
+
 #include "xbinary.h"
 
-class QHexView : public QAbstractScrollArea
-{
+class QHexView : public QAbstractScrollArea {
     Q_OBJECT
 
 public:
-    struct OPTIONS
-    {
+    struct OPTIONS {
         qint64 nStartAddress;
         qint64 nStartSelectionAddress;
         qint64 nSizeOfSelection;
@@ -47,22 +46,19 @@ public:
         XBinary::_MEMORY_MAP memoryMap;
     };
 
-    enum CURSOR_TYPE
-    {
-        CT_NONE=0,
+    enum CURSOR_TYPE {
+        CT_NONE = 0,
         CT_HIWORD,
         CT_LOWORD,
         CT_ANSI
     };
 
-    struct CURSOR_POSITION
-    {
+    struct CURSOR_POSITION {
         qint64 nOffset;
         CURSOR_TYPE type;
     };
 
-    struct STATE
-    {
+    struct STATE {
         qint64 nCursorAddress;
         qint64 nCursorOffset;
         qint64 nSelectionAddress;
@@ -70,22 +66,21 @@ public:
         qint64 nSelectionSize;
     };
 
-    struct POS_INFO
-    {
+    struct POS_INFO {
         qint64 nSelectionInitOffset;
         qint64 nSelectionStartOffset;
         qint64 nSelectionEndOffset;
         CURSOR_POSITION cursorPosition;
     };
 
-    QHexView(QWidget *pParent=nullptr);
+    QHexView(QWidget *pParent = nullptr);
     //    ~QHexView();
     QIODevice *getDevice() const;
-    void setData(QIODevice *pDevice,OPTIONS *pOptions=nullptr);
+    void setData(QIODevice *pDevice, OPTIONS *pOptions = nullptr);
     void setBackupFileName(QString sBackupFileName);
     quint32 getBytesProLine() const;
     void setBytesProLine(const quint32 nBytesProLine);
-//    qint64 getBaseAddress() const;
+    //    qint64 getBaseAddress() const;
     void setFont(const QFont &font);
     bool isAddressValid(qint64 nAddress);
     bool isRelAddressValid(qint64 nRelAddress);
@@ -93,15 +88,14 @@ public:
     void reload();
     STATE getState();
     bool setReadonly(bool bState);
-    QByteArray readArray(qint64 nOffset,qint64 nSize);
+    QByteArray readArray(qint64 nOffset, qint64 nSize);
     bool isEdited();
     void setEdited(bool bState);
     qint64 getBaseAddress();
 
 private:
-    enum ST
-    {
-        ST_NOTSELECTED=0,
+    enum ST {
+        ST_NOTSELECTED = 0,
         ST_ONEBYTE,
         ST_BEGIN,
         ST_MID,
@@ -116,10 +110,16 @@ public slots:
     void goToRelAddress(qint64 nRelAddress);
     void goToOffset(qint64 nOffset);
     void _goToOffset(qint64 nOffset);
-    void setSelection(qint64 nAddress,qint64 nSize);
+    void setSelection(qint64 nAddress, qint64 nSize);
     void selectAll();
-    void setWidgetResizable(bool resizable) {Q_UNUSED(resizable)} // hack TODO Check
-    void setWidget(QWidget *widget) {Q_UNUSED(widget)} // hack TODO Check
+    void setWidgetResizable(bool resizable)
+    {
+        Q_UNUSED(resizable)
+    }  // hack TODO Check
+    void setWidget(QWidget *widget)
+    {
+        Q_UNUSED(widget)
+    }  // hack TODO Check
     XBinary::_MEMORY_MAP *getMemoryMap();
 
 private slots:
@@ -136,8 +136,8 @@ private slots:
     qint64 relAddressToOffset(qint64 nRelAddress);
     qint64 offsetToAddress(qint64 nOffset);
     QPoint cursorToPoint(CURSOR_POSITION cp);
-    bool readByte(qint64 nOffset,quint8 *pByte);
-    bool writeByte(qint64 nOffset,quint8 *pByte);
+    bool readByte(qint64 nOffset, quint8 *pByte);
+    bool writeByte(qint64 nOffset, quint8 *pByte);
     void _customContextMenu(const QPoint &pos);
 
 signals:
@@ -188,4 +188,4 @@ private:
     XBinary::_MEMORY_MAP g_memoryMap;
 };
 
-#endif // QHEXVIEW_H
+#endif  // QHEXVIEW_H

@@ -19,22 +19,21 @@
 // SOFTWARE.
 //
 #include "dialoghex.h"
+
 #include "ui_dialoghex.h"
 
-DialogHex::DialogHex(QWidget *pParent, QIODevice *pDevice, QHexView::OPTIONS *pOptions) :
-    QDialog(pParent),
-    ui(new Ui::DialogHex)
+DialogHex::DialogHex(QWidget *pParent, QIODevice *pDevice, QHexView::OPTIONS *pOptions) : QDialog(pParent), ui(new Ui::DialogHex)
 {
     ui->setupUi(this);
 
     setWindowFlags(Qt::Window);
 
-    connect(ui->widgetHex,SIGNAL(editState(bool)),this,SIGNAL(editState(bool)));
+    connect(ui->widgetHex, SIGNAL(editState(bool)), this, SIGNAL(editState(bool)));
 
     ui->widgetHex->enableHeader(true);
     ui->widgetHex->enableReadOnly(true);
 
-    ui->widgetHex->setData(pDevice,pOptions);
+    ui->widgetHex->setData(pDevice, pOptions);
 }
 
 DialogHex::~DialogHex()
