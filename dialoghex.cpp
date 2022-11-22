@@ -22,8 +22,7 @@
 
 #include "ui_dialoghex.h"
 
-DialogHex::DialogHex(QWidget *pParent, QIODevice *pDevice, QHexView::OPTIONS *pOptions)
-    : QDialog(pParent), ui(new Ui::DialogHex)
+DialogHex::DialogHex(QWidget *pParent, QIODevice *pDevice, QHexView::OPTIONS *pOptions) : QDialog(pParent), ui(new Ui::DialogHex)
 {
     ui->setupUi(this);
 
