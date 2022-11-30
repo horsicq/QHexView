@@ -802,8 +802,8 @@ void QHexView::keyPressEvent(QKeyEvent *pEvent)
             } else if (pEvent->matches(QKeySequence::MoveToPreviousPage)) {
                 g_posInfo.cursorPosition.nOffset -= g_nBytesProLine * g_nLinesProPage;
             }
-        } else if (pEvent->matches(QKeySequence::MoveToStartOfLine) || pEvent->matches(QKeySequence::MoveToEndOfLine) || pEvent->matches(QKeySequence::MoveToStartOfDocument) ||
-                   pEvent->matches(QKeySequence::MoveToEndOfDocument)) {
+        } else if (pEvent->matches(QKeySequence::MoveToStartOfLine) || pEvent->matches(QKeySequence::MoveToEndOfLine) ||
+                   pEvent->matches(QKeySequence::MoveToStartOfDocument) || pEvent->matches(QKeySequence::MoveToEndOfDocument)) {
             if ((g_posInfo.cursorPosition.type == CT_HIWORD) || (g_posInfo.cursorPosition.type == CT_LOWORD)) {
                 g_posInfo.cursorPosition.type = CT_HIWORD;
             }
