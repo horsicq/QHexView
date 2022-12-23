@@ -83,7 +83,7 @@ private slots:
 
 private:
     Ui::QHexViewWidget *ui;
-    SearchProcess::SEARCHDATA g_searchData;
+    XBinary::SEARCHDATA g_searchData;
     QShortcut *g_scGoToAddress;
     QShortcut *g_scDumpToFile;
     QShortcut *g_scSelectAll;
