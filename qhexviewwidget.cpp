@@ -169,7 +169,10 @@ void QHexViewWidget::_goToAddress()
 {
     DialogGoToAddress da(this, ui->scrollAreaHex->getMemoryMap(), DialogGoToAddress::TYPE_ADDRESS);
     if (da.exec() == QDialog::Accepted) {
-        ui->scrollAreaHex->goToAddress(da.getValue());
+        const qint64 nOffset = XBinary::addressToOffset(ui->scrollAreaHex->getMemoryMap(), da.getValue_XADDR());
+        if (nOffset != -1) {
+            ui->scrollAreaHex->goToOffset(nOffset);
+        }
         ui->scrollAreaHex->setFocus();
         ui->scrollAreaHex->reload();
     }
